@@ -21,5 +21,10 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "@blueprintjs/core": "^3.7.0",
+    "react-ace": "^6.2.0",
+    "react-router-dom": "^4.3.1"
+  }
 }
