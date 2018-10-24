@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
-import render from 'react-dom';
 import brace from 'brace';
 import 'brace/ext/searchbox';
 import AceEditor from 'react-ace';
-import ace from 'react-ace'
 import 'brace/mode/sql';
 import 'brace/theme/github';
 import 'brace/ext/language_tools';
 
-import './MLSQLAceEditor.css'
+import './MLSQLAceEditor.scss'
 
 
 class MLSQLAceEditor extends Component {
@@ -42,8 +40,8 @@ class MLSQLAceEditor extends Component {
   }
 
 }
-class MLSQLMode extends ace.acequire('ace/mode/text').Mode {
+// class MLSQLMode extends ace.acequire('ace/mode/text').Mode {
   
-}
+// }
 export default MLSQLAceEditor
 

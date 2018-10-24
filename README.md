@@ -1,12 +1,12 @@
-# mlsql-web
+# mlsql-web-console
 
 mlsql-web-console是一个基于React的前端应用,
-是为了 [StreamingPro](https://github.com/allwefantasy/streamingpro)中。配套开发的一套Web UI系统。
+是为了 [StreamingPro](https://github.com/allwefantasy/streamingpro)配套开发的一套Web UI系统。
 
 提供的功能有：
 
-1. 登录、校验
-2. 云端部署MLSQL
+1. 用户权限体系
+2. 支持云端按需部署MLSQL
 
 ## 同时....
 
