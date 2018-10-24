@@ -17,12 +17,13 @@ export class APIResponse {
     }
 }
 
+
+
 export class MLSQLAPI {
 
     constructor(url) {
         this.url = url;
     }
-
 
     request(method, body, successCallback, serverErrorCallback) {
         method = method.toUpperCase();

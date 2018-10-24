@@ -2,9 +2,8 @@ import * as React from "react";
 import {FormGroup, InputGroup, Button} from '@blueprintjs/core'
 import './MLSQLRegister.scss'
 import {Redirect} from "react-router-dom";
-import * as backendConfig from '../service/BackendConfig'
-import {MLSQLAPI, APIResponse, ServerError} from '../service/MLSQLAPI'
-import * as HTTP from '../service/HTTPMethod'
+import {MLSQLAuth as Auth} from './MLSQLAuth'
+import * as HTTP from "../service/HTTPMethod";
 
 export default class MLSQLRegister extends React.Component {
     constructor(props) {
@@ -16,6 +15,7 @@ export default class MLSQLRegister extends React.Component {
         this.userName = this.userName.bind(this)
         this.password = this.password.bind(this)
         this.register = this.register.bind(this)
+        this.auth = new Auth()
     }
 
     render() {
@@ -56,44 +56,44 @@ export default class MLSQLRegister extends React.Component {
         this.setState({password: e.target.value})
     }
 
+    isLogin() {
+
+    }
+
+    /**
+     * @param  {APIResponse} apiResponse
+     */
+    registerSuccess(apiResponse) {
+        if (apiResponse.status === HTTP.Status.Success) {
+            this.setState({
+                registerSuccess: true
+            })
+        } else {
+            const self = this;
+            const log = (s) => {
+                self.setState({msg: s})
+            }
+            apiResponse.content.then(log).catch(log)
+
+        }
+
+    }
+
+    /**
+     *
+     * @param {ServerError} serverError
+     */
+    registerFail(serverError) {
+        this.setState({msg: serverError.value.message})
+    }
+
     register() {
 
-        const api = new MLSQLAPI(backendConfig.REGISTER_URL)
-
-        const body = {
-            userName: this.state.userName,
-            password: this.state.password
-        }
-
-        /**
-         * @param  {APIResponse} apiResponse
-         */
-        const sCallBack = (apiResponse) => {
-            console.log("token" + apiResponse.accessToken)
-            if (apiResponse.status === HTTP.Status.Success) {
-                console.log("token" + apiResponse.accessToken)
-                sessionStorage.setItem("access_token", apiResponse.accessToken)
-                this.setState({
-                    registerSuccess: true
-                })
-            } else {
-                const self = this;
-                const log = (s) => {
-                    self.setState({msg: s})
-                }
-                apiResponse.content.then(log).catch(log)
-
-            }
-        }
-        /**
-         *
-         * @param {ServerError} serverError
-         */
-        const errorCallBack = (serverError) => {
-            console.log(serverError)
-            this.setState({msg: serverError.value.message})
-        }
-        api.request(HTTP.Method.POST, body, sCallBack, errorCallBack)
+        const _sCallBack = this.registerSuccess.bind(this)
+        const _errorCallBack = this.registerFail.bind(this)
+        this.auth.register(
+            this.state.userName,
+            this.state.password, _sCallBack, _errorCallBack)
     }
 }
 
