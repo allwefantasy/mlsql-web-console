@@ -1,13 +1,33 @@
 import * as React from "react";
 import {FormGroup, InputGroup, Button} from '@blueprintjs/core'
 import './MLSQLRegister.scss'
-import {Redirect} from "react-router-dom";
+import {Redirect, withRouter} from "react-router-dom";
 import {MLSQLAuth as Auth} from './MLSQLAuth'
 import * as HTTP from "../service/HTTPMethod";
 
 
 export const LOGIN = "login"
 export const REGISTER = "register"
+
+export const LoginButton = withRouter(
+    ({history}) => {
+        return <Button className="bp3-minimal" icon="log-in" text="Login" onClick={() => {
+            {
+                history.push('/')
+            }
+        }}/>
+    }
+)
+
+export const RegisterButton = withRouter(
+    ({history}) => {
+        return <Button className="bp3-minimal" icon="intersection" text="Register" onClick={() => {
+            {
+                history.push('/register')
+            }
+        }}/>
+    }
+)
 
 export class MLSQLRegisterOrLogin extends React.Component {
     constructor(props) {
@@ -71,6 +91,7 @@ export class MLSQLRegisterOrLogin extends React.Component {
      * @param  {APIResponse} apiResponse
      */
     registerSuccess = (apiResponse) => {
+
         if (apiResponse.status === HTTP.Status.Success) {
             this.setState({
                 registerOrLoginSuccess: true
@@ -78,7 +99,12 @@ export class MLSQLRegisterOrLogin extends React.Component {
         } else {
             const self = this;
             const log = (s) => {
-                self.setState({msg: s})
+                let msg = s;
+                try {
+                    msg = JSON.parse(s)["msg"]
+                } catch (e) {
+                }
+                self.setState({msg: msg})
             }
             apiResponse.content.then(log).catch(log)
 
@@ -94,7 +120,13 @@ export class MLSQLRegisterOrLogin extends React.Component {
         this.setState({msg: serverError.value.message})
     }
 
-    login() {
+    login = () => {
+        const validator = new FormValidate(this)
+        if (validator.validate()) {
+            this.auth.login(
+                this.state.userName,
+                this.state.password, this.registerSuccess, this.registerFail)
+        }
     }
 
     register = () => {

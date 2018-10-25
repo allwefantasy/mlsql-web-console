@@ -1,6 +1,8 @@
 import {MLSQLAPI, APIResponse, ServerError} from "../service/MLSQLAPI";
 import * as backendConfig from "../service/BackendConfig";
 import * as HTTP from "../service/HTTPMethod";
+import React from "react";
+
 
 export class MLSQLAuth {
 
@@ -20,9 +22,17 @@ export class MLSQLAuth {
          * @param  {APIResponse} apiResponse
          */
         const sCallBack = (apiResponse) => {
-            apiResponse.content.then((s => {
-                callback(JSON.parse(s)["userName"])
-            }))
+            /**
+             *  if server return unauthorized status, then we should
+             *  remove our token since it maybe invalidate.
+             */
+            if (apiResponse.status === HTTP.Status.Unauthorized) {
+                sessionStorage.removeItem(HTTP.AccessToken.name)
+            } else {
+                apiResponse.content.then((s => {
+                    callback(JSON.parse(s)["userName"])
+                }))
+            }
         }
 
         api.request(HTTP.Method.GET, {}, sCallBack, (m) => {
@@ -34,8 +44,20 @@ export class MLSQLAuth {
      * @param {String} userName
      * @param {String} password
      */
+    login(userName, password, _sCallBack, _errorCallBack) {
+        this.registerOrLogin(backendConfig.LOGIN_URL, userName, password, _sCallBack, _errorCallBack)
+    }
+
+    /**
+     * @param {String} userName
+     * @param {String} password
+     */
     register(userName, password, _sCallBack, _errorCallBack) {
-        const api = new MLSQLAPI(backendConfig.REGISTER_URL)
+        this.registerOrLogin(backendConfig.REGISTER_URL, userName, password, _sCallBack, _errorCallBack)
+    }
+
+    registerOrLogin(url, userName, password, _sCallBack, _errorCallBack) {
+        const api = new MLSQLAPI(url)
 
         const body = {
             userName: userName,

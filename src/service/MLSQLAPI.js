@@ -55,25 +55,7 @@ export class MLSQLAPI {
             body: formBody
         })
             .then((res) => {
-                if (!res.ok) {
-                    if (res.status === HTTP.Status.Unauthorized) {
-                        res.text().then((s) => {
-                            console.log("API Server return " + HTTP.Status.Unauthorized + " , should reLogin")
-                        })
-                        sessionStorage.removeItem(HTTP.AccessToken.name)
-                    } else {
-                        res.text().then((s) => {
-                            console.log("API Server return " + res.status + " , should reLogin; server message:" + s)
-                        })
-                    }
-                    throw new Error("API Server return other status which is not 200")
-                }
-                return res;
-            }).then((res) => {
-
-                if (res.status === HTTP.Status.Success) {
-                    successCallback(new APIResponse(res.status, res.text(), res.headers.get(HTTP.AccessToken.name)))
-                }
+                successCallback(new APIResponse(res.status, res.text(), res.headers.get(HTTP.AccessToken.name)))
             })
             .catch((res) => {
                 serverErrorCallback(new ServerError(res))
