@@ -44,7 +44,6 @@ export class MLSQLAPI {
         } else {
             formBody = formBody.join("&")
         }
-
         return fetch(newurl, {
             method: method,
             headers: {

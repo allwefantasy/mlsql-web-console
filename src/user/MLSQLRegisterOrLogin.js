@@ -19,6 +19,16 @@ export const LoginButton = withRouter(
     }
 )
 
+export const LogoutButton = withRouter(
+    ({history}) => {
+        return <Button className="bp3-minimal" icon="log-out" text="Logout" onClick={() => {
+            {
+                history.push('/logout')
+            }
+        }}/>
+    }
+)
+
 export const RegisterButton = withRouter(
     ({history}) => {
         return <Button className="bp3-minimal" icon="intersection" text="Register" onClick={() => {
@@ -28,6 +38,19 @@ export const RegisterButton = withRouter(
         }}/>
     }
 )
+
+export class WelcomeMessage extends React.Component {
+
+    render() {
+        this.props.auth.userName((name) => {
+            this.setState({userName: name})
+        })
+
+        return (
+            <div>welcome {this.state === null ? "" : this.state.userName}</div>
+        )
+    }
+}
 
 export class MLSQLRegisterOrLogin extends React.Component {
     constructor(props) {

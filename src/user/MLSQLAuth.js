@@ -7,7 +7,7 @@ import React from "react";
 export class MLSQLAuth {
 
     isLogin() {
-        return sessionStorage.getItem('access_token') !== null
+        return sessionStorage.getItem(HTTP.AccessToken.name) !== null
     }
 
     /**
@@ -69,7 +69,7 @@ export class MLSQLAuth {
          */
         const sCallBack = (apiResponse) => {
             if (apiResponse.accessToken) {
-                sessionStorage.setItem("access_token", apiResponse.accessToken)
+                sessionStorage.setItem(HTTP.AccessToken.name, apiResponse.accessToken)
             }
             _sCallBack(apiResponse)
         }

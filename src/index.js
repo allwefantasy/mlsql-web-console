@@ -8,7 +8,14 @@ import {
     withRouter, Redirect
 } from 'react-router-dom';
 
-import {LOGIN, REGISTER, MLSQLRegisterOrLogin, LoginButton, RegisterButton} from "./user/MLSQLRegisterOrLogin";
+import {
+    LOGIN,
+    REGISTER,
+    MLSQLRegisterOrLogin,
+    LoginButton,
+    LogoutButton,
+    RegisterButton, WelcomeMessage
+} from "./user/MLSQLRegisterOrLogin";
 
 import MLSQLQueryApp from './components/MLSQLQueryApp';
 import {Navbar, Button, Alignment} from "@blueprintjs/core";
@@ -16,10 +23,6 @@ import * as serviceWorker from './serviceWorker';
 import {MLSQLAuth as Auth} from "./user/MLSQLAuth";
 
 const auth = new Auth()
-const callback = (userName) => {
-    return <span>userName</span>
-}
-
 
 const AuthRoute = ({component: Component, ...rest}) => (
     <Route {...rest} render={(props) => (
@@ -40,11 +43,12 @@ ReactDOM.render(
                     <Button className="bp3-minimal" icon="document" text="Jobs"/>
                 </Navbar.Group>
                 <Navbar.Group align={Alignment.RIGHT}>
-                    {auth.userName(callback)}
-                    <LoginButton/>
+                    <WelcomeMessage auth={auth}/>
+                    {auth.isLogin() ? <LogoutButton/> : <LoginButton/>}
                     <RegisterButton/>
                 </Navbar.Group>
             </Navbar>
+
             <Route exact path="/"
                    component={() => {
                        return <MLSQLRegisterOrLogin loginType={LOGIN}/>
@@ -52,6 +56,10 @@ ReactDOM.render(
             <Route exact path="/register"
                    render={() => {
                        return <MLSQLRegisterOrLogin loginType={REGISTER}/>
+                   }}/>
+            <Route exact path="/logout"
+                   render={() => {
+                       return <MLSQLRegisterOrLogin loginType={LOGIN}/>
                    }}/>
             <AuthRoute exact path="/query" component={MLSQLQueryApp}/>
         </div>

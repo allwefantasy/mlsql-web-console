@@ -13,5 +13,5 @@ export const Status = {
 }
 
 export const AccessToken = {
-    name: "access_token"
+    name: "access-token"
 }
