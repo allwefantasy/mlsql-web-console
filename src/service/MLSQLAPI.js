@@ -1,3 +1,5 @@
+import * as HTTP from "../service/HTTPMethod";
+
 export class ServerError {
     constructor(content) {
         this.value = content
@@ -18,7 +20,6 @@ export class APIResponse {
 }
 
 
-
 export class MLSQLAPI {
 
     constructor(url) {
@@ -27,9 +28,6 @@ export class MLSQLAPI {
 
     request(method, body, successCallback, serverErrorCallback) {
         method = method.toUpperCase();
-        if (method === 'GET') {
-            body = undefined;
-        }
 
         let formBody = [];
         for (let property in body) {
@@ -38,18 +36,46 @@ export class MLSQLAPI {
             formBody.push(encodedKey + "=" + encodedValue);
         }
 
-        return fetch(this.url, {
+        let newurl = this.url
+
+        if (method === "GET") {
+            newurl = newurl + "?" + formBody
+            formBody = undefined
+        } else {
+            formBody = formBody.join("&")
+        }
+
+        return fetch(newurl, {
             method: method,
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Accept': 'application/json',
-                'Access-Token': sessionStorage.getItem('access_token') || ''
+                'Access-Token': sessionStorage.getItem(HTTP.AccessToken.name) || ''
             },
-            body: formBody.join("&")
+            body: formBody
         })
             .then((res) => {
-                successCallback(new APIResponse(res.status, res.text(), res.headers.get("access-token")))
-            }).catch((res) => {
+                if (!res.ok) {
+                    if (res.status === HTTP.Status.Unauthorized) {
+                        res.text().then((s) => {
+                            console.log("API Server return " + HTTP.Status.Unauthorized + " , should reLogin")
+                        })
+                        sessionStorage.removeItem(HTTP.AccessToken.name)
+                    } else {
+                        res.text().then((s) => {
+                            console.log("API Server return " + res.status + " , should reLogin; server message:" + s)
+                        })
+                    }
+                    throw new Error("API Server return other status which is not 200")
+                }
+                return res;
+            }).then((res) => {
+
+                if (res.status === HTTP.Status.Success) {
+                    successCallback(new APIResponse(res.status, res.text(), res.headers.get(HTTP.AccessToken.name)))
+                }
+            })
+            .catch((res) => {
                 serverErrorCallback(new ServerError(res))
             })
     }

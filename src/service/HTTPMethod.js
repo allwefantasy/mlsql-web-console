@@ -11,3 +11,7 @@ export const Status = {
     Forbidden: 404,
     ServerError: 500
 }
+
+export const AccessToken = {
+    name: "access_token"
+}
