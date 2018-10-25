@@ -21,6 +21,7 @@ import MLSQLQueryApp from './components/MLSQLQueryApp';
 import {Navbar, Button, Alignment} from "@blueprintjs/core";
 import * as serviceWorker from './serviceWorker';
 import {MLSQLAuth as Auth} from "./user/MLSQLAuth";
+import {MLSQLTest} from "./components/MLSQLTest";
 
 const auth = new Auth()
 
@@ -62,6 +63,7 @@ ReactDOM.render(
                        return <MLSQLRegisterOrLogin loginType={LOGIN}/>
                    }}/>
             <AuthRoute exact path="/query" component={MLSQLQueryApp}/>
+            <AuthRoute exact path="/test" component={MLSQLTest}/>
         </div>
 
     </BrowserRouter>, document.getElementById('root'));

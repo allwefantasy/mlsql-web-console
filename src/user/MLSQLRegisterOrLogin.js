@@ -47,7 +47,7 @@ export class WelcomeMessage extends React.Component {
         })
 
         return (
-            <div>welcome {this.state === null ? "" : this.state.userName}</div>
+            <div>{this.state === null ? "" : "welcome  " + this.state.userName}</div>
         )
     }
 }
