@@ -52,7 +52,7 @@ export class ScriptNodeTree extends React.Component {
                  *
                  * @type {[{id:number,icon:string,label:string,parentId:number,isDir:boolean,childNodes:[]}]}
                  */
-                let rawData = "[]"
+                let rawData = []
                 try {
                     rawData = JSON.parse(s || "[]")
                 } catch (e) {
