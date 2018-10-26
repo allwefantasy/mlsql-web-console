@@ -31,7 +31,8 @@ export class MLSQLAuth {
             } else {
                 apiResponse.content.then((s => {
                     callback(JSON.parse(s)["userName"])
-                }))
+                })).catch((error) => {
+                })
             }
         }
 

@@ -17,20 +17,54 @@ import {
 } from "@blueprintjs/core";
 import {ContextMenu, Menu, MenuItem} from "@blueprintjs/core";
 import classNames from "classnames";
-import {MLSQLAPI} from "../service/MLSQLAPI";
+import {MLSQLAPI, APIResponse} from "../service/MLSQLAPI";
 import * as HTTP from "../service/HTTPMethod"
 import './MLSQLTreeNode.scss'
 import * as backendConfig from "../service/BackendConfig";
+import MLSQLTreeBuilder from "../service/MLSQLTreeBuilder"
 
 
 export class ScriptNodeTree extends React.Component {
 
     constructor(props) {
         super(props)
+
         /**
-         * @type {{nodes: *[], isContextMenuOpen: boolean,openCreateScriptDialog: boolean}}
+         * @type {{isContextMenuOpen: boolean,openCreateScriptDialog: boolean}}
          */
-        this.state = {nodes: INITIAL_STATE, isContextMenuOpen: false, openCreateScriptDialog: false};
+        this.state = {isContextMenuOpen: false, openCreateScriptDialog: false};
+
+        this.reloadData()
+
+    }
+
+    reloadData = () => {
+
+        const api = new MLSQLAPI(backendConfig.CREATE_SCRIPT_FILE)
+        const self = this;
+        /**
+         *
+         * @param {APIResponse} ok
+         */
+        const success = (ok) => {
+            ok.content.then((s) => {
+                /**
+                 *
+                 * @type {[{id:number,icon:string,label:string,parentId:number,isDir:boolean,childNodes:[]}]}
+                 */
+                const rawData = JSON.parse(s || "[]")
+                rawData.forEach((item) => {
+                    item["hasCaret"] = item.isDir
+                })
+                const builder = new MLSQLTreeBuilder()
+                const treeRes = builder.build(rawData).sort((a, b) => {
+                    return a.id - b.id
+                })
+                self.setState({nodes: treeRes})
+            })
+        }
+        api.request(HTTP.Method.GET, {}, success, (notok) => {
+        })
     }
 
     render() {
@@ -45,7 +79,8 @@ export class ScriptNodeTree extends React.Component {
                     onNodeContextMenu={this.onNodeContextMenu}
                     className={Classes.ELEVATION_0}
                 />
-                {this.state.openCreateScriptDialog ? <CreateScriptDialog parent={this}></CreateScriptDialog> : ""}
+                {this.state.openCreateScriptDialog ?
+                    <CreateScriptDialog nodeId={this.state.nodeId} parent={this}></CreateScriptDialog> : ""}
 
             </div>
         );
@@ -55,7 +90,7 @@ export class ScriptNodeTree extends React.Component {
         e.preventDefault()
         const self = this;
         ContextMenu.show(
-            <ScriptNodeTreeMenu parent={self}/>,
+            <ScriptNodeTreeMenu parent={self} nodeId={node.id}/>,
             {left: e.clientX, top: e.clientY},
             () => this.setState({isContextMenuOpen: false}),
         );
@@ -97,7 +132,7 @@ class CreateScriptDialog extends React.Component {
 
     /**
      *
-     * @param {{isDir:boolean, parentFolder:number,parent:ScriptNodeTree}} props
+     * @param {{parentFolder:number,parent:ScriptNodeTree,nodeId:number}} props
      */
     constructor(props) {
         super(props)
@@ -110,7 +145,7 @@ class CreateScriptDialog extends React.Component {
     }
 
     title = () => {
-        if (this.props.isDir) {
+        if (this.props.parent.state.isDir) {
             return "Create Folder"
         }
         else return "Create Script"
@@ -128,7 +163,7 @@ class CreateScriptDialog extends React.Component {
     }
 
     create = () => {
-        console.log(this)
+
         const api = new MLSQLAPI(backendConfig.CREATE_SCRIPT_FILE)
         const self = this;
 
@@ -147,7 +182,14 @@ class CreateScriptDialog extends React.Component {
             }
         }
 
-        api.request(HTTP.Method.POST, {}, success, (notok) => {
+        const params = {
+            fileName: this.state.fileName,
+            isDir: this.props.parent.state.isDir,
+            content: this.state.content,
+            parentId: this.props.nodeId
+        }
+
+        api.request(HTTP.Method.POST, params, success, (notok) => {
             self.setState({msg: "Server error"})
         })
 
@@ -214,24 +256,22 @@ class ScriptNodeTreeMenu extends React.Component {
             <div>
                 <Menu>
                     <MenuItem icon="document" text="Create Script" onClick={(() => {
-                        this.props.parent.setState({openCreateScriptDialog: true})
+                        this.props.parent.setState({
+                            openCreateScriptDialog: true,
+                            nodeId: this.props.nodeId,
+                            isDir: false
+                        })
                     }).bind(this)}/>
-                    <MenuItem icon="folder-new" text="Create Folder"/>
+                    <MenuItem icon="folder-new" text="Create Folder" onClick={(() => {
+                        this.props.parent.setState({
+                            openCreateScriptDialog: true,
+                            nodeId: this.props.nodeId,
+                            isDir: true
+                        })
+                    }).bind(this)}/>
                 </Menu>
             </div>
         )
-    }
-
-    createScript = () => {
-
-    }
-
-    createFolder = () => {
-        const api = new MLSQLAPI();
-
-        api.request(HTTP.Method.POST, {}, (ok) => {
-        }, (notok) => {
-        })
     }
 }
 

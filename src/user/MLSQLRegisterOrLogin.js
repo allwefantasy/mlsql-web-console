@@ -41,10 +41,16 @@ export const RegisterButton = withRouter(
 
 export class WelcomeMessage extends React.Component {
 
-    render() {
+    constructor(props) {
+        super(props)
         this.props.auth.userName((name) => {
             this.setState({userName: name})
         })
+
+    }
+
+    render() {
+
 
         return (
             <div>{this.state === null ? "" : "welcome  " + this.state.userName}</div>
