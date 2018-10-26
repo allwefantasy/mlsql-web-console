@@ -56,7 +56,7 @@ export class ScriptNodeTree extends React.Component {
                 try {
                     rawData = JSON.parse(s || "[]")
                 } catch (e) {
-                    
+
                 }
                 rawData.forEach((item) => {
                     item["hasCaret"] = item.isDir

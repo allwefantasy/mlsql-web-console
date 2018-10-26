@@ -30,5 +30,5 @@
     "react-ace": "^6.2.0",
     "react-router-dom": "^4.3.1"
   },
-  "proxy": "http://120.77.37.161"
+  "proxy": "http://mlsql.server"
 }
