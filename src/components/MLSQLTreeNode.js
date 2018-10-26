@@ -52,7 +52,12 @@ export class ScriptNodeTree extends React.Component {
                  *
                  * @type {[{id:number,icon:string,label:string,parentId:number,isDir:boolean,childNodes:[]}]}
                  */
-                const rawData = JSON.parse(s || "[]")
+                let rawData = "[]"
+                try {
+                    rawData = JSON.parse(s || "[]")
+                } catch (e) {
+                    
+                }
                 rawData.forEach((item) => {
                     item["hasCaret"] = item.isDir
                 })
