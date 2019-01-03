@@ -17,6 +17,15 @@ export class APIResponse {
         this.content = content;
         this.accessToken = accessToken
     }
+
+    json = (process) => {
+
+        this.content.then((s) => {
+            const jsonObj = JSON.parse(s)
+            process(jsonObj)
+        })
+    }
+
 }
 
 

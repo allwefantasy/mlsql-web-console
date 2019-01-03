@@ -1,3 +1,23 @@
 .mlsql-queryapp {
-    display: flex
+  display: flex
+}
+
+.mlsql-directory-tree {
+  display: flex;
+  width: 30%;
+  justify-content: left;
+}
+
+.mlsql-editor {
+  display: flex;
+  flex-flow: column;
+  flex: 1 100%;
+}
+
+.mlsql-messagebox {
+  height: 100px;
+}
+
+.mslql-editor-buttons button {
+  margin: 20px 20px;
 }

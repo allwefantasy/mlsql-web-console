@@ -1,59 +1,57 @@
 import * as React from "react";
-import {FormGroup, InputGroup, Button} from '@blueprintjs/core'
+import {FormGroup, InputGroup, Button, Navbar} from '@blueprintjs/core'
 import './MLSQLRegister.scss'
-import {Redirect, withRouter} from "react-router-dom";
 import {MLSQLAuth as Auth} from './MLSQLAuth'
 import * as HTTP from "../service/HTTPMethod";
+import MLSQLQueryApp from "../components/MLSQLQueryApp";
 
 
 export const LOGIN = "login"
 export const REGISTER = "register"
 
-export const LoginButton = withRouter(
-    ({history}) => {
-        return <Button className="bp3-minimal" icon="log-in" text="Login" onClick={() => {
-            {
-                history.push('/')
-            }
-        }}/>
-    }
-)
-
-export const LogoutButton = withRouter(
-    ({history}) => {
-        return <Button className="bp3-minimal" icon="log-out" text="Logout" onClick={() => {
-            {
-                history.push('/logout')
-            }
-        }}/>
-    }
-)
-
-export const RegisterButton = withRouter(
-    ({history}) => {
-        return <Button className="bp3-minimal" icon="intersection" text="Register" onClick={() => {
-            {
-                history.push('/register')
-            }
-        }}/>
-    }
-)
-
 export class WelcomeMessage extends React.Component {
 
     constructor(props) {
         super(props)
-        this.props.auth.userName((name) => {
+        this.auth = new Auth()
+        this.auth.userName((name) => {
             this.setState({userName: name})
         })
+        this.app = this.props.parent
+    }
+
+    getLoginOrRegisterManager = () => {
+        return this.app.registerOrLoginRef.current
+    }
+
+
+    isLogin = () => {
+        return this.state != null && this.state.userName != null
+    }
+
+    logout = () => {
+        this.auth.logout()
+        this.updateLoginoutStatus()
+    }
+
+    updateLoginoutStatus = () => {
+        this.setState({userName: null})
+        this.getLoginOrRegisterManager().updateLoginoutStatus()
 
     }
 
     render() {
+        const LoginButton = <Button className="bp3-minimal" icon="log-in" text="Login"/>
 
+        const LogoutButton = <Button className="bp3-minimal" icon="log-out" text="Logout"
+                                     onClick={this.updateLoginoutStatus}/>
 
+        const RegisterButton = <Button className="bp3-minimal" icon="intersection" text="Register"/>
         return (
-            <div>{this.state === null ? "" : "welcome  " + this.state.userName}</div>
+            <div>{this.isLogin() ? "welcome  " + this.state.userName : ""}
+                {this.isLogin() ? LogoutButton : LoginButton}
+                {RegisterButton}
+            </div>
         )
     }
 }
@@ -63,24 +61,26 @@ export class MLSQLRegisterOrLogin extends React.Component {
         super(props)
 
         this.loginType = this.props.loginType
-
+        this.auth = new Auth()
+        this.app = this.props.parent
         /**
          * @type {{registerOrLoginSuccess: boolean, msg: string, userName: string, password: string}}
          */
         this.state = {
             registerOrLoginSuccess: false,
-            msg: ""
+            msg: "",
+            isLogin: this.auth.isLogin()
         }
 
-        this.auth = new Auth()
+
     }
 
+    getMenuView = () => {
+        return this.app.menuRef.current
+    }
 
     render() {
-
-        if (this.auth.isLogin() || this.state.registerOrLoginSuccess === true) {
-            return <Redirect to='/query'/>
-        }
+        if (this.state.isLogin) return <MLSQLQueryApp/>
         return (
             <div className="mlsql-register">
                 <div className="mlsql-register-form">
@@ -116,6 +116,10 @@ export class MLSQLRegisterOrLogin extends React.Component {
         this.setState({password: e.target.value})
     }
 
+    updateLoginoutStatus = () => {
+        this.setState({isLogin: this.auth.isLogin()})
+    }
+
     /**
      * @param  {APIResponse} apiResponse
      */
@@ -125,6 +129,7 @@ export class MLSQLRegisterOrLogin extends React.Component {
             this.setState({
                 registerOrLoginSuccess: true
             })
+            this.getMenuView().updateLoginoutStatus()
         } else {
             const self = this;
             const log = (s) => {

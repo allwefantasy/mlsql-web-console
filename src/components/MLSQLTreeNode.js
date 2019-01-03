@@ -23,7 +23,7 @@ import './MLSQLTreeNode.scss'
 import * as backendConfig from "../service/BackendConfig";
 import MLSQLTreeBuilder from "../service/MLSQLTreeBuilder"
 
-
+//the directory tree in the left
 export class ScriptNodeTree extends React.Component {
 
     constructor(props) {
@@ -33,7 +33,7 @@ export class ScriptNodeTree extends React.Component {
          * @type {{isContextMenuOpen: boolean,openCreateScriptDialog: boolean}}
          */
         this.state = {isContextMenuOpen: false, openCreateScriptDialog: false};
-
+        this.parent = this.props.parent
         this.reloadData()
 
     }
@@ -61,6 +61,7 @@ export class ScriptNodeTree extends React.Component {
                 rawData.forEach((item) => {
                     item["hasCaret"] = item.isDir
                 })
+
                 const builder = new MLSQLTreeBuilder()
                 const treeRes = builder.build(rawData).sort((a, b) => {
                     return a.id - b.id
@@ -82,7 +83,8 @@ export class ScriptNodeTree extends React.Component {
                     onNodeCollapse={this.handleNodeCollapse}
                     onNodeExpand={this.handleNodeExpand}
                     onNodeContextMenu={this.onNodeContextMenu}
-                    className={Classes.ELEVATION_0}
+                    onNodeDoubleClick={this.handNodeDoubleClick}
+                    className="mlsql-directory-tree"
                 />
                 {this.state.openCreateScriptDialog ?
                     <CreateScriptDialog nodeId={this.state.nodeId} parent={this}></CreateScriptDialog> : ""}
@@ -101,6 +103,26 @@ export class ScriptNodeTree extends React.Component {
         );
         this.setState({isContextMenuOpen: true});
     }
+
+    handNodeDoubleClick = (node, _nodePath, e) => {
+        if (node.isDir) {
+            node.isExpanded = !node.isExpanded;
+        } else {
+            const api = new MLSQLAPI(backendConfig.GET_SCRIPT_FILE)
+            const self = this;
+            api.request(HTTP.Method.GET, {id: node.id}, (ok) => {
+                ok.content.then((s) => {
+                    const scriptFile = JSON.parse(s || "{}")
+                    self.parent.editor.current.text(scriptFile.content, node.id)
+                })
+            }, (fail) => {
+            })
+
+
+        }
+        this.setState(this.state);
+
+    };
 
     handleNodeClick = (nodeData, _nodePath, e) => {
         const originallySelected = nodeData.isSelected;
@@ -165,6 +187,7 @@ class CreateScriptDialog extends React.Component {
 
     finish = () => {
         this.props.parent.setState({openCreateScriptDialog: false})
+        this.props.parent.reloadData()
     }
 
     create = () => {
@@ -205,10 +228,11 @@ class CreateScriptDialog extends React.Component {
          */
         const parent = this.props.parent;
         parent.setState({openCreateScriptDialog: false})
+        parent.reloadData()
     }
 
     render() {
-        const OVERLAY_EXAMPLE_CLASS = "docs-overlay-example-transition";
+        const OVERLAY_EXAMPLE_CLASS = "docs-md-overlay-example-transition";
         const classes = classNames(Classes.CARD, Classes.ELEVATION_4, OVERLAY_EXAMPLE_CLASS);
         return (
             <div>
@@ -254,6 +278,28 @@ class ScriptNodeTreeMenu extends React.Component {
      */
     constructor(props) {
         super(props)
+        this.parent = this.props.parent
+        this.nodeId = this.props.nodeId
+    }
+
+    removeFile = () => {
+        const api = new MLSQLAPI(backendConfig.REMOVE_SCRIPT_FILE)
+        const self = this;
+        api.request(HTTP.Method.POST, {
+            id: self.nodeId
+        }, (ok) => {
+            if (ok.status === HTTP.Status.Success) {
+                self.parent.reloadData()
+            } else {
+                ok.content.then((msg) => {
+                    self.parent.setState({msg: msg})
+                })
+
+            }
+
+        }, (fail) => {
+            self.parent.setState({msg: "Server error"})
+        })
     }
 
     render() {
@@ -261,18 +307,21 @@ class ScriptNodeTreeMenu extends React.Component {
             <div>
                 <Menu>
                     <MenuItem icon="document" text="Create Script" onClick={(() => {
-                        this.props.parent.setState({
+                        this.parent.setState({
                             openCreateScriptDialog: true,
-                            nodeId: this.props.nodeId,
+                            nodeId: this.nodeId,
                             isDir: false
                         })
                     }).bind(this)}/>
                     <MenuItem icon="folder-new" text="Create Folder" onClick={(() => {
-                        this.props.parent.setState({
+                        this.parent.setState({
                             openCreateScriptDialog: true,
-                            nodeId: this.props.nodeId,
+                            nodeId: this.nodeId,
                             isDir: true
                         })
+                    }).bind(this)}/>
+                    <MenuItem icon="remove" text="Delete" onClick={(() => {
+                        this.removeFile()
                     }).bind(this)}/>
                 </Menu>
             </div>
@@ -280,65 +329,5 @@ class ScriptNodeTreeMenu extends React.Component {
     }
 }
 
-/* tslint:disable:object-literal-sort-keys so childNodes can come last */
-const INITIAL_STATE = [
-    {
-        id: 0,
-        hasCaret: true,
-        icon: "folder-close",
-        label: "Folder 0",
-    },
-    {
-        id: 1,
-        icon: "folder-close",
-        isExpanded: true,
-        label: (
-            <Tooltip content="I'm a folder <3" position={Position.RIGHT}>
-                Folder 1
-            </Tooltip>
-        ),
-        childNodes: [
-            {
-                id: 2,
-                icon: "document",
-                label: "Item 0",
-                secondaryLabel: (
-                    <Tooltip content="An eye!">
-                        <Icon icon="eye-open"/>
-                    </Tooltip>
-                ),
-            },
-            {
-                id: 3,
-                icon: "tag",
-                label: "Organic meditation gluten-free, sriracha VHS drinking vinegar beard man.",
-            },
-            {
-                id: 4,
-                hasCaret: true,
-                icon: "folder-close",
-                label: (
-                    <Tooltip content="foo" position={Position.RIGHT}>
-                        Folder 2
-                    </Tooltip>
-                ),
-                childNodes: [
-                    {id: 5, label: "No-Icon Item"},
-                    {id: 6, icon: "tag", label: "Item 1"},
-                    {
-                        id: 7,
-                        hasCaret: true,
-                        icon: "folder-close",
-                        label: "Folder 3",
-                        childNodes: [
-                            {id: 8, icon: "document", label: "Item 0"},
-                            {id: 9, icon: "tag", label: "Item 1"},
-                        ],
-                    },
-                ],
-            },
-        ],
-    },
-];
 
 

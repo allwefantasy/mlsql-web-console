@@ -1,4 +1,5 @@
 class MLSQLTreeNodeBuilder {
+
     /**
      *
      * Usage:
@@ -16,7 +17,6 @@ class MLSQLTreeNodeBuilder {
      * @param {[{id:number,icon:string,label:string,parentId:number,childNodes:[]}]} list
      */
     build = (list) => {
-        const ROOT = {"id": 0, "icon": "folder-close", "label": "scripts", "parentId": 0}
         let tempMap = {}, node, roots = [], i;
         for (i = 0; i < list.length; i += 1) {
             tempMap[list[i].id] = i;
@@ -25,12 +25,11 @@ class MLSQLTreeNodeBuilder {
         for (i = 0; i < list.length; i += 1) {
             node = list[i];
             if (node.parentId !== 0) {
-                list[tempMap[node.parentId]].children.push(node);
+                list[tempMap[node.parentId]].childNodes.push(node);
             } else {
                 roots.push(node);
             }
         }
-        roots.push(ROOT)
         return roots;
     }
 

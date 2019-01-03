@@ -49,6 +49,10 @@ export class MLSQLAuth {
         this.registerOrLogin(backendConfig.LOGIN_URL, userName, password, _sCallBack, _errorCallBack)
     }
 
+    logout() {
+        sessionStorage.removeItem(HTTP.AccessToken.name)
+    }
+
     /**
      * @param {String} userName
      * @param {String} password

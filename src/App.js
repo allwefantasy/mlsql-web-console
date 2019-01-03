@@ -1,28 +1,34 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
+import React, {Component} from 'react';
 import './App.scss';
+import {Alignment, Button, Navbar} from "@blueprintjs/core";
+import {LOGIN, MLSQLRegisterOrLogin, WelcomeMessage} from "./user/MLSQLRegisterOrLogin";
+import {MLSQLAuth as Auth} from "./user/MLSQLAuth";
 
 class App extends Component {
-  render() {
-    return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Welcome to MLSQL console
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Query Now
-          </a>
-        </header>
-      </div>
-    );
-  }
+    constructor(props) {
+        super(props)
+        this.menuRef = React.createRef()
+        this.registerOrLoginRef = React.createRef()
+    }
+
+    render() {
+        return (
+            <div>
+                <Navbar>
+                    <Navbar.Group align={Alignment.LEFT}>
+                        <Navbar.Heading>MLSQL Web Console</Navbar.Heading>
+                        <Navbar.Divider/>
+                        <Button className="bp3-minimal" icon="home" text="Console"/>
+                        <Button className="bp3-minimal" icon="document" text="Jobs"/>
+                    </Navbar.Group>
+                    <Navbar.Group align={Alignment.RIGHT}>
+                        <WelcomeMessage ref={this.menuRef} parent={this}/>
+                    </Navbar.Group>
+                </Navbar>
+                <MLSQLRegisterOrLogin ref={this.registerOrLoginRef} parent={this} loginType={LOGIN}/>
+            </div>
+        );
+    }
 }
 
 export default App;
