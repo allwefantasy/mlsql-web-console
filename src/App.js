@@ -11,6 +11,12 @@ class App extends Component {
         this.registerOrLoginRef = React.createRef()
     }
 
+    updateLoginoutStatus = () => {
+        console.log("------")
+        this.menuRef.current.updateLoginoutStatus()
+        this.registerOrLoginRef.current.updateLoginoutStatus()
+    }
+
     render() {
         return (
             <div>

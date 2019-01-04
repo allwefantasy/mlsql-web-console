@@ -13,6 +13,8 @@ import * as BackendConfig from "../service/BackendConfig";
 import * as HTTP from "../service/HTTPMethod";
 import {MLSQLAuth as Auth} from "../user/MLSQLAuth";
 
+const uuidv4 = require('uuid/v4');
+
 
 class MLSQLAceEditor extends React.Component {
 
@@ -58,12 +60,21 @@ class MLSQLAceEditor extends React.Component {
 
         const select = self.getSelection()
         let finalSQL = self.getAllText()
+        const jobName = uuidv4()
         if (select != '') {
             finalSQL = select
         }
         const auth = new Auth()
         auth.userName((userName) => {
-            api.request(HTTP.Method.POST, {sql: finalSQL, owner: userName}, (ok) => {
+            api.request(HTTP.Method.POST, {
+                sql: finalSQL,
+                owner: userName,
+                jobName: jobName,
+                sessionPerUser: true,
+                "context.__default__include_fetch_url__": "",
+                "context.__default__include_project_name__": ""
+
+            }, (ok) => {
                 ok.json((wow) => {
                     //render table
                     self.getDisplay().update(wow)

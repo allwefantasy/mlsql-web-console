@@ -14,10 +14,12 @@ export class WelcomeMessage extends React.Component {
     constructor(props) {
         super(props)
         this.auth = new Auth()
+        this.state = {isLogin: this.auth.isLogin()}
+        this.app = this.props.parent
         this.auth.userName((name) => {
             this.setState({userName: name})
         })
-        this.app = this.props.parent
+
     }
 
     getLoginOrRegisterManager = () => {
@@ -25,31 +27,36 @@ export class WelcomeMessage extends React.Component {
     }
 
 
-    isLogin = () => {
-        return this.state != null && this.state.userName != null
-    }
-
     logout = () => {
         this.auth.logout()
-        this.updateLoginoutStatus()
+        this.app.updateLoginoutStatus()
+    }
+
+    login = () => {
+        this.logout()
+        this.getLoginOrRegisterManager().setState({loginType: LOGIN})
+    }
+
+    register = () => {
+        this.logout()
+        this.getLoginOrRegisterManager().setState({loginType: REGISTER})
     }
 
     updateLoginoutStatus = () => {
-        this.setState({userName: null})
-        this.getLoginOrRegisterManager().updateLoginoutStatus()
-
+        this.setState({isLogin: this.auth.isLogin()})
     }
 
     render() {
-        const LoginButton = <Button className="bp3-minimal" icon="log-in" text="Login"/>
+        const LoginButton = <Button className="bp3-minimal" icon="log-in" text="Login" onClick={this.login}/>
 
         const LogoutButton = <Button className="bp3-minimal" icon="log-out" text="Logout"
-                                     onClick={this.updateLoginoutStatus}/>
+                                     onClick={this.logout}/>
 
-        const RegisterButton = <Button className="bp3-minimal" icon="intersection" text="Register"/>
+        const RegisterButton = <Button className="bp3-minimal" icon="intersection" text="Register"
+                                       onClick={this.register}/>
         return (
-            <div>{this.isLogin() ? "welcome  " + this.state.userName : ""}
-                {this.isLogin() ? LogoutButton : LoginButton}
+            <div>{this.state.isLogin ? "welcome  " + this.state.userName : ""}
+                {this.state.isLogin ? LogoutButton : LoginButton}
                 {RegisterButton}
             </div>
         )
@@ -60,24 +67,19 @@ export class MLSQLRegisterOrLogin extends React.Component {
     constructor(props) {
         super(props)
 
-        this.loginType = this.props.loginType
         this.auth = new Auth()
         this.app = this.props.parent
-        /**
-         * @type {{registerOrLoginSuccess: boolean, msg: string, userName: string, password: string}}
-         */
+
         this.state = {
             registerOrLoginSuccess: false,
             msg: "",
-            isLogin: this.auth.isLogin()
+            isLogin: this.auth.isLogin(),
+            loginType: this.props.loginType || LOGIN
         }
 
 
     }
 
-    getMenuView = () => {
-        return this.app.menuRef.current
-    }
 
     render() {
         if (this.state.isLogin) return <MLSQLQueryApp/>
@@ -99,8 +101,8 @@ export class MLSQLRegisterOrLogin extends React.Component {
                         <InputGroup id="password" type="password" placeholder="password" onChange={this.password}/>
                     </FormGroup>
 
-                    <Button type="submit" text={this.loginType === LOGIN ? "Login" : "Register"}
-                            onClick={this.loginType === LOGIN ? this.login : this.register}/>
+                    <Button type="submit" text={this.state.loginType === LOGIN ? "Login" : "Register"}
+                            onClick={this.state.loginType === LOGIN ? this.login : this.register}/>
                     {this.state.msg !== "" && <div className="mlsql-register-messagebox">{this.state.msg}</div>}
                 </div>
 
