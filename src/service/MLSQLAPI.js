@@ -18,16 +18,20 @@ export class APIResponse {
         this.accessToken = accessToken
     }
 
-    json = (process) => {
+    json = (process, jsonErr) => {
 
         this.content.then((s) => {
-            const jsonObj = JSON.parse(s)
-            process(jsonObj)
+            try {
+                const jsonObj = JSON.parse(s)
+                process(jsonObj)
+            } catch (e) {
+                jsonErr(s)
+            }
+
         })
     }
 
 }
-
 
 export class MLSQLAPI {
 

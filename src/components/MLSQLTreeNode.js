@@ -58,10 +58,7 @@ export class ScriptNodeTree extends React.Component {
                 } catch (e) {
 
                 }
-                rawData.forEach((item) => {
-                    item["hasCaret"] = item.isDir
-                })
-
+                console.log(rawData)
                 const builder = new MLSQLTreeBuilder()
                 const treeRes = builder.build(rawData).sort((a, b) => {
                     return a.id - b.id
@@ -87,10 +84,15 @@ export class ScriptNodeTree extends React.Component {
                     className="mlsql-directory-tree"
                 />
                 {this.state.openCreateScriptDialog ?
-                    <CreateScriptDialog nodeId={this.state.nodeId} parent={this}></CreateScriptDialog> : ""}
+                    <CreateScriptDialog nodeId={this.state.nodeId} parent={this}
+                                        queryApp={this.parent}></CreateScriptDialog> : ""}
 
             </div>
         );
+    }
+
+    isRootNode = (nodeId) => {
+        return this.state.nodes[0].id === nodeId
     }
 
     onNodeContextMenu = (node, _nodePath, e) => {
@@ -107,6 +109,7 @@ export class ScriptNodeTree extends React.Component {
     handNodeDoubleClick = (node, _nodePath, e) => {
         if (node.isDir) {
             node.isExpanded = !node.isExpanded;
+            this.toggleIsExpanded(node.id, node.isExpanded)
         } else {
             const api = new MLSQLAPI(backendConfig.GET_SCRIPT_FILE)
             const self = this;
@@ -132,6 +135,17 @@ export class ScriptNodeTree extends React.Component {
         nodeData.isSelected = originallySelected == null ? true : !originallySelected;
         this.setState(this.state);
     };
+
+    toggleIsExpanded = (id, isExpanded) => {
+        const api = new MLSQLAPI(backendConfig.CREATE_SCRIPT_FILE)
+        const self = this;
+        api.request(HTTP.Method.POST, {id: id, isExpanded: isExpanded}, (ok) => {
+            ok.content.then((s) => {
+
+            })
+        }, (fail) => {
+        })
+    }
 
     handleNodeCollapse = (nodeData) => {
         nodeData.isExpanded = false;
@@ -169,6 +183,8 @@ class CreateScriptDialog extends React.Component {
         this.state = {
             msg: ""
         }
+        this.messageBox = this.props.queryApp.messageBox.current.editor
+        this.directoryTree = this.props.parent
     }
 
     title = () => {
@@ -204,7 +220,7 @@ class CreateScriptDialog extends React.Component {
                 self.finish()
             } else {
                 ok.content.then((msg) => {
-                    self.setState({msg: msg})
+                    this.setState({"msg": msg})
                 })
 
             }
@@ -215,6 +231,16 @@ class CreateScriptDialog extends React.Component {
             isDir: this.props.parent.state.isDir,
             content: this.state.content,
             parentId: this.props.nodeId
+        }
+
+        if (!params.fileName) {
+            this.setState({"msg": "filename should not be empty"})
+            return
+        }
+
+        if (!params.isDir && !params.fileName.endsWith(".mlsql")) {
+            this.setState({"msg": "filename should be ends with .mlsql"})
+            return
         }
 
         api.request(HTTP.Method.POST, params, success, (notok) => {
@@ -242,8 +268,8 @@ class CreateScriptDialog extends React.Component {
 
                         <div className="msql-treenode-dialog-form">
 
-                            <p>
-
+                            <p style={{color: "red"}}>
+                                {this.state.msg}
                             </p>
                             <FormGroup
                                 helperText="The file of name you want create."
@@ -285,6 +311,7 @@ class ScriptNodeTreeMenu extends React.Component {
     removeFile = () => {
         const api = new MLSQLAPI(backendConfig.REMOVE_SCRIPT_FILE)
         const self = this;
+
         api.request(HTTP.Method.POST, {
             id: self.nodeId
         }, (ok) => {
@@ -302,27 +329,53 @@ class ScriptNodeTreeMenu extends React.Component {
         })
     }
 
+    isCreateProject = () => {
+        return this.parent.isRootNode(this.nodeId)
+    }
+
+    createDocMenuItem = () => {
+        if (!this.isCreateProject()) {
+            return <MenuItem icon="document" text="Create Script" onClick={(() => {
+                this.parent.setState({
+                    openCreateScriptDialog: true,
+                    nodeId: this.nodeId,
+                    isDir: false
+                })
+            }).bind(this)}/>
+        }
+    }
+
+    createFolderTitle = () => {
+        if (!this.isCreateProject()) {
+            return "Create Folder"
+        }
+        else {
+            return "Create Project"
+        }
+    }
+
+    deleteMenu = () => {
+        if (!this.isCreateProject()) {
+            return <MenuItem icon="remove" text="Delete" onClick={(() => {
+                this.removeFile()
+            }).bind(this)}/>
+        }
+    }
+
+
     render() {
         return (
             <div>
                 <Menu>
-                    <MenuItem icon="document" text="Create Script" onClick={(() => {
-                        this.parent.setState({
-                            openCreateScriptDialog: true,
-                            nodeId: this.nodeId,
-                            isDir: false
-                        })
-                    }).bind(this)}/>
-                    <MenuItem icon="folder-new" text="Create Folder" onClick={(() => {
+                    {this.createDocMenuItem()}
+                    <MenuItem icon="folder-new" text={this.createFolderTitle()} onClick={(() => {
                         this.parent.setState({
                             openCreateScriptDialog: true,
                             nodeId: this.nodeId,
                             isDir: true
                         })
                     }).bind(this)}/>
-                    <MenuItem icon="remove" text="Delete" onClick={(() => {
-                        this.removeFile()
-                    }).bind(this)}/>
+                    {this.deleteMenu()}
                 </Menu>
             </div>
         )

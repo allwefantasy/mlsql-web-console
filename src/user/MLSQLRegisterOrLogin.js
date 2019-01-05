@@ -131,7 +131,7 @@ export class MLSQLRegisterOrLogin extends React.Component {
             this.setState({
                 registerOrLoginSuccess: true
             })
-            this.getMenuView().updateLoginoutStatus()
+            this.app.updateLoginoutStatus()
         } else {
             const self = this;
             const log = (s) => {

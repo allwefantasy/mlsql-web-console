@@ -25,7 +25,14 @@ class MLSQLTreeNodeBuilder {
         for (i = 0; i < list.length; i += 1) {
             node = list[i];
             if (node.parentId !== 0) {
-                list[tempMap[node.parentId]].childNodes.push(node);
+                try {
+                    list[tempMap[node.parentId]].childNodes.push(node);
+                } catch (e) {
+                    console.log("------------")
+                    console.log(node)
+                    console.log(tempMap[node.parentId])
+                }
+
             } else {
                 roots.push(node);
             }

@@ -7,7 +7,8 @@ import 'brace/theme/github';
 import 'brace/ext/language_tools';
 
 import './MLSQLAceEditor.scss'
-import {Button, Intent} from "@blueprintjs/core";
+import 'antd/dist/antd.css';
+import {Button} from 'antd';
 import {MLSQLAPI} from "../service/MLSQLAPI";
 import * as BackendConfig from "../service/BackendConfig";
 import * as HTTP from "../service/HTTPMethod";
@@ -20,7 +21,7 @@ class MLSQLAceEditor extends React.Component {
 
     constructor(props) {
         super(props)
-        this.state = {"value": ""}
+        this.state = {value: "", loading: false}
         this.queryApp = this.props.parent
         this.aceEditorRef = React.createRef();
     }
@@ -55,8 +56,10 @@ class MLSQLAceEditor extends React.Component {
     }
 
     executeQuery = () => {
+        this.enterLoading()
         const api = new MLSQLAPI(BackendConfig.RUN_SCRIPT)
         const self = this
+        self.getMessageBoxAceEditor().setValue("")
 
         const select = self.getSelection()
         let finalSQL = self.getAllText()
@@ -65,23 +68,35 @@ class MLSQLAceEditor extends React.Component {
             finalSQL = select
         }
         const auth = new Auth()
+        const startTime = new Date().getTime();
+
+        function measureTime() {
+            self.exitLoading()
+            const endTime = new Date().getTime()
+            return endTime - startTime
+        }
+
         auth.userName((userName) => {
             api.request(HTTP.Method.POST, {
                 sql: finalSQL,
                 owner: userName,
                 jobName: jobName,
                 sessionPerUser: true,
-                "context.__default__include_fetch_url__": "",
-                "context.__default__include_project_name__": ""
-
+                show_stack: true
             }, (ok) => {
                 ok.json((wow) => {
                     //render table
                     self.getDisplay().update(wow)
+                    self.getMessageBoxAceEditor().setValue("\nTime cost:" + measureTime() + "ms")
+                }, (jsonErr) => {
+                    self.getMessageBoxAceEditor().setValue(jsonErr + "\nTime cost:" + measureTime() + "ms")
+                    measureTime()
+
                 })
             }, (fail) => {
                 fail.value().content((str) => {
-                    self.getMessageBoxAceEditor().setValue(str)
+                    self.getMessageBoxAceEditor().setValue(str + "\nTime cost:" + measureTime() + "ms")
+
                 })
 
             })
@@ -112,6 +127,14 @@ class MLSQLAceEditor extends React.Component {
         return this.queryApp.display.current
     }
 
+    enterLoading = () => {
+        this.setState({loading: true});
+    }
+
+    exitLoading = () => {
+        this.setState({loading: false});
+    }
+
 
     render() {
         const self = this
@@ -140,10 +163,12 @@ class MLSQLAceEditor extends React.Component {
                         tabSize: 2,
                     }}
                 /></div>
-                <div className="mslql-editor-buttons"><Button intent={Intent.PRIMARY}
-                                                              onClick={this.executeQuery}>运行</Button><Button
-                    intent={Intent.PRIMARY}
-                    onClick={this.executeSave}>保存</Button></div>
+                <div className="mslql-editor-buttons">
+                    <Button onClick={this.executeQuery}
+                            loading={this.state.loading}>运行</Button>
+                    <Button onClick={this.executeSave}>保存</Button>
+
+                </div>
             </div>
         )
     }
