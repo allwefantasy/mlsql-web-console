@@ -10,6 +10,7 @@ class MLSQLQueryApp extends Component {
     constructor(props) {
         super(props);
         // create a ref to store the textInput DOM element
+        this.state = {sqlContent: ""}
         this.directoryTree = React.createRef()
         this.editor = React.createRef();
         this.messageBox = React.createRef();

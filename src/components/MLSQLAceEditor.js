@@ -21,13 +21,15 @@ class MLSQLAceEditor extends React.Component {
 
     constructor(props) {
         super(props)
-        this.state = {value: "", loading: false}
         this.queryApp = this.props.parent
-        this.aceEditorRef = React.createRef();
+        this.aceEditorRef = React.createRef()
+        this.commandGroup = React.createRef()
+        this.state = {value: "", loading: false}
     }
 
     text = (value, scriptId) => {
         this.setState({value: value, scriptId: scriptId})
+        this.aceEditorRef.current.editor.setValue(value)
     }
 
     onChange(newValue) {
@@ -63,10 +65,12 @@ class MLSQLAceEditor extends React.Component {
 
         const select = self.getSelection()
         let finalSQL = self.getAllText()
+
         const jobName = uuidv4()
-        if (select != '') {
+        if (select !== '') {
             finalSQL = select
         }
+
         const auth = new Auth()
         const startTime = new Date().getTime();
 
@@ -77,6 +81,7 @@ class MLSQLAceEditor extends React.Component {
         }
 
         auth.userName((userName) => {
+
             api.request(HTTP.Method.POST, {
                 sql: finalSQL,
                 owner: userName,
@@ -86,17 +91,19 @@ class MLSQLAceEditor extends React.Component {
             }, (ok) => {
                 ok.json((wow) => {
                     //render table
-                    self.getDisplay().update(wow)
-                    self.getMessageBoxAceEditor().setValue("\nTime cost:" + measureTime() + "ms")
+                    try {
+                        self.getDisplay().update(wow)
+                        self.getMessageBoxAceEditor().setValue("\nTime cost:" + measureTime() + "ms")
+                    } catch (e) {
+                        self.getMessageBoxAceEditor().setValue("Can not display the result. raw data:\n" + JSON.stringify(wow))
+                    }
+
                 }, (jsonErr) => {
                     self.getMessageBoxAceEditor().setValue(jsonErr + "\nTime cost:" + measureTime() + "ms")
-                    measureTime()
-
                 })
             }, (fail) => {
                 fail.value().content((str) => {
                     self.getMessageBoxAceEditor().setValue(str + "\nTime cost:" + measureTime() + "ms")
-
                 })
 
             })
@@ -128,11 +135,11 @@ class MLSQLAceEditor extends React.Component {
     }
 
     enterLoading = () => {
-        this.setState({loading: true});
+        this.commandGroup.current.setState({loading: true});
     }
 
     exitLoading = () => {
-        this.setState({loading: false});
+        this.commandGroup.current.setState({loading: false});
     }
 
 
@@ -152,9 +159,11 @@ class MLSQLAceEditor extends React.Component {
                     fontSize={16}
                     showPrintMargin={true}
                     showGutter={true}
-                    value={self.state.value}
                     highlightActiveLine={true}
-                    editorProps={{$blockScrolling: true}}
+                    value=""
+                    editorProps={{
+                        $blockScrolling: Infinity
+                    }}
                     setOptions={{
                         enableBasicAutocompletion: true,
                         enableLiveAutocompletion: true,
@@ -163,12 +172,26 @@ class MLSQLAceEditor extends React.Component {
                         tabSize: 2,
                     }}
                 /></div>
-                <div className="mslql-editor-buttons">
-                    <Button onClick={this.executeQuery}
-                            loading={this.state.loading}>运行</Button>
-                    <Button onClick={this.executeSave}>保存</Button>
+                <CommandGroup ref={this.commandGroup} parent={this}/>
+            </div>
+        )
+    }
 
-                </div>
+}
+
+class CommandGroup extends React.Component {
+    constructor(props) {
+        super(props)
+        this.state = {loading: false}
+        this.parent = props.parent
+    }
+
+    render() {
+        return (
+            <div className="mslql-editor-buttons">
+                <Button onClick={this.parent.executeQuery}
+                        loading={this.state.loading}>运行</Button>
+                <Button onClick={this.parent.executeSave}>保存</Button>
             </div>
         )
     }

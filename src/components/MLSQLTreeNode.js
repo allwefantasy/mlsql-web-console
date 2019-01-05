@@ -58,7 +58,7 @@ export class ScriptNodeTree extends React.Component {
                 } catch (e) {
 
                 }
-                console.log(rawData)
+
                 const builder = new MLSQLTreeBuilder()
                 const treeRes = builder.build(rawData).sort((a, b) => {
                     return a.id - b.id

@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import './App.scss';
 import {Alignment, Button, Navbar} from "@blueprintjs/core";
 import {LOGIN, MLSQLRegisterOrLogin, WelcomeMessage} from "./user/MLSQLRegisterOrLogin";
-import {MLSQLAuth as Auth} from "./user/MLSQLAuth";
 
 class App extends Component {
     constructor(props) {
@@ -12,7 +11,6 @@ class App extends Component {
     }
 
     updateLoginoutStatus = () => {
-        console.log("------")
         this.menuRef.current.updateLoginoutStatus()
         this.registerOrLoginRef.current.updateLoginoutStatus()
     }

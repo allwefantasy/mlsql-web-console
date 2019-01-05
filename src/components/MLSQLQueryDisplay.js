@@ -14,7 +14,6 @@ export class MLSQLQueryDisplay extends React.Component {
         let keys = []
         let basket = {}
         let rows = []
-        console.log(data)
         //collect all keys
         data.forEach(function (item) {
             for (let key in item) {
@@ -38,7 +37,7 @@ export class MLSQLQueryDisplay extends React.Component {
             new_item["key"] = index
             rows.push(new_item)
         })
-        console.log(rows)
+
         this.setState({columns: keys, data: rows})
     }
 
