@@ -41,6 +41,16 @@ export class MLSQLAuth {
         })
     }
 
+    user(callback) {
+
+        const api = new MLSQLAPI(backendConfig.USERNAME_URL)
+        api.request2({}, (json) => {
+            callback(json)
+        }, (str) => {
+
+        })
+    }
+
     /**
      * @param {String} userName
      * @param {String} password

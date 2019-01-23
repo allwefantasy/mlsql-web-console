@@ -42,19 +42,48 @@ export class MLSQLAPI {
         this.url = url;
     }
 
+
+    request2(params, successCallback, serverErrorCallback) {
+        const self = this
+        self.request(HTTP.Method.POST, params, (ok) => {
+            ok.json((wow) => {
+                successCallback(wow)
+            }, (jsonErr) => {
+                serverErrorCallback(jsonErr)
+            })
+        }, (fail) => {
+            try {
+                fail.value().content((str) => {
+                    serverErrorCallback(str)
+                })
+            } catch (e) {
+                serverErrorCallback(fail ? fail.toString() : "result is null")
+            }
+
+        })
+    }
+
     runScript(params, sql, successCallback, serverErrorCallback) {
         const auth = new Auth()
         const jobName = uuidv4()
         const self = this
-        auth.userName((userName) => {
+        auth.user((jsonRes) => {
+            const {userName, backendTags} = jsonRes
+
             const finalParams = {
                 sql: sql,
                 owner: userName,
                 jobName: jobName,
                 sessionPerUser: true,
-                show_stack: true
+                show_stack: true,
+                tags: backendTags || ""
             }
             Object.assign(finalParams, params)
+            const background = params.background || false
+            if (background) {
+                Object.assign(finalParams, {async: true, callback: ""})
+            }
+
             self.request(HTTP.Method.POST, finalParams, (ok) => {
                 ok.json((wow) => {
                     successCallback(wow)
@@ -67,7 +96,7 @@ export class MLSQLAPI {
                         serverErrorCallback(str)
                     })
                 } catch (e) {
-                    serverErrorCallback(fail)
+                    serverErrorCallback(fail ? fail.toString() : "result is null")
                 }
 
             })
@@ -94,6 +123,7 @@ export class MLSQLAPI {
         }
         return fetch(newurl, {
             method: method,
+            timeout: 1000 * 60 * 60 * 24,
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Accept': 'application/json',

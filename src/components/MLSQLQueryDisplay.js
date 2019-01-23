@@ -9,22 +9,40 @@ export class MLSQLQueryDisplay extends React.Component {
     }
 
     setRender = (keyColumn, data) => {
+
         const value = data[0][keyColumn.key]
-        console.log(typeof  value)
+
+        if (this.state.config && this.state.config["render"]) {
+            const render = this.state.config["render"][keyColumn.key]
+            if (render) {
+                keyColumn["render"] = render
+            }
+            return
+        }
+
+        if (React.Component.isPrototypeOf(value.type)) {
+            keyColumn["render"] = value => <span>{value}</span>
+            return
+        }
         if ((typeof value) === 'object') {
             keyColumn["render"] = value => <span>{JSON.stringify(value).substring(0, 300)}</span>
+            return
         }
         if ((typeof value) === 'array') {
             keyColumn["render"] = value => <span>{value.join(",").substring(0, 300)}</span>
+            return
         }
         if ((typeof value) === 'boolean') {
             keyColumn["render"] = value => <span>{value.toString()}</span>
+            return
         }
+
+
     }
 
-    update = (data) => {
+    update = (data, config) => {
         // e.g. [{"a":1}]
-
+        this.setState({config: config})
         let keys = []
         let basket = {}
         let rows = []

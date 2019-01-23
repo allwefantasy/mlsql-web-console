@@ -60,6 +60,11 @@ class MLSQLAceEditor extends React.Component {
 
     }
 
+    executeQueryBackGround = () => {
+        this.setState({background: true})
+        this.executeQuery()
+    }
+
     executeQuery = () => {
         const jobName = uuidv4()
 
@@ -76,7 +81,6 @@ class MLSQLAceEditor extends React.Component {
             finalSQL = select
         }
 
-        const auth = new Auth()
         const startTime = new Date().getTime();
 
         function measureTime() {
@@ -85,42 +89,19 @@ class MLSQLAceEditor extends React.Component {
             return endTime - startTime
         }
 
-        auth.userName((userName) => {
+        api.runScript({jobName: jobName, background: (this.state.background || false)}, finalSQL, (wow) => {
+            try {
+                self.getDisplay().update(wow)
+                self.getMessageBoxAceEditor().setValue("\nTime cost:" + measureTime() + "ms")
+            } catch (e) {
+                self.getMessageBoxAceEditor().setValue("Can not display the result. raw data:\n" + JSON.stringify(wow))
+            }
+            self.exitLoading()
 
-            api.request(HTTP.Method.POST, {
-                sql: finalSQL,
-                owner: userName,
-                jobName: jobName,
-                sessionPerUser: true,
-                show_stack: true
-            }, (ok) => {
-                ok.json((wow) => {
-                    //render table
-                    try {
-                        self.getDisplay().update(wow)
-                        self.getMessageBoxAceEditor().setValue("\nTime cost:" + measureTime() + "ms")
-                    } catch (e) {
-                        self.getMessageBoxAceEditor().setValue("Can not display the result. raw data:\n" + JSON.stringify(wow))
-                    }
-                    self.exitLoading()
-                }, (jsonErr) => {
-                    self.exitLoading()
-                    self.getMessageBoxAceEditor().setValue(jsonErr + "\nTime cost:" + measureTime() + "ms")
-                })
-            }, (fail) => {
-                try {
-                    fail.value().content((str) => {
-                        self.getMessageBoxAceEditor().setValue(str + "\nTime cost:" + measureTime() + "ms")
-                        self.exitLoading()
-                    })
-                } catch (e) {
-                    console.log(fail)
-                    self.exitLoading()
-                }
-
-            })
+        }, (fail) => {
+            self.getMessageBoxAceEditor().setValue(fail + "\nTime cost:" + measureTime() + "ms")
+            self.exitLoading()
         })
-
 
     }
 
@@ -208,8 +189,8 @@ class CommandGroup extends React.Component {
         return (
             <div className="mslql-editor-buttons">
                 <Button onClick={this.parent.executeQuery}
-                        loading={this.state.loading}>运行</Button>
-                <Button onClick={this.parent.executeSave}>保存</Button>
+                        loading={this.state.loading}>Run</Button>
+                <Button onClick={this.parent.executeSave}>Save</Button>
             </div>
         )
     }
