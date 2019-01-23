@@ -1,8 +1,17 @@
 import React, {Component} from 'react';
 import './App.scss';
 import {Alignment, Button, Navbar} from "@blueprintjs/core";
+import {notification} from 'antd';
 import {LOGIN, MLSQLRegisterOrLogin, WelcomeMessage} from "./user/MLSQLRegisterOrLogin";
 import {VIEW_CLUSTER, VIEW_CONSOLE} from "./common/ViewConst"
+import {MLSQLAuth} from "./user/MLSQLAuth";
+
+const openNotificationWithIcon = (type, message, description) => {
+    notification[type]({
+        message: message,
+        description: description
+    });
+};
 
 class App extends Component {
     constructor(props) {
@@ -18,12 +27,23 @@ class App extends Component {
     }
 
     switchToCluster = () => {
-        this.setState({currentView: VIEW_CLUSTER})
+        const auth = new MLSQLAuth()
+        const self = this
+        auth.user((user) => {
+            console.log(user["role"])
+            if (user["role"] == "admin") {
+                self.setState({currentView: VIEW_CLUSTER})
+            } else {
+                openNotificationWithIcon("error", "Auth Fail", "You are not allow to visit Cluster Manager")
+            }
+        })
+
     }
 
     switchToConsole = () => {
         this.setState({currentView: VIEW_CONSOLE})
     }
+
 
     render() {
         return (
