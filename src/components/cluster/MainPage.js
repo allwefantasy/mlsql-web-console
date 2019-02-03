@@ -33,7 +33,8 @@ export default class MainPage extends React.Component {
         const self = this
         const api = new MLSQLAPI(CLUSTER_MANAGER)
         api.request2({
-            id: id
+            id: id,
+            action: "/backend/remove"
         }, (json) => {
             self.switchToBackendList()
         }, (str) => {

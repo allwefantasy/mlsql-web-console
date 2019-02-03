@@ -4,6 +4,7 @@ import {ScriptNodeTree} from './MLSQLTreeNode'
 import './MLSQLQueryApp.scss'
 import AceEditor from "react-ace";
 import {MLSQLQueryDisplay} from "./MLSQLQueryDisplay";
+import {MLSQLDash} from "./query/MLSQLDash";
 
 class MLSQLQueryApp extends Component {
 
@@ -36,6 +37,9 @@ class MLSQLQueryApp extends Component {
                             theme="github"
                             name="message_box"
                         />
+                    </div>
+                    <div>
+                        <MLSQLDash/>
                     </div>
                     <div className="mlsql-query-display">
                         <MLSQLQueryDisplay ref={this.display} parent={this}/></div>
