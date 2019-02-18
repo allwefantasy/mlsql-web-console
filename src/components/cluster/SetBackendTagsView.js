@@ -75,15 +75,21 @@ export default class SetBackendTagsView extends React.Component {
         this.setState({updateTag: value})
     }
 
+    setUser = (value) => {
+        this.setState({updateUser: value})
+    }
+
     setDefaultBackend = () => {
         const self = this
         const api = new MLSQLAPI(USER_TAGS_UPDATE)
-        const tag = this.state.updateTag.join(",")
+        const tag = (this.state.updateTag || []).join(",")
+        const users = (this.state.updateUser || []).join(",")
         if (tag) {
             api.request2({
-                backendTags: tag
+                backendTags: tag,
+                users: users
             }, (json) => {
-                self.mainPage.switchToSetBackendTags()
+                self.mainPage.switchToBackendList()
             }, (failStr) => {
                 self.setState({msg: failStr})
             })
@@ -101,7 +107,6 @@ export default class SetBackendTagsView extends React.Component {
                     style={{width: '100%'}}
                     placeholder="Please select"
                     onChange={this.setTag}
-                    value={this.state.tags}
                     ref={this.tagSelectRef}
                 >
                     {this.state.renderTags}
@@ -112,6 +117,7 @@ export default class SetBackendTagsView extends React.Component {
                     mode="multiple"
                     style={{width: '100%'}}
                     placeholder="Please select"
+                    onChange={this.setUser}
                     ref={this.userSelectRef}
                 >
                     {this.state.renderUsers}
@@ -121,6 +127,9 @@ export default class SetBackendTagsView extends React.Component {
                 <Button type="primary" onClick={() => {
                     this.setDefaultBackend()
                 }}>Update</Button>
+                <div>
+
+                </div>
                 {this.state.msg && <div className="mlsql-backend-messagebox">{this.state.msg}</div>}
 
             </div>

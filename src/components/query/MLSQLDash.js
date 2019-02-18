@@ -1,8 +1,10 @@
 import React, {Component} from 'react';
 import {Collapse} from 'antd';
+import {UploadDropzone} from '../upload/UploadDropZone'
 import 'ant-design-pro/dist/ant-design-pro.css';
-import { TimelineChart } from 'ant-design-pro/lib/Charts';
-import { Tabs } from 'antd';
+import {TimelineChart} from 'ant-design-pro/lib/Charts';
+import {Tabs} from 'antd';
+
 
 const Panel = Collapse.Panel;
 const TabPane = Tabs.TabPane;
@@ -28,16 +30,18 @@ export class MLSQLDash extends Component {
 
     render() {
         return (<Collapse onChange={callback}>
-            <Panel header="This is panel header 1" key="1">
+            <Panel header="More" key="1">
                 <Tabs defaultActiveKey="1" onChange={callback}>
-                    <TabPane tab="Dashboard" key="1"><TimelineChart
+                    <TabPane tab="Upload" key="1">
+                        <UploadDropzone/>
+                    </TabPane>
+                    <TabPane tab="Dashboard" key="2"><TimelineChart
                         height={200}
                         data={chartData}
-                        titleMap={{ y1: '客流量', y2: '支付笔数' }}
+                        titleMap={{y1: '客流量', y2: '支付笔数'}}
                     /></TabPane>
-                    <TabPane tab="RawData" key="2">Content of Tab Pane 2</TabPane>
-                </Tabs>,
-
+                    <TabPane tab="RawData" key="3">Content of Tab Pane 2</TabPane>
+                </Tabs>
             </Panel>
         </Collapse>)
     }

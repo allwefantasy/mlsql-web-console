@@ -9,4 +9,6 @@ export const REMOVE_SCRIPT_FILE = BACKEND_SERVER + "/api_v1/script_file/remove";
 export const GET_SCRIPT_FILE = BACKEND_SERVER + "/api_v1/script_file/get";
 export const RUN_SCRIPT = BACKEND_SERVER + "/api_v1/run/script";
 export const CLUSTER_MANAGER = BACKEND_SERVER + "/api_v1/cluster";
+export const FILE_UPLOAD = BACKEND_SERVER + "/api_v1/file/upload";
+export const FILE_DOWNLOAD = BACKEND_SERVER + "/api_v1/file/download";
 
