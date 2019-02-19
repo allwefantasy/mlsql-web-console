@@ -13,10 +13,16 @@ class MLSQLQueryApp extends Component {
         // create a ref to store the textInput DOM element
         this.state = {sqlContent: ""}
         this.directoryTree = React.createRef()
-        this.editor = React.createRef();
-        this.messageBox = React.createRef();
-        this.display = React.createRef();
+        this.editor = React.createRef()
+        this.messageBox = React.createRef()
+        this.display = React.createRef()
+        this.dash = React.createRef()
 
+    }
+
+    setData = (data) => {
+        this.queryResData = data
+        this.dash.current.refresh()
     }
 
     render() {
@@ -39,7 +45,7 @@ class MLSQLQueryApp extends Component {
                         />
                     </div>
                     <div>
-                        <MLSQLDash/>
+                        <MLSQLDash ref={this.dash} parent={this}/>
                     </div>
                     <div className="mlsql-query-display">
                         <MLSQLQueryDisplay ref={this.display} parent={this}/></div>

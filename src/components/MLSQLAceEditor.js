@@ -91,9 +91,11 @@ class MLSQLAceEditor extends React.Component {
 
         api.runScript({jobName: jobName, background: (this.state.background || false)}, finalSQL, (wow) => {
             try {
+                self.queryApp.setData(wow)
                 self.getDisplay().update(wow)
                 self.getMessageBoxAceEditor().setValue("\nTime cost:" + measureTime() + "ms")
             } catch (e) {
+                console.log(e)
                 self.getMessageBoxAceEditor().setValue("Can not display the result. raw data:\n" + JSON.stringify(wow))
             }
             self.exitLoading()
@@ -121,6 +123,10 @@ class MLSQLAceEditor extends React.Component {
 
     getMessageBoxAceEditor = () => {
         return this.queryApp.messageBox.current.editor
+    }
+
+    getDashBoard = () => {
+        return this.queryApp.dash.current
     }
 
     getDisplay = () => {

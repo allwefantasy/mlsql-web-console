@@ -44,6 +44,10 @@ class App extends Component {
         this.setState({currentView: VIEW_CONSOLE})
     }
 
+    switchToCnDoc = () => {
+        window.open("http://docs.mlsql.tech/zh/", "_blank")
+    }
+
 
     render() {
         return (
@@ -54,6 +58,8 @@ class App extends Component {
                         <Navbar.Divider/>
                         <Button className="bp3-minimal" icon="home" text="Console" onClick={this.switchToConsole}/>
                         <Button className="bp3-minimal" icon="document" text="Cluster" onClick={this.switchToCluster}/>
+                        <Button className="bp3-minimal" icon="document" text="中文文档"
+                                onClick={this.switchToCnDoc}/>
                     </Navbar.Group>
                     <Navbar.Group align={Alignment.RIGHT}>
                         <WelcomeMessage ref={this.menuRef} parent={this}/>
