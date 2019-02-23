@@ -54,7 +54,8 @@ export class UploadDropzone extends React.Component {
                     this.setState({msg: "total files:" + files.length + " are uploaded"})
                 }
             } else {
-                this.setState({msg: err.toString()})
+                console.log(err)
+                this.setState({msg: err.toString() + "\n Sometimes this caused by your upload space is not enough."})
             }
         })
     }

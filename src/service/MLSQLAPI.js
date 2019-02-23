@@ -70,6 +70,19 @@ export class MLSQLAPI {
         auth.user((jsonRes) => {
             const {userName, backendTags} = jsonRes
 
+            if (!backendTags) {
+                serverErrorCallback(`
+                
+                ---------------Warning--------------------
+                
+                Please make sure you have backend configured. 
+                If not, please contact admin;
+                
+                ------------------------------------------
+                `)
+                return
+            }
+
             const finalParams = {
                 sql: sql,
                 owner: userName,
@@ -85,11 +98,22 @@ export class MLSQLAPI {
             }
 
             self.request(HTTP.Method.POST, finalParams, (ok) => {
-                ok.json((wow) => {
-                    successCallback(wow)
-                }, (jsonErr) => {
-                    serverErrorCallback(jsonErr)
-                })
+                if (ok.status === 200) {
+                    ok.json((wow) => {
+                        successCallback(wow)
+                    }, (jsonErr) => {
+                        serverErrorCallback(jsonErr)
+                    })
+                } else {
+                    try {
+                        ok.content.then((str) => {
+                            serverErrorCallback(str)
+                        })
+                    } catch (e) {
+                        serverErrorCallback("backend status:" + ok.status)
+                    }
+                }
+
             }, (fail) => {
                 try {
                     fail.value().content((str) => {

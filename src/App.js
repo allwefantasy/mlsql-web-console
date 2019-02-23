@@ -66,6 +66,10 @@ class App extends Component {
                     </Navbar.Group>
                 </Navbar>
                 <MLSQLRegisterOrLogin ref={this.registerOrLoginRef} parent={this} loginType={LOGIN}/>
+                <div style={{bottom: "100px", textAlign: "center", width: "100%"}}>
+                    MLSQL Licensed under the Apache License, Version 2.0. @<a className="copyright"
+                                                                              href="http://www.miitbeian.gov.cn/">浙ICP备18052520号</a>
+                </div>
             </div>
         );
     }

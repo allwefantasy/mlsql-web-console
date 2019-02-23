@@ -12,8 +12,10 @@ import {Button, Tooltip, Progress} from 'antd';
 import {MLSQLAPI} from "../service/MLSQLAPI";
 import * as BackendConfig from "../service/BackendConfig";
 import * as HTTP from "../service/HTTPMethod";
-import {MLSQLAuth as Auth} from "../user/MLSQLAuth";
 import {assert} from "../common/tool"
+import {MLSQLETQuick} from "./et/MLSQLETQuick";
+import Modal from "../../node_modules/antd/lib/modal/Modal";
+import {ETPop} from "./et/ETPop";
 
 const uuidv4 = require('uuid/v4');
 
@@ -60,11 +62,6 @@ class MLSQLAceEditor extends React.Component {
 
     }
 
-    executeQueryBackGround = () => {
-        this.setState({background: true})
-        this.executeQuery()
-    }
-
     executeQuery = () => {
         const jobName = uuidv4()
 
@@ -96,12 +93,17 @@ class MLSQLAceEditor extends React.Component {
                 self.getMessageBoxAceEditor().setValue("\nTime cost:" + measureTime() + "ms")
             } catch (e) {
                 console.log(e)
-                self.getMessageBoxAceEditor().setValue("Can not display the result. raw data:\n" + JSON.stringify(wow))
+                self.getMessageBoxAceEditor().setValue("Can not display the result. raw data:\n" + JSON.stringify(wow, null, 2))
             }
             self.exitLoading()
 
         }, (fail) => {
-            self.getMessageBoxAceEditor().setValue(fail + "\nTime cost:" + measureTime() + "ms")
+            let failRes = fail.toString()
+            try {
+                failRes = JSON.parse(failRes)["msg"]
+            } catch (e) {
+            }
+            self.getMessageBoxAceEditor().setValue(failRes + "\nTime cost:" + measureTime() + "ms")
             self.exitLoading()
         })
 
@@ -145,13 +147,19 @@ class MLSQLAceEditor extends React.Component {
         this.taskProgressRef.current.exit()
     }
 
+    etOver = (evt) => {
+        this.setState({etPop: true})
+    }
+
 
     render() {
         const self = this
-
         return (
             <div className="mlsql-editor-area">
-                <div><AceEditor
+                <div>
+                    <MLSQLETQuick/>
+                </div>
+                <div onDragOver={(evt) => evt.preventDefault()} onDrop={this.etOver}><AceEditor
                     ref={this.aceEditorRef}
                     mode="sql"
                     theme="github"
@@ -178,6 +186,7 @@ class MLSQLAceEditor extends React.Component {
                 <CommandGroup ref={this.commandGroup} parent={this}/>
                 <ResourceProgress ref={this.resourceProgressRef} parent={this}></ResourceProgress>
                 <TaskProgress ref={this.taskProgressRef} parent={this}></TaskProgress>
+                {this.state.etPop ? <ETPop parent={this}/> : null}
             </div>
         )
     }
@@ -228,7 +237,12 @@ class ResourceProgress extends React.Component {
                                 title: `Resource (for all users): taken/Total: ${jsonObj.activeTasks}/${jsonObj.totalCores}(${jsonObj.currentJobGroupActiveTasks} you took)`
                             })
                         }, (str) => {
-                            self.parent.getMessageBoxAceEditor().setValue(str)
+                            try {
+                                self.parent.getMessageBoxAceEditor().setValue(str)
+                            } catch (e) {
+                                console.log(e)
+                            }
+
                         })
 
                     }
@@ -294,7 +308,11 @@ class TaskProgress extends React.Component {
                                 title: `Tasks (for all stages): Succeeded/Total:\n${jsonObj.numCompletedTasks}/${jsonObj.numTasks}(${jsonObj.numActiveTasks} running)`
                             })
                         }, (str) => {
-                            self.parent.getMessageBoxAceEditor().setValue(str)
+                            try {
+                                self.parent.getMessageBoxAceEditor().setValue(str)
+                            } catch (e) {
+                                console.log(e)
+                            }
                         })
 
                     }
