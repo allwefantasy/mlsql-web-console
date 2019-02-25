@@ -22,6 +22,7 @@ export class MLSQLETQuick extends React.Component {
     onDragStart = (evt) => {
         evt.dataTransfer.setData("eventName", evt.target.getAttribute("name"));
         evt.dataTransfer.setData("popName", evt.target.getAttribute("help"));
+        evt.dataTransfer.setData("processType", evt.target.getAttribute("processtype"));
     }
 
     makeMLSQL = (sql) => {
@@ -80,11 +81,17 @@ export class MLSQLETQuick extends React.Component {
 
                             <Col span={8}>
                                 <Card title="Register UDF/UDAF">
+                                    <Tag onDragStart={this.onDragStart} name={"ScriptUDF"} processtype={"tool"}
+                                         help={"Use ScriptUDF create udf"}
+                                         draggable={true} color="magenta">Create UDF</Tag>
                                 </Card>
                             </Col>
 
                             <Col span={8}>
                                 <Card title="Tools">
+                                    <Tag onDragStart={this.onDragStart} name={"DownloadExt"} processtype={"tool"}
+                                         help={"Use DownloadExt to download files you have uploaded"}
+                                         draggable={true} color="magenta">Download uploaded file</Tag>
                                 </Card>
                             </Col>
                         </Row>

@@ -3,6 +3,9 @@ import Modal from "../../../node_modules/antd/lib/modal/Modal";
 import {ETPopLoad} from "./ETPopLoad";
 import {ETPopAlgorithm} from "./ETPopAlgorithm";
 import {ETPopSave} from "./ETPopSave";
+import {ETPopTool} from "./ETPopTool";
+import {ETPopDownload} from "./ETPopDownload";
+import {ETPopScriptUDF} from "./ETPopScriptUDF";
 
 export class ETPop extends React.Component {
     constructor(props) {
@@ -28,10 +31,21 @@ export class ETPop extends React.Component {
         }
         if (this.et.state.eventName === "save") {
             return <ETPopSave name={this.et.state.eventName} ref={this.popChild}/>
-        } else {
-            return <ETPopAlgorithm name={this.et.state.eventName} ref={this.popChild}/>
         }
-        return null
+
+        if (this.et.state.eventName === "DownloadExt") {
+            return <ETPopDownload name={this.et.state.eventName} ref={this.popChild}/>
+        }
+
+        if (this.et.state.eventName === "ScriptUDF") {
+            return <ETPopScriptUDF name={this.et.state.eventName} ref={this.popChild}/>
+        }
+
+        if (this.et.state.processType === "tool") {
+            return <ETPopTool name={this.et.state.eventName} ref={this.popChild}/>
+        }
+
+        return <ETPopAlgorithm name={this.et.state.eventName} ref={this.popChild}/>
     }
 
 

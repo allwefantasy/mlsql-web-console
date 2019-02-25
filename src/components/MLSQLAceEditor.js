@@ -14,7 +14,6 @@ import * as BackendConfig from "../service/BackendConfig";
 import * as HTTP from "../service/HTTPMethod";
 import {assert} from "../common/tool"
 import {MLSQLETQuick} from "./et/MLSQLETQuick";
-import {ETPop} from "./et/ETPop";
 
 const uuidv4 = require('uuid/v4');
 
@@ -156,7 +155,8 @@ class MLSQLAceEditor extends React.Component {
     etOver = (evt) => {
         const eventName = evt.dataTransfer.getData("eventName")
         const popName = evt.dataTransfer.getData("popName")
-        this.etRef.current.setState({etPop: true, eventName: eventName, popName: popName})
+        const processType = evt.dataTransfer.getData("processType")
+        this.etRef.current.setState({etPop: true, eventName: eventName, popName: popName, processType: processType})
     }
 
     render() {

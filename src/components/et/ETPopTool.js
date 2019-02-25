@@ -9,7 +9,7 @@ const InputGroup = Input.Group;
 const Option = Select.Option;
 
 
-export class ETPopAlgorithm extends React.Component {
+export class ETPopTool extends React.Component {
     constructor(props) {
         super(props)
         this.etpop = props.parent
@@ -62,14 +62,14 @@ export class ETPopAlgorithm extends React.Component {
         if (paramsArray.length == 0) {
             paramsArray.push("keepVersion=\"true\"")
         }
-
-        return `train ${this.data.tableNameV} as ${this.name}.\`${this.data.pathV}\` where 
-${paramsArray.join(" and\n ")};`
+        //run command as DownloadExt.`` where from="test2" and to="/tmp/jack";
+        return `run ${this.data.tableNameV || "command"} as ${this.name}.\`${this.data.pathV}\` where 
+${paramsArray.join("and\n ")};`
     }
 
     render() {
         return <div>
-            <span>Training data and model path:</span>
+            <span>Command:</span>
             <InputGroup compact={true}>
                 <Row>
                     <Col>
@@ -88,7 +88,7 @@ ${paramsArray.join(" and\n ")};`
                 </Row>
             </InputGroup>
             <br/>
-            <span>Algorithm parameters:</span>
+            <span>Parameters:</span>
             <InputGroup compact={true}>
                 {this.state.dataForRender}
             </InputGroup>

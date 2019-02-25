@@ -4,6 +4,7 @@ import {RUN_SCRIPT} from "../../service/BackendConfig";
 import {
     Select, Form, Icon, Input, Button, Checkbox, Col, Row
 } from 'antd';
+import {ETLoadParams} from "./ETLoadParams";
 
 const InputGroup = Input.Group;
 const Option = Select.Option;
@@ -15,7 +16,9 @@ export class ETPopLoad extends React.Component {
         this.etpop = props.parent
         this.data = {}
         this.state = {datasourcesRender: []}
+        this.loadParamsRef = React.createRef()
     }
+
 
     componentDidMount() {
         const self = this
@@ -30,10 +33,28 @@ export class ETPopLoad extends React.Component {
         }, fail => {
 
         })
+
     }
 
-    sourceType = (value,evt) => {
+    sourceType = (value, evt) => {
         this.data.sourceTypeV = value
+        const self = this
+        const api = new MLSQLAPI(RUN_SCRIPT)
+        api.runScript({}, `load _mlsql_.\`datasources/params/${value}\` as output;`, (data) => {
+            const dataForRender = []
+            data.forEach(item => {
+                dataForRender.push(<Row>
+                    <Col>
+                        <Input style={{marginBottom: "10px"}} name={item.param} onChange={this.params} type="text"
+                               addonBefore={item.param}
+                               placeholder={item.description}/>
+                    </Col>
+                </Row>)
+            })
+            self.loadParamsRef.current.setState({dataForRender: dataForRender})
+        }, fail => {
+
+        })
     }
 
     path = (evt) => {
@@ -86,7 +107,7 @@ export class ETPopLoad extends React.Component {
                 </Row>
             </InputGroup>
             <br/>
-
+            <ETLoadParams parent={this} ref={this.loadParamsRef}/>
         </div>
     }
 }
