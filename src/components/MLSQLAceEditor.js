@@ -14,7 +14,6 @@ import * as BackendConfig from "../service/BackendConfig";
 import * as HTTP from "../service/HTTPMethod";
 import {assert} from "../common/tool"
 import {MLSQLETQuick} from "./et/MLSQLETQuick";
-import Modal from "../../node_modules/antd/lib/modal/Modal";
 import {ETPop} from "./et/ETPop";
 
 const uuidv4 = require('uuid/v4');
@@ -29,6 +28,7 @@ class MLSQLAceEditor extends React.Component {
         this.commandGroup = React.createRef()
         this.resourceProgressRef = React.createRef()
         this.taskProgressRef = React.createRef()
+        this.etRef = React.createRef()
         this.state = {value: "", loading: false}
     }
 
@@ -119,6 +119,13 @@ class MLSQLAceEditor extends React.Component {
         return content
     }
 
+    appendToEditor = (str) => {
+        const editor = this.getAceEditor()
+        const p = editor.getCursorPosition()
+        editor.session.insert(p, str)
+        editor.focus();
+    }
+
     getAceEditor = () => {
         return this.aceEditorRef.current.editor
     }
@@ -146,18 +153,18 @@ class MLSQLAceEditor extends React.Component {
         this.resourceProgressRef.current.exit()
         this.taskProgressRef.current.exit()
     }
-
     etOver = (evt) => {
-        this.setState({etPop: true})
+        const eventName = evt.dataTransfer.getData("eventName")
+        const popName = evt.dataTransfer.getData("popName")
+        this.etRef.current.setState({etPop: true, eventName: eventName, popName: popName})
     }
-
 
     render() {
         const self = this
         return (
             <div className="mlsql-editor-area">
                 <div>
-                    <MLSQLETQuick/>
+                    <MLSQLETQuick ref={this.etRef} parent={this}/>
                 </div>
                 <div onDragOver={(evt) => evt.preventDefault()} onDrop={this.etOver}><AceEditor
                     ref={this.aceEditorRef}
@@ -186,7 +193,6 @@ class MLSQLAceEditor extends React.Component {
                 <CommandGroup ref={this.commandGroup} parent={this}/>
                 <ResourceProgress ref={this.resourceProgressRef} parent={this}></ResourceProgress>
                 <TaskProgress ref={this.taskProgressRef} parent={this}></TaskProgress>
-                {this.state.etPop ? <ETPop parent={this}/> : null}
             </div>
         )
     }
