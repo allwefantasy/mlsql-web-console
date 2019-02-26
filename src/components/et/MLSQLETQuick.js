@@ -20,9 +20,14 @@ export class MLSQLETQuick extends React.Component {
     }
 
     onDragStart = (evt) => {
+        const processType = evt.target.getAttribute("processtype")
         evt.dataTransfer.setData("eventName", evt.target.getAttribute("name"));
         evt.dataTransfer.setData("popName", evt.target.getAttribute("help"));
-        evt.dataTransfer.setData("processType", evt.target.getAttribute("processtype"));
+        evt.dataTransfer.setData("processType", processType);
+        evt.dataTransfer.setData("pathAlias", evt.target.getAttribute("pathalias") || "");
+        evt.dataTransfer.setData("tableHidden", evt.target.getAttribute("tablehidden") || false);
+        evt.dataTransfer.setData("pathHidden", evt.target.getAttribute("pathhidden") || false);
+
     }
 
     makeMLSQL = (sql) => {
@@ -92,6 +97,30 @@ export class MLSQLETQuick extends React.Component {
                                     <Tag onDragStart={this.onDragStart} name={"DownloadExt"} processtype={"tool"}
                                          help={"Use DownloadExt to download files you have uploaded"}
                                          draggable={true} color="magenta">Download uploaded file</Tag>
+                                    <Tag onDragStart={this.onDragStart} name={"ImageLoaderExt"} processtype={"tool"}
+                                         help={"Use ImageLoaderExt to load images"}
+                                         draggable={true} color="magenta">Load images</Tag>
+
+                                    <Tag onDragStart={this.onDragStart} name={"JobList"} processtype={"direct"}
+                                         draggable={true} color="magenta">Show jobs</Tag>
+                                    <Tag onDragStart={this.onDragStart} name={"Kill"} processtype={"tool"}
+                                         pathalias={"groupId or jobName"} tablehidden={"true"}
+                                         help={"Kill your job"}
+                                         draggable={true} color="magenta">Kill job</Tag>
+                                    <Tag onDragStart={this.onDragStart} name={"ConnectMySQL"} processtype={"direct"}
+                                         help={""}
+                                         draggable={true} color="magenta">Connect MySQL</Tag>
+                                    <Tag onDragStart={this.onDragStart} name={"JDBC"} processtype={"tool"}
+                                         pathalias={"DB name in connect"} tablehidden={"false"}
+                                         help={"Run DLL on MySQL"}
+                                         draggable={true} color="magenta">MySQL DDL</Tag>
+                                    <Tag onDragStart={this.onDragStart} name={"TreeBuildExt"} processtype={"tool"}
+                                         pathalias={""} tablehidden={"false"} pathhidden={"true"}
+                                         help={"Build tree from parent-child"}
+                                         draggable={true} color="magenta">Parent-Child</Tag>
+                                    <Tag onDragStart={this.onDragStart} name={"ETExample"} processtype={""}
+                                         help={"Show Example of ET"}
+                                         draggable={true} color="magenta">Show ET Example</Tag>
                                 </Card>
                             </Col>
                         </Row>

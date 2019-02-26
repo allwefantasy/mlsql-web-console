@@ -6,6 +6,7 @@ import {ETPopSave} from "./ETPopSave";
 import {ETPopTool} from "./ETPopTool";
 import {ETPopDownload} from "./ETPopDownload";
 import {ETPopScriptUDF} from "./ETPopScriptUDF";
+import {ETExample} from "./ETExample";
 
 export class ETPop extends React.Component {
     constructor(props) {
@@ -37,12 +38,16 @@ export class ETPop extends React.Component {
             return <ETPopDownload name={this.et.state.eventName} ref={this.popChild}/>
         }
 
+        if (this.et.state.eventName === "ETExample") {
+            return <ETExample name={this.et.state.eventName} ref={this.popChild}/>
+        }
+
         if (this.et.state.eventName === "ScriptUDF") {
             return <ETPopScriptUDF name={this.et.state.eventName} ref={this.popChild}/>
         }
 
         if (this.et.state.processType === "tool") {
-            return <ETPopTool name={this.et.state.eventName} ref={this.popChild}/>
+            return <ETPopTool name={this.et.state.eventName} ref={this.popChild} {...this.et.state}/>
         }
 
         return <ETPopAlgorithm name={this.et.state.eventName} ref={this.popChild}/>

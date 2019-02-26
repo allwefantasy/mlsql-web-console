@@ -14,6 +14,7 @@ import * as BackendConfig from "../service/BackendConfig";
 import * as HTTP from "../service/HTTPMethod";
 import {assert} from "../common/tool"
 import {MLSQLETQuick} from "./et/MLSQLETQuick";
+import {ButtonToCommand} from "./et/ButtonToCommand";
 
 const uuidv4 = require('uuid/v4');
 
@@ -156,7 +157,18 @@ class MLSQLAceEditor extends React.Component {
         const eventName = evt.dataTransfer.getData("eventName")
         const popName = evt.dataTransfer.getData("popName")
         const processType = evt.dataTransfer.getData("processType")
-        this.etRef.current.setState({etPop: true, eventName: eventName, popName: popName, processType: processType})
+        const pathAlias = evt.dataTransfer.getData("pathAlias")
+        const tableHidden = evt.dataTransfer.getData("tableHidden")
+        const pathHidden = evt.dataTransfer.getData("pathHidden")
+        if (processType === "direct") {
+            this.appendToEditor(new ButtonToCommand().makeSQL(eventName))
+        } else {
+            this.etRef.current.setState({
+                etPop: true, eventName: eventName, popName: popName, processType: processType,
+                pathAlias: pathAlias, tableHidden: tableHidden, pathHidden: pathHidden
+            })
+        }
+
     }
 
     render() {

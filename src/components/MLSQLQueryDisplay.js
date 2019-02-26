@@ -1,11 +1,14 @@
 import * as React from "react";
 import 'antd/dist/antd.css';
 import {Table} from 'antd';
+import Modal from "../../node_modules/antd/lib/modal/Modal";
+
+const ReactMarkdown = require('react-markdown')
 
 export class MLSQLQueryDisplay extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {columns: [], rows: []}
+        this.state = {columns: [], rows: [], view: {enabled: false}}
     }
 
     setRender = (keyColumn, data) => {
@@ -76,10 +79,53 @@ export class MLSQLQueryDisplay extends React.Component {
         this.setState({columns: keys, data: rows})
     }
 
+    rowDoubleClick = (row, index, event) => {
+        if (row.name === "codeExample" || row.name === "doc") {
+            this.setState({
+                view: {
+                    enabled: true,
+                    content: row.value
+                }
+            })
+        }
+    }
+
+    disablePreview = () => {
+        this.setState({
+            view: {
+                enabled: false
+            }
+        })
+    }
+
     render() {
+        const self = this
         return (<div>
-            <Table columns={this.state.columns} dataSource={this.state.data}/>
-        </div>)
+                <Table
+                    onRow={(row, index) => {
+                        return {
+                            onDoubleClick: (event) => {
+                                self.rowDoubleClick(row, index, event)
+
+                            }
+                        }
+                    }
+                    }
+
+                    columns={this.state.columns}
+                    dataSource={this.state.data}/>
+                <Modal
+                    title={"View"}
+                    visible={this.state.view.enabled}
+                    onCancel={this.disablePreview}
+                    onOk={this.disablePreview}
+                    cancelText="Cancel"
+                    OkText="Ok"
+                >
+                    <ReactMarkdown source={this.state.view.content || ""}/>
+                </Modal>
+            </div>
+        )
     }
 
 }

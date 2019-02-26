@@ -15,7 +15,12 @@ export class ETPopTool extends React.Component {
         this.etpop = props.parent
         this.name = props.name
         this.data = {params: {}}
-        this.state = {dataForRender: []}
+        this.state = {
+            dataForRender: [],
+            tableHidden: props.tableHidden,
+            pathAlias: props.pathAlias,
+            pathHidden: props.pathHidden
+        }
     }
 
     componentDidMount() {
@@ -59,18 +64,18 @@ export class ETPopTool extends React.Component {
             paramsArray.push(k.replace(/\[group\]/g, '0') + "=" + "\"" + v + "\"")
         }
 
-        if (paramsArray.length == 0) {
-            paramsArray.push("keepVersion=\"true\"")
+        let whereStr = ""
+        if (paramsArray.length > 0) {
+            whereStr = "where"
         }
+
         //run command as DownloadExt.`` where from="test2" and to="/tmp/jack";
-        return `run ${this.data.tableNameV || "command"} as ${this.name}.\`${this.data.pathV}\` where 
-${paramsArray.join("and\n ")};`
+        return `run ${this.data.tableNameV || "command"} as ${this.name}.\`${this.data.pathV}\` ${whereStr} ${paramsArray.join("and\n ")};`
     }
 
-    render() {
-        return <div>
-            <span>Command:</span>
-            <InputGroup compact={true}>
+    showTableName = () => {
+        if (this.state.tableHidden !== "true") {
+            return <InputGroup compact={true}>
                 <Row>
                     <Col>
                         <Input type="text" onChange={this.tableName} size={"large"} addonBefore="tableName"
@@ -78,17 +83,39 @@ ${paramsArray.join("and\n ")};`
                     </Col>
                 </Row>
             </InputGroup>
-            <br/>
-            <InputGroup compact={true}>
+        }
+        return null
+    }
+
+    pathNameForRender = () => {
+        if (this.state.pathAlias) {
+            return this.state.pathAlias
+        } else {
+            return "Save path"
+        }
+    }
+    showPathName = () => {
+        console.log(this.state.pathHidden)
+        if (this.state.pathHidden !== "true") {
+            return <InputGroup compact={true}>
                 <Row>
                     <Col>
-                        <Input onChange={this.path} type="text" size={"large"} addonBefore="Model save path"
-                               placeholder="the location you save you model"/>
+                        <Input onChange={this.path} type="text" size={"large"} addonBefore={this.pathNameForRender()}
+                               placeholder=""/>
                     </Col>
                 </Row>
             </InputGroup>
+        }
+        return ""
+    }
+
+    render() {
+        return <div>
+            {this.showTableName()}
             <br/>
-            <span>Parameters:</span>
+            {this.showPathName()}
+            <br/>
+            {this.state.dataForRender.length == 0 ? "" : <span>Parameters:</span>}
             <InputGroup compact={true}>
                 {this.state.dataForRender}
             </InputGroup>

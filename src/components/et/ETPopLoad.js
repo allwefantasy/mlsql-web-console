@@ -67,7 +67,6 @@ export class ETPopLoad extends React.Component {
 
     makeMLSQL = () => {
         const self = this
-        console.log(self.data)
         return `load ${self.data.sourceTypeV}.\`${self.data.pathV}\` where key="value" as ${self.data.tableNameV};`
     }
 
