@@ -3,7 +3,7 @@ import './App.scss';
 import {Alignment, Button, Navbar} from "@blueprintjs/core";
 import {notification} from 'antd';
 import {LOGIN, MLSQLRegisterOrLogin, WelcomeMessage} from "./user/MLSQLRegisterOrLogin";
-import {VIEW_CLUSTER, VIEW_CONSOLE} from "./common/ViewConst"
+import {VIEW_CLUSTER, VIEW_CONSOLE, VIEW_DEMO} from "./common/ViewConst"
 import {MLSQLAuth} from "./user/MLSQLAuth";
 
 const openNotificationWithIcon = (type, message, description) => {
@@ -44,6 +44,10 @@ class App extends Component {
         this.setState({currentView: VIEW_CONSOLE})
     }
 
+    switchToDemo = () => {
+        this.setState({currentView: VIEW_DEMO})
+    }
+
     switchToCnDoc = () => {
         window.open("http://docs.mlsql.tech/zh/", "_blank")
     }
@@ -57,6 +61,7 @@ class App extends Component {
                         <Navbar.Heading>MLSQL Web Console</Navbar.Heading>
                         <Navbar.Divider/>
                         <Button className="bp3-minimal" icon="home" text="Console" onClick={this.switchToConsole}/>
+                        <Button className="bp3-minimal" icon="document" text="Demo Center" onClick={this.switchToDemo}/>
                         <Button className="bp3-minimal" icon="document" text="Cluster" onClick={this.switchToCluster}/>
                         <Button className="bp3-minimal" icon="document" text="中文文档"
                                 onClick={this.switchToCnDoc}/>

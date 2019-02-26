@@ -160,12 +160,24 @@ class MLSQLAceEditor extends React.Component {
         const pathAlias = evt.dataTransfer.getData("pathAlias")
         const tableHidden = evt.dataTransfer.getData("tableHidden")
         const pathHidden = evt.dataTransfer.getData("pathHidden")
+        const outputTableHidden = evt.dataTransfer.getData("outputTableHidden")
+        const outputTableAlias = evt.dataTransfer.getData("outputTableAlias")
+        const tableAlias = evt.dataTransfer.getData("tableAlias")
+
         if (processType === "direct") {
             this.appendToEditor(new ButtonToCommand().makeSQL(eventName))
         } else {
             this.etRef.current.setState({
-                etPop: true, eventName: eventName, popName: popName, processType: processType,
-                pathAlias: pathAlias, tableHidden: tableHidden, pathHidden: pathHidden
+                etPop: true,
+                eventName: eventName,
+                popName: popName,
+                processType: processType,
+                pathAlias: pathAlias,
+                tableHidden: tableHidden,
+                pathHidden: pathHidden,
+                outputTableHidden: outputTableHidden,
+                outputTableAlias: outputTableAlias,
+                tableAlias: tableAlias
             })
         }
 

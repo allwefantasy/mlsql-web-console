@@ -4,8 +4,9 @@ import './MLSQLRegister.scss'
 import {MLSQLAuth as Auth} from './MLSQLAuth'
 import * as HTTP from "../service/HTTPMethod";
 import MLSQLQueryApp from "../components/MLSQLQueryApp";
-import {VIEW_CLUSTER, VIEW_CONSOLE} from "../common/ViewConst";
+import {VIEW_CLUSTER, VIEW_CONSOLE, VIEW_DEMO} from "../common/ViewConst";
 import {ClusterApp} from "../components/cluster/ClusterApp";
+import {MLSQLDemoApp} from "../components/MLSQLDemoApp";
 
 
 export const LOGIN = "login"
@@ -88,33 +89,34 @@ export class MLSQLRegisterOrLogin extends React.Component {
 
 
     render() {
-        if (this.state.isLogin && this.currentView() == VIEW_CONSOLE) return <MLSQLQueryApp/>
-        if (this.state.isLogin && this.currentView() == VIEW_CLUSTER) return <ClusterApp/>
-        return (
-            <div className="mlsql-register">
-                <div className="mlsql-register-form">
-                    <FormGroup
-                        helperText="email"
-                        label="userName"
-                        labelFor="userName"
-                        labelInfo="(required)">
-                        <InputGroup id="userName" placeholder="email" onChange={this.userName}/>
-                    </FormGroup>
-                    <FormGroup
-                        helperText="password"
-                        label="password"
-                        labelFor="password"
-                        labelInfo="(required)">
-                        <InputGroup id="password" type="password" placeholder="password" onChange={this.password}/>
-                    </FormGroup>
+        if (this.state.isLogin && this.currentView() === VIEW_CONSOLE) return <MLSQLQueryApp/>
+        if (this.state.isLogin && this.currentView() === VIEW_CLUSTER) return <ClusterApp/>
+        if (this.state.isLogin && this.currentView() === VIEW_DEMO) return <MLSQLDemoApp/>
+            return (
+                <div className="mlsql-register">
+                    <div className="mlsql-register-form">
+                        <FormGroup
+                            helperText="email"
+                            label="userName"
+                            labelFor="userName"
+                            labelInfo="(required)">
+                            <InputGroup id="userName" placeholder="email" onChange={this.userName}/>
+                        </FormGroup>
+                        <FormGroup
+                            helperText="password"
+                            label="password"
+                            labelFor="password"
+                            labelInfo="(required)">
+                            <InputGroup id="password" type="password" placeholder="password" onChange={this.password}/>
+                        </FormGroup>
 
-                    <Button type="submit" text={this.state.loginType === LOGIN ? "Login" : "Register"}
-                            onClick={this.state.loginType === LOGIN ? this.login : this.register}/>
-                    {this.state.msg !== "" && <div className="mlsql-register-messagebox">{this.state.msg}</div>}
+                        <Button type="submit" text={this.state.loginType === LOGIN ? "Login" : "Register"}
+                                onClick={this.state.loginType === LOGIN ? this.login : this.register}/>
+                        {this.state.msg !== "" && <div className="mlsql-register-messagebox">{this.state.msg}</div>}
+                    </div>
+
                 </div>
-
-            </div>
-        )
+            )
     }
 
     userName = (e) => {
