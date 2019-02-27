@@ -6,6 +6,9 @@ import {LOGIN, MLSQLRegisterOrLogin, WelcomeMessage} from "./user/MLSQLRegisterO
 import {VIEW_CLUSTER, VIEW_CONSOLE, VIEW_DEMO} from "./common/ViewConst"
 import {MLSQLAuth} from "./user/MLSQLAuth";
 
+const s = require('stripmargin');
+s.inject()
+
 const openNotificationWithIcon = (type, message, description) => {
     notification[type]({
         message: message,

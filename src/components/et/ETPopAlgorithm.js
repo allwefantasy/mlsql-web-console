@@ -7,6 +7,7 @@ import {
 
 const InputGroup = Input.Group;
 const Option = Select.Option;
+const {TextArea} = Input;
 
 
 export class ETPopAlgorithm extends React.Component {
@@ -18,6 +19,24 @@ export class ETPopAlgorithm extends React.Component {
         this.state = {dataForRender: []}
     }
 
+    renderParam = (item) => {
+        if (item.param === "keepVersion" && item.param === "evaluateTable") {
+            return null
+        }
+        if (item.param === "code" || item.param === "fitParam.[group].code") {
+            return <Row><Col>{item.param}:<TextArea style={{marginBottom: "10px"}} name={item.param}
+                                                    onChange={this.params}
+                                                    type="text" rows={10}/></Col></Row>
+        }
+        return <Row>
+            <Col>
+                <Input style={{marginBottom: "10px"}} name={item.param} onChange={this.params} type="text"
+                       addonBefore={item.param}
+                       placeholder={item.description}/>
+            </Col>
+        </Row>
+    }
+
     componentDidMount() {
         const self = this
         const api = new MLSQLAPI(RUN_SCRIPT)
@@ -25,13 +44,12 @@ export class ETPopAlgorithm extends React.Component {
         api.runScript({}, `load modelParams.\`${self.name}\` as output;`, (data) => {
             const dataForRender = []
             data.forEach(item => {
-                dataForRender.push(<Row>
-                    <Col>
-                        <Input style={{marginBottom: "10px"}} name={item.param} onChange={this.params} type="text"
-                               addonBefore={item.param}
-                               placeholder={item.description}/>
-                    </Col>
-                </Row>)
+                const temp = this.renderParam(item)
+                if (temp !== null) {
+                    dataForRender.push(temp)
+                    dataForRender.push(<br/>)
+                }
+
             })
             self.setState({dataForRender: dataForRender})
         }, fail => {

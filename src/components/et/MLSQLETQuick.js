@@ -156,6 +156,8 @@ export class MLSQLETQuick extends React.Component {
                                     <Tag style={{marginBottom: "10px"}} onDragStart={this.onDragStart}
                                          name={"ImageLoaderExt"} processtype={"tool"}
                                          help={"Use ImageLoaderExt to load images"}
+                                         pathalias={""} tablehidden={"true"} pathhidden={"true"}
+                                         outputtablehidden={"false"}
                                          draggable={true} color="magenta">Load images</Tag>
 
                                     <Tag style={{marginBottom: "10px"}} onDragStart={this.onDragStart}
@@ -195,6 +197,13 @@ export class MLSQLETQuick extends React.Component {
                                          pathalias={""} tablehidden={"false"} pathhidden={"true"}
                                          outputtablehidden={"true"}
                                          draggable={true} color="magenta">Cache Table</Tag>
+
+                                    <Tag style={{marginBottom: "10px"}} onDragStart={this.onDragStart}
+                                         name={"ETStringIndex"} processtype={"tool"}
+                                         help={"Convert String to number"}
+                                         pathalias={"Mapping path"} tablehidden={"false"} pathhidden={"false"}
+                                         outputtablehidden={"true"}
+                                         draggable={true} color="magenta">Convert String to number</Tag>
 
 
                                 </Card>
