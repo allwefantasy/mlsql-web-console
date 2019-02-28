@@ -93,6 +93,11 @@ export class MLSQLETQuick extends React.Component {
                                          name={"BigDLClassifyExt"}
                                          help={"Use BigDL to develop deep learning algorithm"}
                                          draggable={true} color="magenta">Deep Learning</Tag>
+
+                                    <Tag style={{marginBottom: "10px"}} onDragStart={this.onDragStart}
+                                         name={"NaiveBayes"}
+                                         help={"Use NaiveBayes"}
+                                         draggable={true} color="magenta">NaiveBayes</Tag>
                                 </Card>
                             </Col>
 
@@ -199,11 +204,18 @@ export class MLSQLETQuick extends React.Component {
                                          draggable={true} color="magenta">Cache Table</Tag>
 
                                     <Tag style={{marginBottom: "10px"}} onDragStart={this.onDragStart}
-                                         name={"ETStringIndex"} processtype={"tool"}
+                                         name={"StringIndex"} processtype={"tool"}
                                          help={"Convert String to number"}
                                          pathalias={"Mapping path"} tablehidden={"false"} pathhidden={"false"}
                                          outputtablehidden={"true"}
                                          draggable={true} color="magenta">Convert String to number</Tag>
+
+                                    <Tag style={{marginBottom: "10px"}} onDragStart={this.onDragStart}
+                                         name={"DownloadFile"} processtype={"tool"}
+                                         help={"Download File"}
+                                         pathalias={"Target file"} tablehidden={"true"} pathhidden={"false"}
+                                         outputtablehidden={"true"}
+                                         draggable={true} color="magenta">Download File to computer</Tag>
 
 
                                 </Card>

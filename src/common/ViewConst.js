@@ -6,3 +6,5 @@ export const CLUSTER_VIEW_BackendList = "BackendList"
 export const CLUSTER_VIEW_SetBackendTags = "SetBackendTags"
 
 export const DEMO_VIEW_BIGDL = "bigdl"
+export const DEMO_VIEW_NLP = "nlp"
+export const DEMO_VIEW_STREAM = "stream"

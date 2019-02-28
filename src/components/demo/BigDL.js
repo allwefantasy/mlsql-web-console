@@ -26,7 +26,7 @@ export default class BigDL extends React.Component {
         this.steps = this.generateSteps()
     }
 
-    generateView = (step) => {
+    generateView(step) {
         return <div style={{marginTop: "30px"}}>
             {this.techData[step].length > 0 && <List
                 header={<div>How to do:</div>}
@@ -59,7 +59,7 @@ export default class BigDL extends React.Component {
         </div>
     }
 
-    generateSteps = () => {
+    generateSteps() {
         return [{
             title: 'Download Cifar10 Images',
             content: this.generateView(0),
@@ -141,8 +141,7 @@ export default class BigDL extends React.Component {
         );
     }
 
-    generateTechData = () => {
-
+    generateTechData() {
         return [
             [
                 "Step 0: Clear the content in editor",
@@ -212,7 +211,7 @@ export default class BigDL extends React.Component {
         ]
     }
 
-    generateCommandData = () => {
+    generateCommandData() {
         return [
             `run command as DownloadExt.\`\` where 
             from="public/cifar.tar" 

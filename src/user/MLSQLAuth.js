@@ -1,7 +1,8 @@
+import React from "react";
 import {MLSQLAPI, APIResponse, ServerError} from "../service/MLSQLAPI";
 import * as backendConfig from "../service/BackendConfig";
 import * as HTTP from "../service/HTTPMethod";
-import React from "react";
+import Cookies from 'universal-cookie';
 
 
 export class MLSQLAuth {
@@ -85,6 +86,8 @@ export class MLSQLAuth {
         const sCallBack = (apiResponse) => {
             if (apiResponse.accessToken) {
                 sessionStorage.setItem(HTTP.AccessToken.name, apiResponse.accessToken)
+                const cookies = new Cookies();
+                cookies.set(HTTP.AccessToken.name, apiResponse.accessToken, { path: '/' });
             }
             _sCallBack(apiResponse)
         }

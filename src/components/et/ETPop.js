@@ -9,6 +9,7 @@ import {ETPopScriptUDF} from "./ETPopScriptUDF";
 import {ETExample} from "./ETExample";
 import {ETRegister} from "./ETRegister";
 import ETStringIndex from "./ETStringIndex";
+import {ETDownloadFile} from "./ETDownloadFile";
 
 export class ETPop extends React.Component {
     constructor(props) {
@@ -40,8 +41,12 @@ export class ETPop extends React.Component {
             return <ETPopDownload name={this.et.state.eventName} ref={this.popChild}/>
         }
 
-        if (this.et.state.eventName === "ETStringIndex") {
+        if (this.et.state.eventName === "StringIndex") {
             return <ETStringIndex name={this.et.state.eventName} ref={this.popChild}/>
+        }
+
+        if (this.et.state.eventName === "DownloadFile") {
+            return <ETDownloadFile name={this.et.state.eventName} ref={this.popChild} {...this.et.state}/>
         }
 
         if (this.et.state.eventName === "ETExample") {

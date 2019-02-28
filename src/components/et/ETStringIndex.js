@@ -36,25 +36,6 @@ export default class ETStringIndex extends ETBaseTool {
         return <div>
             {this.showTableName()}
             <br/>
-            <InputGroup compact={true}>
-                <Row>
-                    <Col>
-                        <Input onChange={this.params} name={"inputCol"} type="text" size={"large"}
-                               addonBefore={"inputCol"}
-                               placeholder="inputCol"/>
-                    </Col>
-                </Row>
-            </InputGroup>
-            <InputGroup compact={true}>
-                <Row>
-                    <Col>
-                        <Input onChange={this.params} name={"outputCol"} type="text" size={"large"}
-                               addonBefore={"outputCol"}
-                               placeholder="inputCol"/>
-                    </Col>
-                </Row>
-            </InputGroup>
-            <br/>
 
             {this.showOutputTableName()}
             <br/>

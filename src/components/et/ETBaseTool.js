@@ -36,7 +36,7 @@ export default class ETBaseTool extends React.Component {
                                                     onChange={this.params}
                                                     type="text" rows={10}/></Col></Row>
         }
-        return <Row>
+        return <Row key={item.param}>
             <Col>
                 <Input style={{marginBottom: "10px"}} name={item.param} onChange={this.params} type="text"
                        addonBefore={item.param}
@@ -81,7 +81,7 @@ export default class ETBaseTool extends React.Component {
         this.data.outputTableNameV = evt.target.value
     }
 
-    _makeMLSQL(){
+    _makeMLSQL() {
         const self = this
         let paramsArray = []
         for (let k in this.data.params) {
