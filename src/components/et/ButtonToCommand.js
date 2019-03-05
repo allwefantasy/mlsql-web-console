@@ -11,6 +11,10 @@ export class ButtonToCommand {
  and password=""
  as db_1;`
         }
+
+        if (name === "ShowResource") {
+            return `load _mlsql_.\`resource\` as output;`
+        }
         return ""
     }
 }

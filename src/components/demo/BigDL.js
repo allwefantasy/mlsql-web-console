@@ -157,7 +157,7 @@ export default class BigDL extends React.Component {
                 "Step 2: Drag Tools/Load images",
                 <ReactMarkdown source={"Step 3: An dialog will be opened\n" +
                 "fill field [Output table] with 'images'\n" +
-                "field [imageDir]  with '/tmp/cifar/train'\n" +
+                "field [imageDir]  with '/tmp/cifar'\n" +
                 "field [code]  with \n" +
                 "\n" +
                 "```scala\n" +
@@ -218,7 +218,7 @@ export default class BigDL extends React.Component {
             and to="/tmp";`.stripMargin(),
 
 
-            `run command as ImageLoaderExt.\`/tmp/cifar/train\` 
+            `run command as ImageLoaderExt.\`/tmp/cifar\` 
             where code='''
         def apply(params:Map[String,String]) = {
          Resize(256, 256) -> CenterCrop(224, 224) ->

@@ -256,6 +256,10 @@ class ResourceProgress extends React.Component {
             if (self.state.mark) {
                 self.setState({loading: true})
                 self.intervalTimer = setInterval(() => {
+                        if(self.resourceCompute==="loading"){
+                            return
+                        }
+                        self.resourceCompute="loading"
                         const api = new MLSQLAPI(BackendConfig.RUN_SCRIPT)
                         assert(params.hasOwnProperty("jobName"), "jobName is required")
                         const jobName = params["jobName"]
@@ -266,7 +270,9 @@ class ResourceProgress extends React.Component {
                                 successPercent: jsonObj.currentJobGroupActiveTasks / jsonObj.totalCores * 100,
                                 title: `Resource (for all users): taken/Total: ${jsonObj.activeTasks}/${jsonObj.totalCores}(${jsonObj.currentJobGroupActiveTasks} you took)`
                             })
+                            self.resourceCompute="loaded"
                         }, (str) => {
+                            self.resourceCompute="loaded"
                             try {
                                 self.parent.getMessageBoxAceEditor().setValue(str)
                             } catch (e) {
@@ -276,7 +282,7 @@ class ResourceProgress extends React.Component {
                         })
 
                     }
-                    , 2000)
+                    , 30000)
             }
 
         }, 3000)
@@ -317,10 +323,16 @@ class TaskProgress extends React.Component {
             if (self.state.mark) {
                 self.setState({loading: true})
                 self.intervalTimer = setInterval(() => {
+
+                        if(self.taskCompute==="loading"){
+                            return
+                        }
+                        self.taskCompute="loading"
                         const api = new MLSQLAPI(BackendConfig.RUN_SCRIPT)
                         assert(params.hasOwnProperty("jobName"), "jobName is required")
                         const jobName = params["jobName"]
                         api.runScript({}, `load _mlsql_.\`jobs/${jobName}\` as output;`, (jsonArray) => {
+                            self.taskCompute="loaded"
                             const _jsonObj = jsonArray[0]
                             const jsonObj = {
                                 numTasks: 0,
@@ -338,6 +350,7 @@ class TaskProgress extends React.Component {
                                 title: `Tasks (for all stages): Succeeded/Total:\n${jsonObj.numCompletedTasks}/${jsonObj.numTasks}(${jsonObj.numActiveTasks} running)`
                             })
                         }, (str) => {
+                            self.taskCompute="loaded"
                             try {
                                 self.parent.getMessageBoxAceEditor().setValue(str)
                             } catch (e) {
@@ -346,7 +359,7 @@ class TaskProgress extends React.Component {
                         })
 
                     }
-                    , 2000)
+                    , 30000)
             }
 
         }, 3000)
@@ -354,6 +367,8 @@ class TaskProgress extends React.Component {
     }
 
     exit = () => {
+        this.taskCompute="loaded"
+        this.resourceCompute="loaded"
         this.setState({loading: false, percent: 0, successPercent: 0, mark: false})
         if (this.intervalTimer) {
             clearInterval(this.intervalTimer);

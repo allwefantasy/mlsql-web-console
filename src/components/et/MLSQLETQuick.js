@@ -216,6 +216,9 @@ export class MLSQLETQuick extends React.Component {
                                          pathalias={"Target file"} tablehidden={"true"} pathhidden={"false"}
                                          outputtablehidden={"true"}
                                          draggable={true} color="magenta">Download File to computer</Tag>
+                                    <Tag style={{marginBottom: "10px"}} onDragStart={this.onDragStart} name={"ShowResource"}
+                                         processtype={"direct"}
+                                         draggable={true} color="magenta">Cluster Resource</Tag>
 
 
                                 </Card>

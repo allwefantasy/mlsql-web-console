@@ -14,7 +14,7 @@ export class ETPopLoad extends React.Component {
     constructor(props) {
         super(props)
         this.etpop = props.parent
-        this.data = {}
+        this.data = {params:{}}
         this.state = {datasourcesRender: []}
         this.loadParamsRef = React.createRef()
     }
@@ -36,6 +36,11 @@ export class ETPopLoad extends React.Component {
 
     }
 
+    params = (evt) => {
+        this.data.params[evt.target.getAttribute("name")] = evt.target.value
+    }
+
+
     sourceType = (value, evt) => {
         this.data.sourceTypeV = value
         const self = this
@@ -43,9 +48,9 @@ export class ETPopLoad extends React.Component {
         api.runScript({}, `load _mlsql_.\`datasources/params/${value}\` as output;`, (data) => {
             const dataForRender = []
             data.forEach(item => {
-                dataForRender.push(<Row>
+                dataForRender.push(<Row key={item.param}>
                     <Col>
-                        <Input style={{marginBottom: "10px"}} name={item.param} onChange={this.params} type="text"
+                        <Input style={{marginBottom: "10px"}} name={item.param} onChange={self.params} type="text"
                                addonBefore={item.param}
                                placeholder={item.description}/>
                     </Col>
@@ -67,7 +72,21 @@ export class ETPopLoad extends React.Component {
 
     makeMLSQL = () => {
         const self = this
-        return `load ${self.data.sourceTypeV}.\`${self.data.pathV}\` where key="value" as ${self.data.tableNameV};`
+        let paramsArray = []
+        for (let k in this.data.params) {
+            let v = this.data.params[k]
+            let rv = "\"" + v + "\""
+            if (k === "code" || k === "fitParam.[group].code") {
+                rv = "'''" + v + "'''"
+            }
+            paramsArray.push(k.replace(/\[group\]/g, '0') + "=" + rv)
+        }
+
+        let whereStr = ""
+        if (paramsArray.length > 0) {
+            whereStr = "where"
+        }
+        return `load ${self.data.sourceTypeV}.\`${self.data.pathV}\` ${whereStr} ${paramsArray.join("and\\n ")} as ${self.data.tableNameV};`
     }
 
     render() {

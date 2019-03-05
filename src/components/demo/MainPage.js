@@ -2,9 +2,7 @@ import * as React from "react";
 import {
     Layout, Menu, Breadcrumb, Icon, Button
 } from 'antd';
-import {DEMO_VIEW_BIGDL, DEMO_VIEW_NLP, DEMO_VIEW_STREAM} from "../../common/ViewConst";
-import BigDL from "./BigDL";
-import {NLP} from "./NLP";
+import {DEMO_VIEW_BASIC, DEMO_VIEW_BIGDL, DEMO_VIEW_NLP, DEMO_VIEW_STREAM} from "../../common/ViewConst";
 import {Demos} from "./Demos";
 
 const {
@@ -19,15 +17,19 @@ export default class MainPage extends React.Component {
 
     }
 
-    switchToBigDL = () => {
+    switchToBigDL = (e) => {
         this.demosRef.current.setState({currentView: DEMO_VIEW_BIGDL})
     }
-    switchToNLP = () => {
+    switchToNLP = (e) => {
         this.demosRef.current.setState({currentView: DEMO_VIEW_NLP})
     }
 
-    switchToStream = () => {
+    switchToStream = (e) => {
         this.demosRef.current.setState({currentView: DEMO_VIEW_STREAM})
+    }
+
+    switchToBasic = () => {
+        this.demosRef.current.setState({currentView: DEMO_VIEW_BASIC})
     }
 
 
@@ -36,19 +38,23 @@ export default class MainPage extends React.Component {
             <Layout style={{minHeight: '100vh'}}>
                 <Sider>
                     <div className="logo"/>
-                    <Menu theme="dark" defaultSelectedKeys={["1"]} mode="inline">
+                    <Menu theme="dark" defaultSelectedKeys={["0"]} mode="inline">
+                        <Menu.Item key="0">
+                            <Button block onClick={this.switchToBasic}>Basic Tutorial</Button>
+                        </Menu.Item>
                         <Menu.Item key="1">
-                            <Icon type="desktop"/>
-                            <span><a style={{color: "white"}} onClick={this.switchToBigDL}>Cifar10</a></span>
+                            <Button block onClick={this.switchToBigDL}>Cifar10</Button>
                         </Menu.Item>
                         <Menu.Item key="2">
-                            <Icon type="desktop"/>
-                            <span><a style={{color: "white"}} onClick={this.switchToNLP}>NLP</a></span>
+                            <Button block onClick={this.switchToNLP}>NLP</Button>
                         </Menu.Item>
                         <Menu.Item key="3">
-                            <Icon type="desktop"/>
-                            <span><a style={{color: "white"}}>Stream</a></span>
+                            <Button block>Stream</Button>
                         </Menu.Item>
+                        <Menu.Item key="4">
+                            <Button block>Excel</Button>
+                        </Menu.Item>
+
                     </Menu>
                 </Sider>
                 <Layout>

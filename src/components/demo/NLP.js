@@ -54,7 +54,8 @@ export class NLP extends BigDL {
                 |
                 `.stripMargin()}/>,
                 "Step 4: Click Ok in dialog",
-                "Step 5: Click button Run(it will take a while.)"
+                "Step 5: Use SQL to filter _corrupt_record",
+                "Step 6: Click button Run(it will take a while.)"
             ],
             [
                 <ReactMarkdown source={`
@@ -159,7 +160,9 @@ export class NLP extends BigDL {
              |from="public/SogouCS.reduced.tar" and
              |to="/tmp/nlp/sogo";`.stripMargin(),
 
-            `load xml.\`/tmp/nlp/sogo\` where rowTag="doc" and charset="GBK" as xmlData; `.stripMargin(),
+            `load xml.\`/tmp/nlp/sogo\` where rowTag="doc" and charset="GBK" as xmlData;
+            |select * from xmlData where _corrupt_record is null as xmlData; 
+            `.stripMargin(),
 
             `-- http://sports.sohu.com/20070422/n249599819.shtml extract sports from url
             |select temp.* from (select split(split(url,"/")[2],"\\\\.")[0] as labelStr,content from xmlData) as temp 
