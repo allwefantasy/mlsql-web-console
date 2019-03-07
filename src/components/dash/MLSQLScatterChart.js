@@ -31,12 +31,23 @@ export default class MLSQLThreeDimScatterChart {
 
     static isShouldRender = (data) => {
         return MLSQLThreeDimScatterChart.basicCheck(data, (item) => {
-            return item.hasOwnProperty("x") && item.hasOwnProperty("y") && item.hasOwnProperty("z") && item.hasOwnProperty("dataType")
+
+            return item.hasOwnProperty("x") && item.hasOwnProperty("y") && (item.hasOwnProperty("_dash_config") || item.hasOwnProperty("dash")) && (
+                item["dash"] === "scatter" || (item["_dash_config"] || {})["dash"] === "scatter"
+            )
         })
     }
 
     static render(data) {
-
+        let haveZ = data[0].hasOwnProperty("z")
+        if (!data.hasOwnProperty("dataType")) {
+            data.forEach((item) => {
+                item["dataType"] = "default"
+                if (!haveZ) {
+                    item["z"] = 0
+                }
+            })
+        }
         const dataTypeToItems = data.reduce((map, item) => {
             const {x, y, z, dataType} = item
             const prev = map.get(dataType)
@@ -73,7 +84,7 @@ export default class MLSQLThreeDimScatterChart {
                 <CartesianGrid/>
                 <XAxis {...xConfig}/>
                 <YAxis {...yConfig}/>
-                <ZAxis {...zConfig}/>
+                {haveZ ? <ZAxis {...zConfig}/> : ""}
                 <Tooltip cursor={{strokeDasharray: '3 3'}}/>
                 <Legend/>
                 {scatters}
@@ -82,3 +93,4 @@ export default class MLSQLThreeDimScatterChart {
     }
 
 }
+

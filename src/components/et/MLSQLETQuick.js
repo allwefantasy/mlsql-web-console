@@ -150,6 +150,11 @@ export class MLSQLETQuick extends React.Component {
                                          pathalias={"groupId or jobName"} tablehidden={"true"}
                                          help={"Kill your job"}
                                          draggable={true} color="magenta">Kill job</Tag>
+
+                                    <Tag style={{marginBottom: "10px"}} onDragStart={this.onDragStart}
+                                         name={"ETStreamProgress"} processtype={""}
+                                         help={"Show Progress of Stream"}
+                                         draggable={true} color="magenta">Show Stream Job Progress</Tag>
                                 </Card>
                             </Col>
                             <Col span={8}>
@@ -179,10 +184,13 @@ export class MLSQLETQuick extends React.Component {
                                          pathalias={""} tablehidden={"false"} pathhidden={"true"}
                                          help={"Build tree from parent-child"}
                                          draggable={true} color="magenta">Parent-Child</Tag>
+
                                     <Tag style={{marginBottom: "10px"}} onDragStart={this.onDragStart}
                                          name={"ETExample"} processtype={""}
                                          help={"Show Example of ET"}
                                          draggable={true} color="magenta">Show ET Example</Tag>
+
+
                                     <Tag style={{marginBottom: "10px"}} onDragStart={this.onDragStart}
                                          name={"RepartitionExt"} processtype={"tool"}
                                          help={"Change Table Partition Num"}
@@ -216,7 +224,8 @@ export class MLSQLETQuick extends React.Component {
                                          pathalias={"Target file"} tablehidden={"true"} pathhidden={"false"}
                                          outputtablehidden={"true"}
                                          draggable={true} color="magenta">Download File to computer</Tag>
-                                    <Tag style={{marginBottom: "10px"}} onDragStart={this.onDragStart} name={"ShowResource"}
+                                    <Tag style={{marginBottom: "10px"}} onDragStart={this.onDragStart}
+                                         name={"ShowResource"}
                                          processtype={"direct"}
                                          draggable={true} color="magenta">Cluster Resource</Tag>
 

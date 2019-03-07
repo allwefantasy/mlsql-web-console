@@ -10,6 +10,7 @@ import {ETExample} from "./ETExample";
 import {ETRegister} from "./ETRegister";
 import ETStringIndex from "./ETStringIndex";
 import {ETDownloadFile} from "./ETDownloadFile";
+import {ETStreamProgress} from "./ETStreamProgress";
 
 export class ETPop extends React.Component {
     constructor(props) {
@@ -51,6 +52,10 @@ export class ETPop extends React.Component {
 
         if (this.et.state.eventName === "ETExample") {
             return <ETExample name={this.et.state.eventName} ref={this.popChild}/>
+        }
+
+        if (this.et.state.eventName === "ETStreamProgress") {
+            return <ETStreamProgress name={this.et.state.eventName} ref={this.popChild}/>
         }
 
         if (this.et.state.eventName === "ScriptUDF") {
