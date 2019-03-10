@@ -12,3 +12,16 @@ export const CLUSTER_MANAGER = BACKEND_SERVER + "/api_v1/cluster";
 export const FILE_UPLOAD = BACKEND_SERVER + "/api_v1/file/upload";
 export const FILE_DOWNLOAD = BACKEND_SERVER + "/api_v1/file/download";
 
+
+export const CREATE_TEAM = BACKEND_SERVER + "/api_v1/team/create";
+export const CHECK_TEAM_NAME = BACKEND_SERVER + "/api_v1/team/name/check";
+export const LIST_TEAMS = BACKEND_SERVER + "/api_v1/team";
+export const LIST_TEAMS_JOINED = BACKEND_SERVER + "/api_v1/team/joined";
+export const LIST_TEAMS_INVITED = BACKEND_SERVER + "/api_v1/team/invited";
+export const ADD_TEAMS_MEMBER = BACKEND_SERVER + "/api_v1/team/member/add";
+export const LIST_TEAMS_MEMBER = BACKEND_SERVER + "/api_v1/team/members";
+
+export const ACCEPT_TEAMS_MEMBER = BACKEND_SERVER + "/api_v1/team/member/accept";
+export const REFUSE_TEAMS_MEMBER = BACKEND_SERVER + "/api_v1/team/member/refuse";
+
+

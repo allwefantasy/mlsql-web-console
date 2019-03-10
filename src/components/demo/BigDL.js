@@ -89,7 +89,12 @@ export default class BigDL extends React.Component {
 
     componentDidMount() {
         setTimeout(() => {
-            this.getEditor().setValue(this.commandData[0], -1)
+            try {
+                this.getEditor().setValue(this.commandData[0], -1)
+            } catch (e) {
+
+            }
+
         }, 1000)
     }
 
@@ -97,7 +102,11 @@ export default class BigDL extends React.Component {
         const current = this.state.current + 1;
         this.setState({current});
         setTimeout(() => {
-            this.getEditor().setValue(this.commandData[current], -1)
+            try {
+                this.getEditor().setValue(this.commandData[current], -1)
+            } catch (e) {
+
+            }
         }, 1000)
 
     }
@@ -106,7 +115,11 @@ export default class BigDL extends React.Component {
         const current = this.state.current - 1;
         this.setState({current});
         setTimeout(() => {
-            this.getEditor().setValue(this.commandData[current], -1)
+            try {
+                this.getEditor().setValue(this.commandData[current], -1)
+            } catch (e) {
+
+            }
         }, 1000)
     }
 

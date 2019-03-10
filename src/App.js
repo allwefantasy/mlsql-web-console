@@ -3,7 +3,7 @@ import './App.scss';
 import {Alignment, Button, Navbar} from "@blueprintjs/core";
 import {notification} from 'antd';
 import {LOGIN, MLSQLRegisterOrLogin, WelcomeMessage} from "./user/MLSQLRegisterOrLogin";
-import {VIEW_CLUSTER, VIEW_CONSOLE, VIEW_DEMO} from "./common/ViewConst"
+import {VIEW_CLUSTER, VIEW_CONSOLE, VIEW_DEMO, VIEW_TEAM} from "./common/ViewConst"
 import {MLSQLAuth} from "./user/MLSQLAuth";
 
 const s = require('stripmargin');
@@ -43,6 +43,11 @@ class App extends Component {
 
     }
 
+    switchToTeam = () => {
+        this.setState({currentView: VIEW_TEAM})
+
+    }
+
     switchToConsole = () => {
         this.setState({currentView: VIEW_CONSOLE})
     }
@@ -65,6 +70,7 @@ class App extends Component {
                         <Navbar.Divider/>
                         <Button className="bp3-minimal" icon="home" text="Console" onClick={this.switchToConsole}/>
                         <Button className="bp3-minimal" icon="document" text="Demo Center" onClick={this.switchToDemo}/>
+                        <Button className="bp3-minimal" icon="document" text="Team" onClick={this.switchToTeam}/>
                         <Button className="bp3-minimal" icon="document" text="Cluster" onClick={this.switchToCluster}/>
                         <Button className="bp3-minimal" icon="document" text="中文文档"
                                 onClick={this.switchToCnDoc}/>
@@ -79,7 +85,9 @@ class App extends Component {
                 <div style={{bottom: "100px", textAlign: "center", width: "100%"}}>
                     MLSQL Licensed under the Apache License, Version 2.0. @<a className="copyright"
                                                                               href="http://www.miitbeian.gov.cn/">浙ICP备18052520号</a>
-                    <div>@<a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010802009683" ><img src=""/>浙公网安备 33010802009683号</a></div>
+                    <div>@<a target="_blank"
+                             href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=33010802009683"><img
+                        src=""/>浙公网安备 33010802009683号</a></div>
 
                 </div>
             </div>
