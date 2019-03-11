@@ -12,4 +12,5 @@ export const DEMO_VIEW_STREAM = "stream"
 export const DEMO_VIEW_BASIC = "basic"
 
 
-export const TEAM_VIEW_BASIC = "basic"
+export const TEAM_VIEW_BASIC = "team_view_basic"
+export const CLUSTER_VIEW_BASIC = "cluster_view_basic"
