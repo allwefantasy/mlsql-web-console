@@ -11,6 +11,7 @@ class CreateTeamForm extends React.Component {
 
     constructor(props) {
         super(props)
+        console.log(props)
         this.teamCards = props.parent
     }
 
@@ -22,14 +23,13 @@ class CreateTeamForm extends React.Component {
                 const api = new MLSQLAPI(CREATE_TEAM)
                 api.request2(params, (resJson) => {
                     if (resJson["msg"] === "success") {
-                        self.teamCards.setState({refresh: true})
                         message.success("Create team success", 3)
+                        self.teamCards.teamsRef.current.refresh()
                     } else {
                         message.warning("Create team fail" + resJson["msg"], 10)
                     }
 
                 }, (failStr) => {
-                    self.teamCards.setState({refresh: true})
                     message.error("Create team fail:" + failStr, 10)
                 })
             }

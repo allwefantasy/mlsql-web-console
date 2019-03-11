@@ -5,10 +5,10 @@ import {
 } from 'antd';
 import Service from "./remote/Service";
 import {Views} from "./remote/Views";
-import {LIST_TEAMS_MEMBER} from "../../service/BackendConfig";
+import {LIST_TEAMS} from "../../service/BackendConfig";
 
 
-export class TeamMembers extends React.Component {
+export class TeamTables extends React.Component {
     constructor(props) {
         super(props)
         this.teamCards = props.parent
@@ -20,32 +20,44 @@ export class TeamMembers extends React.Component {
     }
 
     componentDidMount() {
-        Service.fetchTeams(this.apiUrl, this, "teams")
+        Service.fetchTeams(LIST_TEAMS, this, "teams")
     }
 
     selectTeam = (member) => {
         this.currentTeam = member
-        Service.fetchMembersByTeam(this, member, "members")
+        Service.fetchTables(this, member, "tables")
     }
 
-    renderCommand = (userName) => {
-        const self = this
-        return [<a onClick={() => {
-            Service.removeTeamMember(self, self.currentTeam, userName, () => {
-                Service.fetchMembersByTeam(self, self.currentTeam, "members")
+    refresh = () => {
+        if (this.currentTeam) {
+            Service.fetchTables(this, this.currentTeam, "tables")
+        }
+    }
+
+    renderCommand = (tableId) => {
+        return [<a onClick={(evt) => {
+            evt.preventDefault()
+            Service.removeTable(this, this.currentTeam, tableId, null, () => {
+                Service.fetchTables(this, this.currentTeam, "tables")
             })
+
         }
         }>remove</a>]
-
     }
 
-    renderMembers = () => {
+    renderDB = (item) => {
+        if (item.db !== "undefined" && item.db) {
+            return item.db
+        } else return "default"
+    }
+
+    renderRoles = () => {
         return <List
-            dataSource={this.state.members}
+            dataSource={this.state.tables}
             renderItem={item => (
-                <List.Item key={item.name} actions={this.renderCommand(item.name)}>
+                <List.Item key={item.name} actions={this.renderCommand(item.id)}>
                     <List.Item.Meta
-                        title={<a href="#">{item.name}</a>}
+                        title={`${item.tableType}:${this.renderDB(item)}:${item.name}`}
                     />
                 </List.Item>
             )}
@@ -64,8 +76,12 @@ export class TeamMembers extends React.Component {
                 >
                     {Views.renderTeamsForSelect(this)}
                 </Select>
-                {this.renderMembers()}
+                {this.renderRoles()}
             </div>
         );
     }
+
 }
+
+
+

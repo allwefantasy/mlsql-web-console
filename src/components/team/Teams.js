@@ -4,7 +4,13 @@ import {
     List, message
 } from 'antd';
 import {MLSQLAPI} from "../../service/MLSQLAPI";
-import {ACCEPT_TEAMS_MEMBER, LIST_TEAMS_INVITED, REFUSE_TEAMS_MEMBER} from "../../service/BackendConfig";
+import {
+    ACCEPT_TEAMS_MEMBER,
+    LIST_TEAMS,
+    LIST_TEAMS_INVITED,
+    LIST_TEAMS_MEMBER,
+    REFUSE_TEAMS_MEMBER
+} from "../../service/BackendConfig";
 import Service from "./remote/Service";
 
 
@@ -22,8 +28,11 @@ export class Teams extends React.Component {
         Service.fetchTeams(this.apiUrl, this)
     }
 
+    refresh = () => {
+        Service.fetchTeams(this.apiUrl, this)
+    }
     renderCommand = (value) => {
-        const command = new InviteCommand(this, value)
+        const command = new Commands(this, value)
         if (this.apiUrl === LIST_TEAMS_INVITED) {
             return [<a onClick={command.accept}>accept</a>, <a onClick={command.refuse}>refuse</a>]
         }
@@ -50,7 +59,8 @@ export class Teams extends React.Component {
     }
 }
 
-class InviteCommand {
+
+class Commands {
     constructor(teams, teamName) {
         this.view = teams
         this.teamName = teamName

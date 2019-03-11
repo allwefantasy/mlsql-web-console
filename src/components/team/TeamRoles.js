@@ -5,10 +5,10 @@ import {
 } from 'antd';
 import Service from "./remote/Service";
 import {Views} from "./remote/Views";
-import {LIST_TEAMS_MEMBER} from "../../service/BackendConfig";
+import {LIST_TEAMS} from "../../service/BackendConfig";
 
 
-export class TeamMembers extends React.Component {
+export class TeamRoles extends React.Component {
     constructor(props) {
         super(props)
         this.teamCards = props.parent
@@ -20,28 +20,31 @@ export class TeamMembers extends React.Component {
     }
 
     componentDidMount() {
-        Service.fetchTeams(this.apiUrl, this, "teams")
+        Service.fetchTeams(LIST_TEAMS, this, "teams")
     }
 
     selectTeam = (member) => {
         this.currentTeam = member
-        Service.fetchMembersByTeam(this, member, "members")
+        Service.fetchRoles(this, member, "roles")
     }
 
-    renderCommand = (userName) => {
-        const self = this
+    refresh = () => {
+        if(this.currentTeam){
+            Service.fetchRoles(this, this.currentTeam, "roles")
+        }
+    }
+
+    renderCommand = (roleName) => {
         return [<a onClick={() => {
-            Service.removeTeamMember(self, self.currentTeam, userName, () => {
-                Service.fetchMembersByTeam(self, self.currentTeam, "members")
-            })
+            Service.removeRole(this, this.currentTeam, roleName)
+            Service.fetchRoles(this, this.currentTeam, "roles")
         }
         }>remove</a>]
-
     }
 
-    renderMembers = () => {
+    renderRoles = () => {
         return <List
-            dataSource={this.state.members}
+            dataSource={this.state.roles}
             renderItem={item => (
                 <List.Item key={item.name} actions={this.renderCommand(item.name)}>
                     <List.Item.Meta
@@ -64,8 +67,12 @@ export class TeamMembers extends React.Component {
                 >
                     {Views.renderTeamsForSelect(this)}
                 </Select>
-                {this.renderMembers()}
+                {this.renderRoles()}
             </div>
         );
     }
+
 }
+
+
+
