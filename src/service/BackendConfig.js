@@ -37,3 +37,7 @@ export const LIST_TEAMS_TABLES = BACKEND_SERVER + "/api_v1/team/tables";
 export const ADD_ROLES_TABLE = BACKEND_SERVER + "/api_v1/role/table/add";
 export const REMOVE_ROLES_TABLE = BACKEND_SERVER + "/api_v1/role/table/remove";
 export const LIST_ROLES_TABLE = BACKEND_SERVER + "/api_v1/role/tables";
+
+export const ADD_ROLES_MEMBER = BACKEND_SERVER + "/api_v1/role/member/add";
+export const REMOVE_ROLES_MEMBER = BACKEND_SERVER + "/api_v1/role/member/remove";
+export const LIST_ROLES_MEMBER = BACKEND_SERVER + "/api_v1/role/members";

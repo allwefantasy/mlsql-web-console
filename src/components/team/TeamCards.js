@@ -11,6 +11,8 @@ import {MLSQLAddTableForTeam} from "./AddTableForTeam";
 import {TeamTables} from "./TeamTables";
 import {MLSQLAddTableForRole} from "./AddTableForRole";
 import {RoleTables} from "./RoleTables";
+import {MLSQLAddMemberForRole} from "./AddMemberForRole";
+import {RoleMembers} from "./RoleMembers";
 
 
 export class TeamCards extends React.Component {
@@ -24,6 +26,7 @@ export class TeamCards extends React.Component {
         this.teamsRef = React.createRef()
         this.roleTablesRef = React.createRef()
         this.teamTablesRef = React.createRef()
+        this.roleMembersRef = React.createRef()
     }
 
     openNotificationWithIcon = (type, message, description) => {
@@ -94,6 +97,24 @@ export class TeamCards extends React.Component {
                         <MLSQLAddTableForTeam parent={this}/>
                     </Card>
                 </Col>
+
+
+            </Row>
+            <br/>
+            <Row gutter={24}>
+                <Col span={16}>
+                    <Card title="View members By Role" bordered={false}>
+                        <RoleMembers parent={this} ref={this.roleMembersRef}/>
+                    </Card>
+                </Col>
+
+
+                <Col span={8}>
+                    <Card title="Add Member to Role" bordered={false}>
+                        <MLSQLAddMemberForRole parent={this}/>
+                    </Card>
+                </Col>
+
             </Row>
         </div>
     }

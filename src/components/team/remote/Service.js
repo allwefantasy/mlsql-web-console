@@ -1,9 +1,10 @@
 import {MLSQLAPI} from "../../../service/MLSQLAPI";
 import {message} from "antd";
 import {
+    LIST_ROLES_MEMBER,
     LIST_ROLES_TABLE,
     LIST_TEAMS_MEMBER,
-    LIST_TEAMS_ROLE, LIST_TEAMS_TABLES, REMOVE_ROLES_TABLE,
+    LIST_TEAMS_ROLE, LIST_TEAMS_TABLES, REMOVE_ROLES_MEMBER, REMOVE_ROLES_TABLE,
     REMOVE_TEAMS_MEMBER,
     REMOVE_TEAMS_ROLE, REMOVE_TEAMS_TABLE, RUN_SCRIPT
 } from "../../../service/BackendConfig";
@@ -44,6 +45,34 @@ export default class Service {
         api.request2({teamName: teamName, roleName: roleName}, resJson => {
             if (stateKey) {
                 parent.setState({[stateKey]: resJson})
+            }
+        }, failStr => {
+            message.warning("load data fail:" + failStr, Service.MESSAGE_TIMEOUT)
+        })
+    }
+
+    static removeRoleMember(parent, teamName, roleName, userName, stateKey, callback) {
+        const api = new MLSQLAPI(REMOVE_ROLES_MEMBER)
+        api.request2({teamName: teamName, roleName: roleName, userName: userName}, resJson => {
+            if (stateKey) {
+                parent.setState({[stateKey]: resJson})
+            }
+            if (callback) {
+                callback()
+            }
+        }, failStr => {
+            message.warning("load data fail:" + failStr, Service.MESSAGE_TIMEOUT)
+        })
+    }
+
+    static fetchMembersByRole(parent, teamName, roleName, stateKey, callback) {
+        const api = new MLSQLAPI(LIST_ROLES_MEMBER)
+        api.request2({teamName: teamName, roleName: roleName}, resJson => {
+            if (stateKey) {
+                parent.setState({[stateKey]: resJson})
+            }
+            if (callback) {
+                callback()
             }
         }, failStr => {
             message.warning("load data fail:" + failStr, Service.MESSAGE_TIMEOUT)
