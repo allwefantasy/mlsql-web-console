@@ -29,20 +29,6 @@ class App extends Component {
         this.registerOrLoginRef.current.updateLoginoutStatus()
     }
 
-    switchToCluster = () => {
-        const auth = new MLSQLAuth()
-        const self = this
-        auth.user((user) => {
-            console.log(user["role"])
-            if (user["role"] == "admin") {
-                self.setState({currentView: VIEW_CLUSTER})
-            } else {
-                openNotificationWithIcon("error", "Auth Fail", "You are not allow to visit Cluster Manager")
-            }
-        })
-
-    }
-
     switchToTeam = () => {
         this.setState({currentView: VIEW_TEAM})
 
@@ -71,7 +57,6 @@ class App extends Component {
                         <Button className="bp3-minimal" icon="home" text="Console" onClick={this.switchToConsole}/>
                         <Button className="bp3-minimal" icon="document" text="Demo Center" onClick={this.switchToDemo}/>
                         <Button className="bp3-minimal" icon="document" text="Team" onClick={this.switchToTeam}/>
-                        <Button className="bp3-minimal" icon="document" text="Cluster" onClick={this.switchToCluster}/>
                         <Button className="bp3-minimal" icon="document" text="中文文档"
                                 onClick={this.switchToCnDoc}/>
                     </Navbar.Group>

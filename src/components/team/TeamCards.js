@@ -39,14 +39,11 @@ export class TeamCards extends React.Component {
     render() {
         return <div style={{background: '#ECECEC', padding: '30px'}}>
             <Row gutter={24}>
-                <Col span={8}>
+                <Col span={16}>
                     <Card title="Team belongs to you" bordered={false}><Teams parent={this} ref={this.teamsRef}
                                                                               apiUrl={LIST_TEAMS}/></Card>
                 </Col>
-                <Col span={8}>
-                    <Card title="Team you join" bordered={false}><Teams parent={this}
-                                                                        apiUrl={LIST_TEAMS_JOINED}/></Card>
-                </Col>
+
                 <Col span={8}>
                     <Card title="Create new team" bordered={false}>
                         <MLSQLCreateTeamForm parent={this}/>
@@ -54,11 +51,9 @@ export class TeamCards extends React.Component {
                 </Col>
             </Row>
             <br/>
+
             <Row gutter={24}>
-                <Col span={8}>
-                    <Card title="Team inviting you" bordered={false}><Teams parent={this} apiUrl={LIST_TEAMS_INVITED}/></Card>
-                </Col>
-                <Col span={8}>
+                <Col span={16}>
                     <Card title="View members By Team" bordered={false}><TeamMembers ref={this.teamMembersRef}
                                                                                      parent={this} apiUrl={LIST_TEAMS}/></Card>
                 </Col>
@@ -69,38 +64,58 @@ export class TeamCards extends React.Component {
                 </Col>
             </Row>
             <br/>
+
+
             <Row gutter={24}>
                 <Col span={8}>
-                    <Card title="View Roles By Team" bordered={false}><TeamRoles ref={this.teamRolesRef}
-                                                                                 parent={this} apiUrl={ADD_TEAMS_ROLE}/></Card>
+                    <Card title="Team you join" bordered={false}><Teams parent={this}
+                                                                        apiUrl={LIST_TEAMS_JOINED}/></Card>
                 </Col>
+
                 <Col span={8}>
-                    <Card title="Add table to role" bordered={false}>
-                        <MLSQLAddTableForRole parent={this}/>
-                    </Card>
-                </Col>
-                <Col span={8}>
-                    <Card title="Add role to Team" bordered={false}>
-                        <MLSQLAddRoleForTeam parent={this}/>
-                    </Card>
-                </Col>
-            </Row>
-            <br/>
-            <Row gutter={24}>
-                <Col span={8}>
-                    <Card title="View tables By Role" bordered={false}>
-                        <RoleTables parent={this} ref={this.roleTablesRef}/>
-                    </Card>
+                    <Card title="Team inviting you" bordered={false}><Teams parent={this} apiUrl={LIST_TEAMS_INVITED}/></Card>
                 </Col>
                 <Col span={8}>
                     <Card title="Add Table to Team" bordered={false}>
                         <MLSQLAddTableForTeam parent={this}/>
                     </Card>
                 </Col>
+            </Row>
+            <br/>
 
+
+            <Row gutter={24}>
+
+                <Col span={16}>
+                    <Card title="View Roles By Team" bordered={false}><TeamRoles ref={this.teamRolesRef}
+                                                                                 parent={this} apiUrl={ADD_TEAMS_ROLE}/></Card>
+                </Col>
+
+                <Col span={8}>
+                    <Card title="Add role to Team" bordered={false}>
+                        <MLSQLAddRoleForTeam parent={this}/>
+                    </Card>
+                </Col>
 
             </Row>
             <br/>
+
+            <Row gutter={24}>
+                <Col span={16}>
+                    <Card title="View tables By Role" bordered={false}>
+                        <RoleTables parent={this} ref={this.roleTablesRef}/>
+                    </Card>
+                </Col>
+
+                <Col span={8}>
+                    <Card title="Add table to role" bordered={false}>
+                        <MLSQLAddTableForRole parent={this}/>
+                    </Card>
+                </Col>
+
+            </Row>
+            <br/>
+
             <Row gutter={24}>
                 <Col span={16}>
                     <Card title="View members By Role" bordered={false}>
