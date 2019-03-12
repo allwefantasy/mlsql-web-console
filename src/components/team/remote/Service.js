@@ -97,19 +97,31 @@ export default class Service {
         })
     }
 
-    static teamInvite(self, apiUrl, teamName, stateKey = "data") {
+    static teamInvite(self, apiUrl, teamName, stateKey, callback) {
         const api = new MLSQLAPI(apiUrl)
         api.request2({teamName: teamName}, resJson => {
-            self.setState({[stateKey]: resJson})
+            if (stateKey) {
+                self.setState({[stateKey]: resJson})
+            }
+            if (callback) {
+                callback()
+            }
+
         }, failStr => {
             message.warning("load data fail:" + failStr, Service.MESSAGE_TIMEOUT)
         })
     }
 
-    static fetchTables(self, teamName, stateKey = "data") {
+    static fetchTables(self, teamName, stateKey, callback) {
         const api = new MLSQLAPI(LIST_TEAMS_TABLES)
         api.request2({teamName: teamName}, resJson => {
-            self.setState({[stateKey]: resJson})
+            if (stateKey) {
+                self.setState({[stateKey]: resJson})
+            }
+            if (callback) {
+                callback()
+            }
+
         }, failStr => {
             message.warning("load data fail:" + failStr, Service.MESSAGE_TIMEOUT)
         })

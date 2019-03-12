@@ -25,16 +25,31 @@ export class Teams extends React.Component {
     }
 
     componentDidMount() {
-        Service.fetchTeams(this.apiUrl, this)
+        Service.fetchTeams(this.apiUrl, this, "data")
+    }
+
+    accept = (evt) => {
+        evt.preventDefault()
+        Service.teamInvite(this, ACCEPT_TEAMS_MEMBER, this.teamName, null, () => {
+            Service.fetchTeams(this.apiUrl, this, "data")
+            this.teamCards.teamYourJoinRef.current.refresh()
+        })
+    }
+
+    refuse = (evt) => {
+        evt.preventDefault()
+        Service.teamInvite(this, REFUSE_TEAMS_MEMBER, this.teamName, null, () => {
+            Service.fetchTeams(this.apiUrl, this, "data")
+        })
     }
 
     refresh = () => {
-        Service.fetchTeams(this.apiUrl, this)
+        Service.fetchTeams(this.apiUrl, this, "data")
     }
     renderCommand = (value) => {
-        const command = new Commands(this, value)
+        this.teamName = value
         if (this.apiUrl === LIST_TEAMS_INVITED) {
-            return [<a onClick={command.accept}>accept</a>, <a onClick={command.refuse}>refuse</a>]
+            return [<a onClick={this.accept}>accept</a>, <a onClick={this.refuse}>refuse</a>]
         }
         return []
     }
@@ -60,19 +75,3 @@ export class Teams extends React.Component {
 }
 
 
-class Commands {
-    constructor(teams, teamName) {
-        this.view = teams
-        this.teamName = teamName
-    }
-
-    accept = (evt) => {
-        evt.preventDefault()
-        Service.teamInvite(this.view, ACCEPT_TEAMS_MEMBER, this.teamName)
-    }
-
-    refuse = (evt) => {
-        evt.preventDefault()
-        Service.teamInvite(this.view, REFUSE_TEAMS_MEMBER, this.teamName)
-    }
-}

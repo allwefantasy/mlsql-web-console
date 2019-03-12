@@ -27,6 +27,7 @@ export class TeamCards extends React.Component {
         this.roleTablesRef = React.createRef()
         this.teamTablesRef = React.createRef()
         this.roleMembersRef = React.createRef()
+        this.teamYourJoinRef = React.createRef()
     }
 
     openNotificationWithIcon = (type, message, description) => {
@@ -68,7 +69,7 @@ export class TeamCards extends React.Component {
 
             <Row gutter={24}>
                 <Col span={8}>
-                    <Card title="Team you join" bordered={false}><Teams parent={this}
+                    <Card title="Team you join" bordered={false}><Teams parent={this} ref={this.teamYourJoinRef}
                                                                         apiUrl={LIST_TEAMS_JOINED}/></Card>
                 </Col>
 
