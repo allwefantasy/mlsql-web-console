@@ -46,3 +46,5 @@ export const LIST_ROLES_TABLE = BACKEND_SERVER + "/api_v1/role/tables";
 export const ADD_ROLES_MEMBER = BACKEND_SERVER + "/api_v1/role/member/add";
 export const REMOVE_ROLES_MEMBER = BACKEND_SERVER + "/api_v1/role/member/remove";
 export const LIST_ROLES_MEMBER = BACKEND_SERVER + "/api_v1/role/members";
+
+export const LIST_BACKENDS_BY_TEAM = BACKEND_SERVER + "/api_v1/backends";

@@ -31,9 +31,10 @@ class AddClusterBackend extends React.Component {
                 ClusterService.addBackend(self, {
                     name: name,
                     url: url,
-                    tag: tag
+                    tag: tag,
+                    teamName: teamName
                 }, null, () => {
-                    self.setState({teams: []})
+                    message.success("Add backend success")
                 })
             }
         });
@@ -61,6 +62,17 @@ class AddClusterBackend extends React.Component {
         })
     }
 
+    checkBackendName = (rule, value, callback) => {
+        ClusterService.checkBackendName(this, value, null, (resJson) => {
+            if (resJson["msg"]) {
+                callback("Name have been taken. Try another.")
+            } else {
+                callback()
+            }
+        })
+
+    }
+
 
     render() {
         const {getFieldDecorator} = this.props.form;
@@ -70,7 +82,8 @@ class AddClusterBackend extends React.Component {
                 <Form.Item>
                     {getFieldDecorator('name', {
                         rules: [
-                            {required: true, message: 'Please input the backend name'}
+                            {required: true, message: 'Please input the backend name'},
+                            {validator: this.checkBackendName},
                         ],
                     })(
                         <Input prefix={<Icon type="table" style={{color: 'rgba(0,0,0,.25)'}}/>}

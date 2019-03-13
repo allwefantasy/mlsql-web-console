@@ -4,6 +4,7 @@ import {ClusterBackends} from "./ClusterBackends";
 import {MLSQLAddClusterBackend} from "./AddClusterBackend";
 import {MLSQLAddTagToRole} from "./AddTagToRole";
 import {MLSQLConfigureDefaultBackend} from "./ConfigureDefaultBackend";
+import {MLSQLAddExistClusterBackendToRole} from "./AddExistClusterBackendToRole";
 
 
 export class ClusterCards extends React.Component {
@@ -46,6 +47,15 @@ export class ClusterCards extends React.Component {
 
             </Row>
             <br/>
+
+            <Row gutter={24}>
+                <Col span={24}>
+                    <Card title="Add role to backend" bordered={false}>
+                        <MLSQLAddExistClusterBackendToRole parent={this}/>
+                    </Card>
+                </Col>
+
+            </Row>
 
         </div>
     }

@@ -34,6 +34,12 @@ export class Views {
         })
     }
 
+    static renderBackends = (self) => {
+        return self.state.backends.map(item => {
+            return <Select.Option key={item.name} name={item.name}>{item.name}</Select.Option>
+        })
+    }
+    s
     static teamSelect = (self, onChangeCallback) => {
         return <Select
             placeholder="Team name"
@@ -54,6 +60,18 @@ export class Views {
             onChange={onChangeCallback}
         >
             {Views.renderRoles(self)}
+        </Select>
+    }
+
+    static backendSelect = (self, onChangeCallback, mode = "default") => {
+        return <Select
+            placeholder="backend name"
+            mode={mode}
+            size={"large"}
+            style={{width: 200}}
+            onChange={onChangeCallback}
+        >
+            {Views.renderBackends(self)}
         </Select>
     }
 

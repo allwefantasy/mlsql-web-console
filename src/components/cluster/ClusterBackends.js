@@ -3,7 +3,8 @@ import Service from "./remote/Service";
 import {MLSQLQueryDisplay} from "../MLSQLQueryDisplay";
 import {Views as TeamViews} from "../team/remote/Views"
 import TeamService from "../team/remote/Service"
-import {Row, Col} from "antd";
+import CluserService from "./remote/Service"
+import {Row, Col, Button} from "antd";
 import {LIST_TEAMS} from "../../service/BackendConfig";
 
 export class ClusterBackends extends React.Component {
@@ -34,6 +35,11 @@ export class ClusterBackends extends React.Component {
         }, "backends", () => {
             self.dataViewer.current.update(self.state.backends.map(item => {
                 const {ecsResourcePoolId, id, tags, ...newitem} = item;
+                newitem["command"] = <Button onClick={(evt) => {
+                    CluserService.removeBackend(self, newitem.name, null, () => {
+                        self.onRoleSelect(roleName)
+                    })
+                }}>remove</Button>
                 return newitem
             }), {})
         })
