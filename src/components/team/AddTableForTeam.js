@@ -28,7 +28,6 @@ class AddTableForTeam extends React.Component {
                 const api = new MLSQLAPI(ADD_TEAMS_TABLE)
                 api.request2(params, (resJson) => {
                     if (resJson["msg"] === "success") {
-                        self.teamCards.teamTablesRef.current.refresh()
                         message.success("Create  success", 3)
                     } else {
                         message.warning("Create  fail:" + resJson["msg"], 10)

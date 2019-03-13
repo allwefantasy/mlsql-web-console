@@ -89,6 +89,7 @@ export class MLSQLAPI {
                 jobName: jobName,
                 sessionPerUser: true,
                 show_stack: true,
+                skipAuth: false,
                 tags: backendTags || ""
             }
             Object.assign(finalParams, params)

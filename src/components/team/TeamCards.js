@@ -25,7 +25,6 @@ export class TeamCards extends React.Component {
         this.teamMembersRef = React.createRef()
         this.teamsRef = React.createRef()
         this.roleTablesRef = React.createRef()
-        this.teamTablesRef = React.createRef()
         this.roleMembersRef = React.createRef()
         this.teamYourJoinRef = React.createRef()
     }
