@@ -1,4 +1,7 @@
 import * as React from "react";
+import {confirmAlert} from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css';
+
 
 import {
     Button,
@@ -307,6 +310,24 @@ class ScriptNodeTreeMenu extends React.Component {
         this.parent = this.props.parent
         this.nodeId = this.props.nodeId
     }
+	
+    confirmDelete = () => {
+        confirmAlert({
+            title: 'Confirm to delete',
+            message: 'Are you sure to do this ？',
+            buttons: [
+             {
+                 label: 'confirm',
+                 onClick: () => this.removeFile()
+             },
+             {
+                 label: 'cancel',
+                 onClick: () => {}
+             }
+            ],
+            closeOnEscape: true, closeOnClickOutside: false
+        });
+    }
 
     removeFile = () => {
         const api = new MLSQLAPI(backendConfig.REMOVE_SCRIPT_FILE)
@@ -357,7 +378,7 @@ class ScriptNodeTreeMenu extends React.Component {
     deleteMenu = () => {
         if (!this.isCreateProject()) {
             return <MenuItem icon="remove" text="Delete" onClick={(() => {
-                this.removeFile()
+                this.confirmDelete()
             }).bind(this)}/>
         }
     }
