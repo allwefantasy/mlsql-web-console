@@ -64,6 +64,8 @@ class ConfigureDefaultBackend extends React.Component {
         ClusterService.fetchBackends(this, {tag: teamName + "_" + roleName}, "backends", () => {
             if (self.state.backends.length > 0) {
                 self.setState({tags: [teamName + "_" + roleName]})
+            }else {
+                self.setState({tags: []})
             }
         })
     }
