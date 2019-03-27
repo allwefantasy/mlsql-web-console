@@ -135,7 +135,7 @@ export class MLSQLRegisterOrLogin extends React.Component {
      * @param  {APIResponse} apiResponse
      */
     registerSuccess = (apiResponse) => {
-        const selt = this
+        const self = this
         if (apiResponse.status === HTTP.Status.Success) {
             this.setState({
                 registerOrLoginSuccess: true
