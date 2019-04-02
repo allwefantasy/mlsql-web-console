@@ -172,20 +172,21 @@ class MLSQLAceEditor extends React.Component {
         }
     }
     etOver = (evt) => {
-        const eventName = evt.dataTransfer.getData("eventName")
-        const popName = evt.dataTransfer.getData("popName")
-        const processType = evt.dataTransfer.getData("processType")
-        const pathAlias = evt.dataTransfer.getData("pathAlias")
-        const tableHidden = evt.dataTransfer.getData("tableHidden")
-        const pathHidden = evt.dataTransfer.getData("pathHidden")
-        const outputTableHidden = evt.dataTransfer.getData("outputTableHidden")
-        const outputTableAlias = evt.dataTransfer.getData("outputTableAlias")
-        const tableAlias = evt.dataTransfer.getData("tableAlias")
+        const et = this.queryApp.etRef.current
+        const eventName = et.getData("eventName")
+        const popName = et.getData("popName")
+        const processType = et.getData("processType")
+        const pathAlias = et.getData("pathAlias")
+        const tableHidden = et.getData("tableHidden")
+        const pathHidden = et.getData("pathHidden")
+        const outputTableHidden = et.getData("outputTableHidden")
+        const outputTableAlias = et.getData("outputTableAlias")
+        const tableAlias = et.getData("tableAlias")
 
         if (processType === "direct") {
             this.appendToEditor(new ButtonToCommand().makeSQL(eventName))
         } else {
-            this.queryApp.etRef.current.setState({
+            et.setState({
                 etPop: true,
                 eventName: eventName,
                 popName: popName,
