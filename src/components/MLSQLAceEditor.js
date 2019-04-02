@@ -195,7 +195,7 @@ class MLSQLAceEditor extends React.Component {
                     mode="sql"
                     theme="github"
                     width={"100%"}
-                    height={"300px"}
+                    height={"500px"}
                     onChange={this.onChange}
                     name="mlsql_editor"
                     fontSize={16}

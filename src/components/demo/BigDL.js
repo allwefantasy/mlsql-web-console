@@ -41,7 +41,7 @@ export default class BigDL extends React.Component {
                     <MLSQLAceEditor ref={this.editor} parent={this}/>
                     <div className="mlsql-messagebox">
                         <AceEditor
-                            height={"100px"}
+                            height={"300px"}
                             width={"100%"}
                             ref={this.messageBox}
                             mode="text"
