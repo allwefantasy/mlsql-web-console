@@ -119,7 +119,7 @@ export class ScriptNodeTree extends React.Component {
             api.request(HTTP.Method.GET, {id: node.id}, (ok) => {
                 ok.content.then((s) => {
                     const scriptFile = JSON.parse(s || "{}")
-                    self.parent.editor.current.text(scriptFile.content, node.id)
+                    self.parent.getCurrentEditor().text(scriptFile.content, node.id)
                 })
             }, (fail) => {
             })
@@ -310,20 +310,21 @@ class ScriptNodeTreeMenu extends React.Component {
         this.parent = this.props.parent
         this.nodeId = this.props.nodeId
     }
-	
+
     confirmDelete = () => {
         confirmAlert({
             title: 'Confirm to delete',
             message: 'Are you sure to do this ？',
             buttons: [
-             {
-                 label: 'confirm',
-                 onClick: () => this.removeFile()
-             },
-             {
-                 label: 'cancel',
-                 onClick: () => {}
-             }
+                {
+                    label: 'confirm',
+                    onClick: () => this.removeFile()
+                },
+                {
+                    label: 'cancel',
+                    onClick: () => {
+                    }
+                }
             ],
             closeOnEscape: true, closeOnClickOutside: false
         });

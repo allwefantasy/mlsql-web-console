@@ -13,7 +13,6 @@ import {MLSQLAPI} from "../service/MLSQLAPI";
 import * as BackendConfig from "../service/BackendConfig";
 import * as HTTP from "../service/HTTPMethod";
 import {assert} from "../common/tool"
-import {MLSQLETQuick} from "./et/MLSQLETQuick";
 import {ButtonToCommand} from "./et/ButtonToCommand";
 
 const uuidv4 = require('uuid/v4');
@@ -28,13 +27,18 @@ class MLSQLAceEditor extends React.Component {
         this.commandGroup = React.createRef()
         this.resourceProgressRef = React.createRef()
         this.taskProgressRef = React.createRef()
-        this.etRef = React.createRef()
         this.state = {value: "", loading: false}
     }
 
     text = (value, scriptId) => {
         this.setState({value: value, scriptId: scriptId})
         this.aceEditorRef.current.editor.setValue(value)
+    }
+
+    componentDidMount() {
+        if (this.props.parentCallback) {
+            this.props.parentCallback(this)
+        }
     }
 
     onChange(newValue) {
@@ -90,10 +94,10 @@ class MLSQLAceEditor extends React.Component {
             try {
                 self.queryApp.setData(wow)
                 self.getDisplay().update(wow)
-                self.getMessageBoxAceEditor().setValue("\nTime cost:" + measureTime() + "ms")
+                self.appendLog("\nTime cost:" + measureTime() + "ms")
             } catch (e) {
                 console.log(e)
-                self.getMessageBoxAceEditor().setValue("Can not display the result. raw data:\n" + JSON.stringify(wow, null, 2))
+                self.appendLog("Can not display the result. raw data:\n" + JSON.stringify(wow, null, 2))
             }
             self.exitLoading()
 
@@ -103,7 +107,7 @@ class MLSQLAceEditor extends React.Component {
                 failRes = JSON.parse(failRes)["msg"]
             } catch (e) {
             }
-            self.getMessageBoxAceEditor().setValue(failRes + "\nTime cost:" + measureTime() + "ms")
+            self.appendLog(failRes + "\nTime cost:" + measureTime() + "ms")
             self.exitLoading()
         })
 
@@ -134,6 +138,15 @@ class MLSQLAceEditor extends React.Component {
         return this.queryApp.messageBox.current.editor
     }
 
+    appendLog = (msg) => {
+        const editor = this.getMessageBoxAceEditor()
+        const session = editor.session
+        session.insert({
+            row: session.getLength(),
+            column: 0
+        }, "\n" + msg)
+    }
+
     getDashBoard = () => {
         return this.queryApp.dash.current
     }
@@ -146,12 +159,17 @@ class MLSQLAceEditor extends React.Component {
         this.commandGroup.current.setState({loading: true});
         this.resourceProgressRef.current.enter({jobName: jobName})
         this.taskProgressRef.current.enter({jobName: jobName})
+        this.logProgress = new LogProgress(this)
+        this.logProgress.enter()
     }
 
     exitLoading = () => {
         this.commandGroup.current.setState({loading: false});
         this.resourceProgressRef.current.exit()
         this.taskProgressRef.current.exit()
+        if (this.logProgress) {
+            this.logProgress.exit()
+        }
     }
     etOver = (evt) => {
         const eventName = evt.dataTransfer.getData("eventName")
@@ -167,7 +185,7 @@ class MLSQLAceEditor extends React.Component {
         if (processType === "direct") {
             this.appendToEditor(new ButtonToCommand().makeSQL(eventName))
         } else {
-            this.etRef.current.setState({
+            this.queryApp.etRef.current.setState({
                 etPop: true,
                 eventName: eventName,
                 popName: popName,
@@ -187,9 +205,6 @@ class MLSQLAceEditor extends React.Component {
         const self = this
         return (
             <div className="mlsql-editor-area">
-                <div>
-                    <MLSQLETQuick ref={this.etRef} parent={this}/>
-                </div>
                 <div onDragOver={(evt) => evt.preventDefault()} onDrop={this.etOver}><AceEditor
                     ref={this.aceEditorRef}
                     mode="sql"
@@ -242,6 +257,61 @@ class CommandGroup extends React.Component {
 
 }
 
+class LogProgress {
+    constructor(msgBox) {
+        this.msgBox = msgBox
+    }
+
+    enter = (params) => {
+        const self = this
+        this.mark = true
+        this.offset = -1
+        setTimeout(() => {
+            if (self.mark) {
+                self.loading = true
+                self.intervalTimer = setInterval(() => {
+                        if (self.resourceCompute === "loading") {
+                            return
+                        }
+                        self.resourceCompute = "loading"
+                        const api = new MLSQLAPI(BackendConfig.RUN_SCRIPT)
+
+                        api.runScript({}, `load _mlsql_.\`log/${self.offset}\` where filePath="/tmp/__mlsql__/logs/mlsql_engine.log" as output;`, (jsonArray) => {
+                            const jsonObj = jsonArray[0]
+                            if (jsonObj['value'].length > 0) {
+                                this.msgBox.appendLog(jsonObj['value'].join("\n"))
+                            }
+                            self.offset = jsonObj["offset"]
+                            self.resourceCompute = "loaded"
+                        }, (str) => {
+                            self.resourceCompute = "loaded"
+                            try {
+                                this.msgBox.appendLog(str)
+                            } catch (e) {
+                                console.log(e)
+                            }
+
+                        })
+
+                    }
+
+                    , 2000)
+            }
+
+        }, 3000)
+
+    }
+
+    exit = () => {
+        this.loading = false
+        this.mark = false
+        if (this.intervalTimer) {
+            clearInterval(this.intervalTimer);
+        }
+    }
+
+}
+
 class ResourceProgress extends React.Component {
     constructor(props) {
         super(props)
@@ -253,39 +323,46 @@ class ResourceProgress extends React.Component {
         const self = this
         this.setState({mark: true})
         setTimeout(() => {
-            if (self.state.mark) {
-                self.setState({loading: true})
-                self.intervalTimer = setInterval(() => {
-                        if(self.resourceCompute==="loading"){
-                            return
-                        }
-                        self.resourceCompute="loading"
-                        const api = new MLSQLAPI(BackendConfig.RUN_SCRIPT)
-                        assert(params.hasOwnProperty("jobName"), "jobName is required")
-                        const jobName = params["jobName"]
-                        api.runScript({}, `load _mlsql_.\`resource/${jobName}\` as output;`, (jsonArray) => {
-                            const jsonObj = jsonArray[0]
-                            self.setState({
-                                percent: jsonObj.activeTasks / jsonObj.totalCores * 100,
-                                successPercent: jsonObj.currentJobGroupActiveTasks / jsonObj.totalCores * 100,
-                                title: `Resource (for all users): taken/Total: ${jsonObj.activeTasks}/${jsonObj.totalCores}(${jsonObj.currentJobGroupActiveTasks} you took)`
-                            })
-                            self.resourceCompute="loaded"
-                        }, (str) => {
-                            self.resourceCompute="loaded"
-                            try {
-                                self.parent.getMessageBoxAceEditor().setValue(str)
-                            } catch (e) {
-                                console.log(e)
+                if (self.state.mark) {
+                    self.setState({loading: true})
+                    self.intervalTimer = setInterval(() => {
+                            if (self.resourceCompute === "loading") {
+                                return
                             }
+                            self.resourceCompute = "loading"
+                            const api = new MLSQLAPI(BackendConfig.RUN_SCRIPT)
+                            assert(params.hasOwnProperty("jobName"), "jobName is required")
+                            const jobName = params["jobName"]
+                            api.runScript({},
+                                `load _mlsql_.\`resource/${jobName}\` as output;`, (jsonArray) => {
+                                    const jsonObj = jsonArray[0]
+                                    self.setState({
+                                        percent: jsonObj.activeTasks / jsonObj.totalCores * 100,
+                                        successPercent: jsonObj.currentJobGroupActiveTasks / jsonObj.totalCores * 100,
+                                        title: `Resource (for all users): taken/Total: ${jsonObj.activeTasks}/${jsonObj.totalCores}(${jsonObj.currentJobGroupActiveTasks} you took)`
+                                    })
+                                    self.resourceCompute = "loaded"
+                                }, (str) => {
+                                    self.resourceCompute = "loaded"
+                                    try {
+                                        self.parent.appendLog(str)
+                                    } catch (e) {
+                                        console.log(e)
+                                    }
 
-                        })
+                                })
 
-                    }
-                    , 30000)
+                        }
+                        ,
+                        30000
+                    )
+                }
+
             }
 
-        }, 3000)
+            ,
+            3000
+        )
 
     }
 
@@ -324,15 +401,15 @@ class TaskProgress extends React.Component {
                 self.setState({loading: true})
                 self.intervalTimer = setInterval(() => {
 
-                        if(self.taskCompute==="loading"){
+                        if (self.taskCompute === "loading") {
                             return
                         }
-                        self.taskCompute="loading"
+                        self.taskCompute = "loading"
                         const api = new MLSQLAPI(BackendConfig.RUN_SCRIPT)
                         assert(params.hasOwnProperty("jobName"), "jobName is required")
                         const jobName = params["jobName"]
                         api.runScript({}, `load _mlsql_.\`jobs/${jobName}\` as output;`, (jsonArray) => {
-                            self.taskCompute="loaded"
+                            self.taskCompute = "loaded"
                             const _jsonObj = jsonArray[0]
                             const jsonObj = {
                                 numTasks: 0,
@@ -350,9 +427,9 @@ class TaskProgress extends React.Component {
                                 title: `Tasks (for all stages): Succeeded/Total:\n${jsonObj.numCompletedTasks}/${jsonObj.numTasks}(${jsonObj.numActiveTasks} running)`
                             })
                         }, (str) => {
-                            self.taskCompute="loaded"
+                            self.taskCompute = "loaded"
                             try {
-                                self.parent.getMessageBoxAceEditor().setValue(str)
+                                self.parent.appendLog(str)
                             } catch (e) {
                                 console.log(e)
                             }
@@ -367,8 +444,8 @@ class TaskProgress extends React.Component {
     }
 
     exit = () => {
-        this.taskCompute="loaded"
-        this.resourceCompute="loaded"
+        this.taskCompute = "loaded"
+        this.resourceCompute = "loaded"
         this.setState({loading: false, percent: 0, successPercent: 0, mark: false})
         if (this.intervalTimer) {
             clearInterval(this.intervalTimer);

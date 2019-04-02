@@ -35,7 +35,8 @@ export class MLSQLETQuick extends React.Component {
     }
 
     makeMLSQL = (sql) => {
-        this.queryApp.appendToEditor(sql)
+        console.log(this.queryApp.editorGroup.current.getCurrentEditor())
+        this.queryApp.editorGroup.current.getCurrentEditor().appendToEditor(sql)
     }
 
 

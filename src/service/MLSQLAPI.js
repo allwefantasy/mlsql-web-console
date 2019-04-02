@@ -28,6 +28,7 @@ export class APIResponse {
                 const jsonObj = JSON.parse(s)
                 process(jsonObj)
             } catch (e) {
+                console.log(e)
                 jsonErr(s)
             }
 
@@ -54,7 +55,13 @@ export class MLSQLAPI {
         }, (fail) => {
             try {
                 fail.value().content((str) => {
-                    serverErrorCallback(str)
+                    let res = str
+                    try {
+                        res = JSON.parse(str)["msg"]
+                    } catch (e) {
+
+                    }
+                    serverErrorCallback(res)
                 })
             } catch (e) {
                 serverErrorCallback(fail ? fail.toString() : "result is null")
@@ -108,7 +115,13 @@ export class MLSQLAPI {
                 } else {
                     try {
                         ok.content.then((str) => {
-                            serverErrorCallback(str)
+                            let res = str
+                            try {
+                                res = JSON.parse(str)["msg"]
+                            } catch (e) {
+
+                            }
+                            serverErrorCallback("backend status:" + ok.status + "\n" + res)
                         })
                     } catch (e) {
                         serverErrorCallback("backend status:" + ok.status)
@@ -118,7 +131,13 @@ export class MLSQLAPI {
             }, (fail) => {
                 try {
                     fail.value().content((str) => {
-                        serverErrorCallback(str)
+                        let res = str
+                        try {
+                            res = JSON.parse(str)["msg"]
+                        } catch (e) {
+
+                        }
+                        serverErrorCallback(res)
                     })
                 } catch (e) {
                     serverErrorCallback(fail ? fail.toString() : "result is null")

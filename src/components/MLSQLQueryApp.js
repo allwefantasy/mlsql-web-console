@@ -5,6 +5,8 @@ import './MLSQLQueryApp.scss'
 import AceEditor from "react-ace";
 import {MLSQLQueryDisplay} from "./MLSQLQueryDisplay";
 import {MLSQLDash} from "./query/MLSQLDash";
+import {TabEditor} from "./editor/TabEditor";
+import {MLSQLETQuick} from "./et/MLSQLETQuick";
 
 class MLSQLQueryApp extends Component {
 
@@ -13,12 +15,18 @@ class MLSQLQueryApp extends Component {
         // create a ref to store the textInput DOM element
         this.state = {sqlContent: ""}
         this.directoryTree = React.createRef()
-        this.editor = React.createRef()
+        this.editorGroup = React.createRef()
         this.messageBox = React.createRef()
         this.display = React.createRef()
         this.dash = React.createRef()
+        this.etRef = React.createRef()
 
     }
+
+    getCurrentEditor = () => {
+        return this.editorGroup.current.getCurrentEditor()
+    }
+
 
     setData = (data) => {
         this.queryResData = data
@@ -33,10 +41,13 @@ class MLSQLQueryApp extends Component {
                     <ScriptNodeTree ref={this.directoryTree} parent={this}/>
                 </div>
                 <div className="mlsql-editor">
-                    <MLSQLAceEditor ref={this.editor} parent={this}/>
+                    <div style={{marginBottom: "10px"}}>
+                        <MLSQLETQuick ref={this.etRef} parent={this}/>
+                    </div>
+                    <TabEditor ref={this.editorGroup} parent={this}/>
                     <div className="mlsql-messagebox">
                         <AceEditor
-                            height={"100px"}
+                            height={"300px"}
                             width={"100%"}
                             ref={this.messageBox}
                             mode="text"
