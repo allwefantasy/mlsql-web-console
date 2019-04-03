@@ -119,7 +119,7 @@ export class ScriptNodeTree extends React.Component {
             api.request(HTTP.Method.GET, {id: node.id}, (ok) => {
                 ok.content.then((s) => {
                     const scriptFile = JSON.parse(s || "{}")
-                    self.parent.getCurrentEditor().text(scriptFile.content, node.id)
+                    self.parent.openExistsOrNewEditor({id: node.id, content: scriptFile.content, name: scriptFile.name})
                 })
             }, (fail) => {
             })

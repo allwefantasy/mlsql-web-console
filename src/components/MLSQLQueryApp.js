@@ -21,6 +21,49 @@ class MLSQLQueryApp extends Component {
         this.dash = React.createRef()
         this.etRef = React.createRef()
 
+        // key is script id
+        // value is editor ref
+        this.fileToEditorMap = {}
+
+    }
+
+    openExistsOrNewEditor = (script) => {
+        const self = this
+        console.log(this.fileToEditorMap)
+        if (this.fileToEditorMap.hasOwnProperty(script.id)) {
+            const editorRef = this.fileToEditorMap[script.id]
+            editorRef.ref.text(script.content, script.id)
+            this.editorGroup.current.onChange(editorRef.activeKey)
+
+        } else {
+            // if (!Object.values(this.fileToEditorMap).includes(this.getCurrentEditor())) {
+            //
+            //     //close current window
+            //     this.editorGroup.current.remove(this.getCurrentEditor().activeKey)
+            //
+            //     const editorRef = this.getCurrentEditor()
+            //     editorRef.ref.text(script.content, script.id)
+            //     self.fileToEditorMap[script.id] = editorRef.ref
+            //     const activeKey = editorRef.activeKey
+            //
+            //
+            // }
+            this.editorGroup.current.addFull(script.name, (editorRef) => {
+                editorRef.ref.text(script.content, script.id)
+                self.fileToEditorMap[script.id] = editorRef
+            })
+
+        }
+    }
+
+    closeEditor = (editorRef) => {
+        const tempFileToEditorMap = Object.keys(this.fileToEditorMap).filter(key => {
+            return this.fileToEditorMap[key].activeKey !== editorRef.activeKey
+        }).reduce((pre, key) => {
+            pre[key] = this.fileToEditorMap[key]
+            return pre
+        }, {})
+        this.fileToEditorMap = tempFileToEditorMap
     }
 
     getCurrentEditor = () => {

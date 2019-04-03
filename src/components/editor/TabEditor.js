@@ -13,7 +13,9 @@ export class TabEditor extends React.Component {
         const panes = [
             {
                 title: 'MLSQL 1',
-                content: <MLSQLAceEditor parent={this.parent} parentCallback={this.pushRef} activeKey='newTab0'/>,
+                content: <MLSQLAceEditor parent={this.parent} parentCallback={(ref) => {
+                    this.pushRef({ref: ref, activeKey: "newTab0"})
+                }} activeKey='newTab0'/>,
                 key: 'newTab0'
             },
         ];
@@ -32,7 +34,7 @@ export class TabEditor extends React.Component {
         const activeKey = this.state.activeKey;
         let currentItem = null
         this.myRefs.forEach(item => {
-            if (item.props.activeKey === activeKey) {
+            if (item.activeKey === activeKey) {
                 currentItem = item
             }
         })
@@ -47,25 +49,40 @@ export class TabEditor extends React.Component {
         this[action](targetKey);
     }
 
-    add = () => {
+    addFull = (tabName, callback) => {
         const panes = this.state.panes;
         const activeKey = `newTab${this.newTabIndex++}`;
         panes.push({
-            title: 'MLSQL ' + this.newTabIndex,
-            content: <MLSQLAceEditor parent={this.parent} parentCallback={this.pushRef} activeKey={activeKey}/>,
+            title: tabName || 'MLSQL ' + this.newTabIndex,
+            content: <MLSQLAceEditor parent={this.parent} parentCallback={(ref) => {
+                this.pushRef({ref: ref, activeKey: activeKey})
+                if (callback) {
+                    callback({ref: ref, activeKey: activeKey})
+                }
+            }} activeKey={activeKey}/>,
             key: activeKey
         });
         this.setState({panes, activeKey});
     }
 
-    remove = (targetKey) => {
-        let activeKey = this.state.activeKey;
+    add = () => {
+        this.addFull()
+    }
+
+    getPaneIndexByActiveKey = (targetKey) => {
         let lastIndex;
         this.state.panes.forEach((pane, i) => {
             if (pane.key === targetKey) {
                 lastIndex = i - 1;
             }
         });
+        return lastIndex
+    }
+
+    remove = (targetKey) => {
+        let activeKey = this.state.activeKey;
+        let lastIndex = this.getPaneIndexByActiveKey(targetKey)
+
         const panes = this.state.panes.filter(pane => pane.key !== targetKey);
         if (panes.length && activeKey === targetKey) {
             if (lastIndex >= 0) {
@@ -74,6 +91,10 @@ export class TabEditor extends React.Component {
                 activeKey = panes[0].key;
             }
         }
+        const editorRefList = this.myRefs.filter((item) => item.activeKey === targetKey)
+        this.myRefs = this.myRefs.filter((item) => item.activeKey !== targetKey)
+        this.parent.closeEditor(editorRefList[0])
+
         this.setState({panes, activeKey});
     }
 

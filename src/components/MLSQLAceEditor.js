@@ -31,8 +31,10 @@ class MLSQLAceEditor extends React.Component {
     }
 
     text = (value, scriptId) => {
-        this.setState({value: value, scriptId: scriptId})
-        this.aceEditorRef.current.editor.setValue(value)
+        this.setState({value: value, scriptId: scriptId}, () => {
+            this.aceEditorRef.current.editor.setValue(value,1)
+        })
+
     }
 
     componentDidMount() {
