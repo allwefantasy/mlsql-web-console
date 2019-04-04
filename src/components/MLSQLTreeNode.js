@@ -367,10 +367,17 @@ class ScriptNodeTreeMenu extends React.Component {
             }).bind(this)}/>
         }
     }
-    
+    createFolderTitle = () => {
+        if (!this.isCreateProject()) {
+            return "Create Folder"
+        }
+        else {
+            return "Create Project"
+        }
+    }
     createFolder = () => {
-        if (!this.isCreateProject() && this.isDir) {
-           return <MenuItem icon="folder-new" text="Create Folder" onClick={(() => {
+        if (this.isDir) {
+           return <MenuItem icon="folder-new" text={this.createFolderTitle()} onClick={(() => {
                 this.parent.setState({
                     openCreateScriptDialog: true,
                     nodeId: this.nodeId,
