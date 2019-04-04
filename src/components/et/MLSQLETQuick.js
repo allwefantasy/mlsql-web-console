@@ -58,7 +58,7 @@ export class MLSQLETQuick extends React.Component {
 
     etDoubleClick = (evt) => {
         this.onDragStart(evt)
-        this.queryApp.getCurrentEditor().etOver(evt)
+        this.queryApp.getCurrentEditor().ref.etOver(evt)
     }
 
     render() {
