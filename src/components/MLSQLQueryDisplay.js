@@ -119,7 +119,7 @@ export class MLSQLQueryDisplay extends React.Component {
 
                     columns={this.state.columns}
                     dataSource={this.state.data}
-                    scroll={{ x: '100%', y: 250 }}
+                    scroll={{ x: '100%', y: 800 }}
                 />
                 <Modal
                     title={"View"}
