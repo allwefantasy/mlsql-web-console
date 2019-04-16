@@ -10,7 +10,15 @@ export class MLSQLAuth {
     isLogin() {
         return sessionStorage.getItem(HTTP.AccessToken.name) !== null
     }
+    
+    setUserName(username) {
+        sessionStorage.setItem(HTTP.AccessToken.username, username);
+    }
 
+    getUserName() {
+        return sessionStorage.getItem(HTTP.AccessToken.username);
+    }
+    
     /**
      *
      * @param callback {(userName)=>{}}
@@ -57,11 +65,13 @@ export class MLSQLAuth {
      * @param {String} password
      */
     login(userName, password, _sCallBack, _errorCallBack) {
+        this.setUserName(userName)
         this.registerOrLogin(backendConfig.LOGIN_URL, userName, password, _sCallBack, _errorCallBack)
     }
 
     logout() {
         sessionStorage.removeItem(HTTP.AccessToken.name)
+        sessionStorage.removeItem(HTTP.AccessToken.username)
     }
 
     /**
@@ -69,6 +79,7 @@ export class MLSQLAuth {
      * @param {String} password
      */
     register(userName, password, _sCallBack, _errorCallBack) {
+        this.setUserName(userName)
         this.registerOrLogin(backendConfig.REGISTER_URL, userName, password, _sCallBack, _errorCallBack)
     }
 
