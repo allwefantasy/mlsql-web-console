@@ -46,7 +46,7 @@ export class WelcomeMessage extends React.Component {
     }
 
     updateLoginoutStatus = () => {
-        this.setState({isLogin: this.auth.isLogin()})
+        this.setState({isLogin: this.auth.isLogin(),userName: this.auth.getUserName()})
     }
 
     render() {
@@ -128,7 +128,7 @@ export class MLSQLRegisterOrLogin extends React.Component {
     }
 
     updateLoginoutStatus = () => {
-        this.setState({isLogin: this.auth.isLogin()})
+        this.setState({isLogin: this.auth.isLogin(),userName: this.auth.getUserName()})
     }
 
     /**
