@@ -13,5 +13,6 @@ export const Status = {
 }
 
 export const AccessToken = {
-    name: "access-token"
+    name: "access-token",
+    username: "_username_"
 }
