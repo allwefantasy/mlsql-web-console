@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {TimelineChart} from "../../../node_modules/ant-design-pro/lib/Charts";
+import {LineChart, Line, CartesianGrid, XAxis, YAxis} from 'recharts';
 import moment from "moment";
 
 
@@ -43,23 +43,21 @@ export default class MLSQLStream extends Component {
 
         data.forEach((item) => {
             const jsonItem = JSON.parse(item["value"])
-            const x = moment.utc(jsonItem.timestamp).toDate().getTime()
+            const x = moment.utc(jsonItem.timestamp).format('DD,h:mm:ss')
             dataForRender.push({
                 x: x,
-                y1: jsonItem.inputRowsPerSecond,
-                y2: jsonItem.processedRowsPerSecond
+                inputRowsPerSecond: jsonItem.inputRowsPerSecond,
+                processedRowsPerSecond: jsonItem.processedRowsPerSecond
             })
 
             dataForRender2.push({
                 x: x,
-                y1: jsonItem.numInputRows
+                numInputRows: jsonItem.numInputRows
             })
         })
         this.setState({
             dataForRender: dataForRender,
-            titleMap: {y1: "inputRowsPerSecond", y2: "processedRowsPerSecond"},
-            dataForRender2: dataForRender2,
-            titleMap2: {y1: "numInputRows"}
+            dataForRender2: dataForRender2
         })
     }
 
@@ -76,16 +74,21 @@ export default class MLSQLStream extends Component {
     render() {
         if (this.state.dataForRender.length === 0) return null
         return <div>
-            <TimelineChart
-                height={200}
-                data={this.state.dataForRender}
-                titleMap={this.state.titleMap}
-            />
-            <TimelineChart
-                height={200}
-                data={this.state.dataForRender2}
-                titleMap={this.state.titleMap2}
-            />
+
+            <LineChart width={800} height={300} data={this.state.dataForRender}>
+                <Line type="monotone" dataKey="inputRowsPerSecond" stroke="#8884d8"/>
+                <Line type="monotone" dataKey="processedRowsPerSecond" stroke="#8884d8"/>
+                <CartesianGrid stroke="#ccc"/>
+                <XAxis dataKey="x"/>
+                <YAxis/>
+            </LineChart>
+
+            <LineChart width={800} height={300} data={this.state.dataForRender2}>
+                <Line type="monotone" dataKey="numInputRows" stroke="#8884d8"/>
+                <CartesianGrid stroke="#ccc"/>
+                <XAxis dataKey="x"/>
+                <YAxis/>
+            </LineChart>
         </div>
     }
 

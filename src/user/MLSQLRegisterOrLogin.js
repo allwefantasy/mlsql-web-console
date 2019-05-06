@@ -19,10 +19,14 @@ export class WelcomeMessage extends React.Component {
         this.auth = new Auth()
         this.state = {isLogin: this.auth.isLogin()}
         this.app = this.props.parent
-        this.auth.userName((name) => {
-            this.setState({userName: name})
-        })
 
+    }
+
+    componentDidMount() {
+        const self = this
+        this.auth.userName((name) => {
+            self.setState({userName: name})
+        })
     }
 
     getLoginOrRegisterManager = () => {
@@ -139,7 +143,7 @@ export class MLSQLRegisterOrLogin extends React.Component {
         if (apiResponse.status === HTTP.Status.Success) {
             this.setState({
                 registerOrLoginSuccess: true
-            } ,() => self.app.updateLoginoutStatus())
+            }, () => self.app.updateLoginoutStatus())
         } else {
             const self = this;
             const log = (s) => {
