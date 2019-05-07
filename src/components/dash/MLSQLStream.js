@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {LineChart, Line, CartesianGrid, XAxis, YAxis} from 'recharts';
+import {LineChart, Line, CartesianGrid, XAxis, YAxis, Legend} from 'recharts';
 import moment from "moment";
 
 
@@ -77,10 +77,11 @@ export default class MLSQLStream extends Component {
 
             <LineChart width={800} height={300} data={this.state.dataForRender}>
                 <Line type="monotone" dataKey="inputRowsPerSecond" stroke="#8884d8"/>
-                <Line type="monotone" dataKey="processedRowsPerSecond" stroke="#8884d8"/>
+                <Line type="monotone" dataKey="processedRowsPerSecond" stroke="#82ca9d"/>
                 <CartesianGrid stroke="#ccc"/>
                 <XAxis dataKey="x"/>
                 <YAxis/>
+                <Legend/>
             </LineChart>
 
             <LineChart width={800} height={300} data={this.state.dataForRender2}>
@@ -88,6 +89,7 @@ export default class MLSQLStream extends Component {
                 <CartesianGrid stroke="#ccc"/>
                 <XAxis dataKey="x"/>
                 <YAxis/>
+                <Legend/>
             </LineChart>
         </div>
     }
