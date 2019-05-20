@@ -44,6 +44,10 @@ export class MLSQLQueryDisplay extends React.Component {
             keyColumn["render"] = value => <span>{value.toString()}</span>
             return
         }
+        if (keyColumn.key == "fileSystem" || keyColumn.key == "message" || keyColumn.key == "info") {
+            keyColumn["render"] = value => <pre>{value.toString()}</pre>
+            return
+        }
 
 
     }

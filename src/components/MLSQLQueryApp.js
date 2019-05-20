@@ -29,7 +29,7 @@ class MLSQLQueryApp extends Component {
 
     openExistsOrNewEditor = (script) => {
         const self = this
-        console.log(this.fileToEditorMap)
+
         if (this.fileToEditorMap.hasOwnProperty(script.id)) {
             const editorRef = this.fileToEditorMap[script.id]
             editorRef.ref.text(script.content, script.id)

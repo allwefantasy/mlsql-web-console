@@ -6,10 +6,6 @@ import {
 import {MLSQLAPI} from "../../service/MLSQLAPI";
 import {
     ADD_ROLES_TABLE,
-    ADD_TEAMS_MEMBER,
-    ADD_TEAMS_ROLE,
-    ADD_TEAMS_TABLE,
-    CREATE_TEAM,
     LIST_TEAMS
 } from "../../service/BackendConfig";
 import Service from "./remote/Service";
@@ -19,7 +15,7 @@ class AddTableForRole extends React.Component {
 
     constructor(props) {
         super(props)
-        this.teamCards = props.parent
+        this.authCards = props.parent
         this.state = {
             teams: [],
             roles: [],
@@ -36,7 +32,7 @@ class AddTableForRole extends React.Component {
                 const api = new MLSQLAPI(ADD_ROLES_TABLE)
                 api.request2(params, (resJson) => {
                     if (resJson["msg"] === "success") {
-                        self.teamCards.roleTablesRef.current.refresh()
+                        self.authCards.roleTablesRef.current.refresh()
                         message.success("Create  success", 3)
                     } else {
                         message.warning("Create  fail:" + resJson["msg"], 10)
@@ -66,16 +62,21 @@ class AddTableForRole extends React.Component {
     }
 
 
-
     renderRoles = () => {
         return this.state.roles.map(item => {
             return <Select.Option key={item.name} name={item.name}>{item.name}</Select.Option>
         })
     }
 
+    sourceType = (item, defaultValue) => {
+        if (item === "undefined") return defaultValue
+        else return item
+    }
+
     renderTables = () => {
         return this.state.tables.map(item => {
-            return <Select.Option key={item.name} value={item.id}>{item.name}</Select.Option>
+            return <Select.Option key={item.name}
+                                  value={item.id}>{item.tableType}:{this.sourceType(item.sourceType, item.tableType)}:{item.db}.{item.name}</Select.Option>
         })
     }
 

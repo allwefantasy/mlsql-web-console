@@ -32,7 +32,7 @@ class MLSQLAceEditor extends React.Component {
 
     text = (value, scriptId) => {
         this.setState({value: value, scriptId: scriptId}, () => {
-            this.aceEditorRef.current.editor.setValue(value,1)
+            this.aceEditorRef.current.editor.setValue(value, 1)
         })
 
     }
@@ -75,6 +75,7 @@ class MLSQLAceEditor extends React.Component {
         const api = new MLSQLAPI(BackendConfig.RUN_SCRIPT)
         const self = this
         self.getMessageBoxAceEditor().setValue("")
+        self.getDisplay().update(JSON.parse("[]"))
 
         const select = self.getSelection()
         let finalSQL = self.getAllText()
@@ -104,13 +105,13 @@ class MLSQLAceEditor extends React.Component {
             self.exitLoading()
 
         }, (fail) => {
+            self.exitLoading()
             let failRes = fail.toString()
             try {
                 failRes = JSON.parse(failRes)["msg"]
             } catch (e) {
             }
             self.appendLog(failRes + "\nTime cost:" + measureTime() + "ms")
-            self.exitLoading()
         })
 
     }
@@ -159,16 +160,16 @@ class MLSQLAceEditor extends React.Component {
 
     enterLoading = (jobName) => {
         this.commandGroup.current.setState({loading: true});
-        this.resourceProgressRef.current.enter({jobName: jobName})
-        this.taskProgressRef.current.enter({jobName: jobName})
+        //this.resourceProgressRef.current.enter({jobName: jobName})
+        //this.taskProgressRef.current.enter({jobName: jobName})
         this.logProgress = new LogProgress(this)
         this.logProgress.enter()
     }
 
     exitLoading = () => {
         this.commandGroup.current.setState({loading: false});
-        this.resourceProgressRef.current.exit()
-        this.taskProgressRef.current.exit()
+        //this.resourceProgressRef.current.exit()
+        //this.taskProgressRef.current.exit()
         if (this.logProgress) {
             this.logProgress.exit()
         }
@@ -263,6 +264,7 @@ class CommandGroup extends React.Component {
 class LogProgress {
     constructor(msgBox) {
         this.msgBox = msgBox
+        this.logProgress = "loaded"
     }
 
     enter = (params) => {
@@ -273,10 +275,10 @@ class LogProgress {
             if (self.mark) {
                 self.loading = true
                 self.intervalTimer = setInterval(() => {
-                        if (self.resourceCompute === "loading") {
+                        if (self.logProgress === "loading") {
                             return
                         }
-                        self.resourceCompute = "loading"
+                        self.logProgress = "loading"
                         const api = new MLSQLAPI(BackendConfig.RUN_SCRIPT)
 
                         api.runScript({}, `load _mlsql_.\`log/${self.offset}\` where filePath="/tmp/__mlsql__/logs/mlsql_engine.log" as output;`, (jsonArray) => {
@@ -285,9 +287,9 @@ class LogProgress {
                                 this.msgBox.appendLog(jsonObj['value'].join("\n"))
                             }
                             self.offset = jsonObj["offset"]
-                            self.resourceCompute = "loaded"
+                            self.logProgress = "loaded"
                         }, (str) => {
-                            self.resourceCompute = "loaded"
+                            self.logProgress = "loaded"
                             try {
                                 this.msgBox.appendLog(str)
                             } catch (e) {
@@ -306,11 +308,16 @@ class LogProgress {
     }
 
     exit = () => {
-        this.loading = false
-        this.mark = false
-        if (this.intervalTimer) {
-            clearInterval(this.intervalTimer);
-        }
+        // we should wait some seconds since the log sometimes may delayed.
+        const self = this
+        setTimeout(() => {
+            self.loading = false
+            self.mark = false
+            if (self.intervalTimer) {
+                clearInterval(self.intervalTimer);
+            }
+        }, 5000)
+
     }
 
 }

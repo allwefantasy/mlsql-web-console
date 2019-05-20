@@ -61,13 +61,18 @@ export class RoleTables extends React.Component {
         })
     }
 
+    sourceType = (item, defaultValue) => {
+        if (item === "undefined") return defaultValue
+        else return item
+    }
+
     renderTables = () => {
         return <List
             dataSource={this.state.tables}
             renderItem={item => (
                 <List.Item key={item.name} actions={this.renderCommand(item.id)}>
                     <List.Item.Meta
-                        title={item.name + ":" + item.operateType}
+                        title={item.tableType + ":" + this.sourceType(item.sourceType, item.tableType) + ":" + item.name + ":" + item.operateType}
                     />
                 </List.Item>
             )}

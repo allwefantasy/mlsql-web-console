@@ -7,10 +7,7 @@ import {InviteMember, MLSQLInviteMember} from "./InviteMember";
 import {TeamMembers} from "./TeamMembers";
 import {MLSQLAddRoleForTeam} from "./AddRoleForTeam";
 import {TeamRoles} from "./TeamRoles";
-import {MLSQLAddTableForTeam} from "./AddTableForTeam";
-import {TeamTables} from "./TeamTables";
-import {MLSQLAddTableForRole} from "./AddTableForRole";
-import {RoleTables} from "./RoleTables";
+
 import {MLSQLAddMemberForRole} from "./AddMemberForRole";
 import {RoleMembers} from "./RoleMembers";
 
@@ -67,19 +64,15 @@ export class TeamCards extends React.Component {
 
 
             <Row gutter={24}>
-                <Col span={8}>
+                <Col span={12}>
                     <Card title="Team you join" bordered={false}><Teams parent={this} ref={this.teamYourJoinRef}
                                                                         apiUrl={LIST_TEAMS_JOINED}/></Card>
                 </Col>
 
-                <Col span={8}>
+                <Col span={12}>
                     <Card title="Team inviting you" bordered={false}><Teams parent={this} apiUrl={LIST_TEAMS_INVITED}/></Card>
                 </Col>
-                <Col span={8}>
-                    <Card title="Add Table to Team" bordered={false}>
-                        <MLSQLAddTableForTeam parent={this}/>
-                    </Card>
-                </Col>
+
             </Row>
             <br/>
 
@@ -100,21 +93,6 @@ export class TeamCards extends React.Component {
             </Row>
             <br/>
 
-            <Row gutter={24}>
-                <Col span={16}>
-                    <Card title="View tables By Role" bordered={false}>
-                        <RoleTables parent={this} ref={this.roleTablesRef}/>
-                    </Card>
-                </Col>
-
-                <Col span={8}>
-                    <Card title="Add table to role" bordered={false}>
-                        <MLSQLAddTableForRole parent={this}/>
-                    </Card>
-                </Col>
-
-            </Row>
-            <br/>
 
             <Row gutter={24}>
                 <Col span={16}>
