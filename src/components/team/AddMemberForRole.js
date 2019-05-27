@@ -38,7 +38,9 @@ class AddMemberForRole extends React.Component {
                     console.log(resJson)
                     console.log("----")
                     if (resJson["msg"] === "success") {
-                        self.teamCards.roleMembersRef.current.refresh()
+                        if (self.teamCards.roleMembersRef) {
+                            self.teamCards.roleMembersRef.current.refresh()
+                        }
                         message.success("Create  success", 3)
                     } else {
                         message.warning("Create  fail:" + resJson["msg"], 10)

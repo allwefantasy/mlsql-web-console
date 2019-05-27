@@ -2,10 +2,11 @@ import * as React from "react";
 import {
     Layout, Menu, Breadcrumb, Icon, Button
 } from 'antd';
-import {AUTH_VIEW_BASIC, CLUSTER_VIEW_BASIC, TEAM_VIEW_BASIC} from "../../common/ViewConst";
+import {AUTH_VIEW_BASIC, CLUSTER_VIEW_BASIC, SETUP_VIEW_BASIC, TEAM_VIEW_BASIC} from "../../common/ViewConst";
 import {TeamCards} from "./TeamCards";
 import {ClusterCards} from "../cluster/ClusterCards";
 import {AuthCards} from "../auth/AuthCards";
+import Setup from "../demo/Setup";
 
 const {
     Header, Content, Footer, Sider,
@@ -17,7 +18,7 @@ export default class MainPage extends React.Component {
         super(props)
         this.app = props.parent
         this.state = {
-            currentView: TEAM_VIEW_BASIC
+            currentView: SETUP_VIEW_BASIC
         }
 
 
@@ -25,6 +26,10 @@ export default class MainPage extends React.Component {
 
     switchToBasic = () => {
         this.setState({currentView: TEAM_VIEW_BASIC})
+    }
+
+    switchToSetup = () => {
+        this.setState({currentView: SETUP_VIEW_BASIC})
     }
 
     switchToCluster = () => {
@@ -36,6 +41,7 @@ export default class MainPage extends React.Component {
     }
 
     renderView = () => {
+        if (this.state.currentView === SETUP_VIEW_BASIC) return <Setup/>
         if (this.state.currentView === TEAM_VIEW_BASIC) return <TeamCards/>
         if (this.state.currentView === CLUSTER_VIEW_BASIC) return <ClusterCards/>
         if (this.state.currentView === AUTH_VIEW_BASIC) return <AuthCards/>
@@ -49,12 +55,15 @@ export default class MainPage extends React.Component {
                     <div className="logo"/>
                     <Menu theme="dark" defaultSelectedKeys={["0"]} mode="inline">
                         <Menu.Item key="0">
-                            <Button block onClick={this.switchToBasic}>Team</Button>
+                            <Button block onClick={this.switchToSetup}>Setup</Button>
                         </Menu.Item>
                         <Menu.Item key="1">
-                            <Button block onClick={this.switchToCluster}>Cluster</Button>
+                            <Button block onClick={this.switchToBasic}>Team</Button>
                         </Menu.Item>
                         <Menu.Item key="2">
+                            <Button block onClick={this.switchToCluster}>Cluster</Button>
+                        </Menu.Item>
+                        <Menu.Item key="3">
                             <Button block onClick={this.switchToAuth}>Auth</Button>
                         </Menu.Item>
                     </Menu>

@@ -13,5 +13,6 @@ export const DEMO_VIEW_BASIC = "basic"
 
 
 export const TEAM_VIEW_BASIC = "team_view_basic"
+export const SETUP_VIEW_BASIC = "setup_view_basic"
 export const CLUSTER_VIEW_BASIC = "cluster_view_basic"
 export const AUTH_VIEW_BASIC = "auth_view_basic"

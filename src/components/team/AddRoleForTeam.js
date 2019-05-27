@@ -26,7 +26,9 @@ class AddRoleForTeam extends React.Component {
                 api.request2(params, (resJson) => {
                     if (resJson["msg"] === "success") {
                         message.success("Create roles success", 3)
-                        self.teamCards.teamsRef.current.refresh()
+                        if (self.teamCards.teamsRef) {
+                            self.teamCards.teamsRef.current.refresh()
+                        }
                     } else {
                         message.warning("Create roles fail:" + resJson["msg"], 10)
                     }
