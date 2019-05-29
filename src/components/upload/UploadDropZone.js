@@ -51,11 +51,11 @@ export class UploadDropzone extends React.Component {
             this.setState({files: []})
             if (!err) {
                 if (res.ok) {
-                    this.setState({msg: "total files:" + files.length + " are uploaded"})
+                    this.setState({msg: "total files:" + files.length + " are uploaded. \n You can check the files with command: !hdfs -ls /tmp/upload; "})
                 }
             } else {
                 console.log(err)
-                this.setState({msg: err.toString() + "\n Sometimes this caused by your upload space is not enough."})
+                this.setState({msg: err.toString() + "\n Sometimes this caused by your upload space is not enough or backend fails"})
             }
         })
     }

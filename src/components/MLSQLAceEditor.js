@@ -14,6 +14,9 @@ import * as BackendConfig from "../service/BackendConfig";
 import * as HTTP from "../service/HTTPMethod";
 import {assert} from "../common/tool"
 import {ButtonToCommand} from "./et/ButtonToCommand";
+import {Select} from 'antd';
+
+const {Option} = Select;
 
 const uuidv4 = require('uuid/v4');
 
@@ -93,7 +96,13 @@ class MLSQLAceEditor extends React.Component {
             return endTime - startTime
         }
 
-        api.runScript({jobName: jobName, background: (this.state.background || false)}, finalSQL, (wow) => {
+        const timeout = this.commandGroup.current.state.timeout
+
+        api.runScript({
+            jobName: jobName,
+            background: (this.state.background || false),
+            timeout: timeout
+        }, finalSQL, (wow) => {
             try {
                 self.queryApp.setData(wow)
                 self.getDisplay().update(wow)
@@ -245,8 +254,12 @@ class MLSQLAceEditor extends React.Component {
 class CommandGroup extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {loading: false}
+        this.state = {loading: false, timeout: "-1"}
         this.parent = props.parent
+    }
+
+    onChange = (value) => {
+        this.setState({timeout: value})
     }
 
     render() {
@@ -255,6 +268,18 @@ class CommandGroup extends React.Component {
                 <Button onClick={this.parent.executeQuery}
                         loading={this.state.loading}>Run</Button>
                 <Button onClick={this.parent.executeSave}>Save</Button>
+                Job Timeout:<Select
+                onChange={this.onChange}
+                style={{width: "120px"}}
+            >
+                <Option value="10000">10s</Option>
+                <Option value="30000">30s</Option>
+                <Option value="60000">60s</Option>
+                <Option value="1800000">30m</Option>
+                <Option value="7200000">2h</Option>
+                <Option value="28800000">8h</Option>
+                <Option value="-1">unlimited</Option>
+            </Select>
             </div>
         )
     }
