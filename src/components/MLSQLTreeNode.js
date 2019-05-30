@@ -152,11 +152,13 @@ export class ScriptNodeTree extends React.Component {
 
     handleNodeCollapse = (nodeData) => {
         nodeData.isExpanded = false;
+        this.toggleIsExpanded(nodeData.id, false)
         this.setState(this.state);
     };
 
     handleNodeExpand = (nodeData) => {
         nodeData.isExpanded = true;
+        this.toggleIsExpanded(nodeData.id, true)
         this.setState(this.state);
     };
 
@@ -377,7 +379,7 @@ class ScriptNodeTreeMenu extends React.Component {
     }
     createFolder = () => {
         if (this.isDir) {
-           return <MenuItem icon="folder-new" text={this.createFolderTitle()} onClick={(() => {
+            return <MenuItem icon="folder-new" text={this.createFolderTitle()} onClick={(() => {
                 this.parent.setState({
                     openCreateScriptDialog: true,
                     nodeId: this.nodeId,
@@ -385,7 +387,7 @@ class ScriptNodeTreeMenu extends React.Component {
                 })
             }).bind(this)}/>
         }
-        if (this.isCreateProject()){
+        if (this.isCreateProject()) {
             return <MenuItem icon="folder-new" text="Create Project" onClick={(() => {
                 this.parent.setState({
                     openCreateScriptDialog: true,

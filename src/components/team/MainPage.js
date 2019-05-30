@@ -2,11 +2,18 @@ import * as React from "react";
 import {
     Layout, Menu, Breadcrumb, Icon, Button
 } from 'antd';
-import {AUTH_VIEW_BASIC, CLUSTER_VIEW_BASIC, SETUP_VIEW_BASIC, TEAM_VIEW_BASIC} from "../../common/ViewConst";
+import {
+    AUTH_VIEW_BASIC,
+    CLUSTER_VIEW_BASIC,
+    SETTING_VIEW_BASIC,
+    SETUP_VIEW_BASIC,
+    TEAM_VIEW_BASIC
+} from "../../common/ViewConst";
 import {TeamCards} from "./TeamCards";
 import {ClusterCards} from "../cluster/ClusterCards";
 import {AuthCards} from "../auth/AuthCards";
 import Setup from "../demo/Setup";
+import {SettingCards} from "./SettingCards";
 
 const {
     Header, Content, Footer, Sider,
@@ -40,11 +47,16 @@ export default class MainPage extends React.Component {
         this.setState({currentView: AUTH_VIEW_BASIC})
     }
 
+    switchToSetting = () => {
+        this.setState({currentView: SETTING_VIEW_BASIC})
+    }
+
     renderView = () => {
         if (this.state.currentView === SETUP_VIEW_BASIC) return <Setup/>
         if (this.state.currentView === TEAM_VIEW_BASIC) return <TeamCards/>
         if (this.state.currentView === CLUSTER_VIEW_BASIC) return <ClusterCards/>
         if (this.state.currentView === AUTH_VIEW_BASIC) return <AuthCards/>
+        if (this.state.currentView === SETTING_VIEW_BASIC) return <SettingCards/>
     }
 
 
@@ -65,6 +77,9 @@ export default class MainPage extends React.Component {
                         </Menu.Item>
                         <Menu.Item key="3">
                             <Button block onClick={this.switchToAuth}>Auth</Button>
+                        </Menu.Item>
+                        <Menu.Item key="4">
+                            <Button block onClick={this.switchToSetting}>Setting</Button>
                         </Menu.Item>
                     </Menu>
                 </Sider>

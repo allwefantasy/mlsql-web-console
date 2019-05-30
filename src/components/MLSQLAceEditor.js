@@ -65,8 +65,18 @@ class MLSQLAceEditor extends React.Component {
             id: self.state.scriptId,
             content: self.getAceEditor().getValue()
         }, (ok) => {
-            messageBox.setValue("saved")
+            if (ok.status != 200) {
+                ok.json((wow) => {
+                    self.appendLog(wow["msg"])
+                }, (jsonErr) => {
+                    self.appendLog(jsonErr)
+                })
+            } else {
+                self.appendLog("saved")
+            }
+
         }, (fail) => {
+            self.appendLog(fail)
         })
 
     }
@@ -306,7 +316,7 @@ class LogProgress {
                         self.logProgress = "loading"
                         const api = new MLSQLAPI(BackendConfig.RUN_SCRIPT)
 
-                        api.runScript({}, `load _mlsql_.\`log/${self.offset}\` where filePath="/tmp/__mlsql__/logs/mlsql_engine.log" as output;`, (jsonArray) => {
+                        api.runScript({}, `load _mlsql_.\`log/${self.offset}\` where filePath="engine_log" as output;`, (jsonArray) => {
                             const jsonObj = jsonArray[0]
                             if (jsonObj['value'].length > 0) {
                                 this.msgBox.appendLog(jsonObj['value'].join("\n"))
