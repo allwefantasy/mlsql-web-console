@@ -61,7 +61,7 @@ export class Basic extends BigDL {
              |select "\${day_id}" as a as test111;
              |
              |-- conf/spark.sql("set spark.sql.shuffle.partitions=200")
-             |set spark.sql.shuffle.partitions="200" where type="conf";
+             |set spark.sql.shuffle.partitions=200 where type="conf";
              |
              |-- shell
              |set date=\`date\` where type="shell";
@@ -69,7 +69,7 @@ export class Basic extends BigDL {
              |                
              `.stripMargin(),
 
-            `load xml.\`/tmp/nlp/sogo\` where rowTag="doc" and charset="GBK" as xmlData;
+            `load xml.\`...xml..file...path\` where rowTag="doc" and charset="GBK" as xmlData;
             |select * from xmlData where _corrupt_record is null as xmlData; 
             `.stripMargin(),
 
