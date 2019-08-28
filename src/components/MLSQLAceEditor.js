@@ -15,6 +15,7 @@ import * as HTTP from "../service/HTTPMethod";
 import {assert} from "../common/tool"
 import {ButtonToCommand} from "./et/ButtonToCommand";
 import {Select} from 'antd';
+import {Resizable} from "re-resizable";
 
 const {Option} = Select;
 
@@ -231,30 +232,34 @@ class MLSQLAceEditor extends React.Component {
         const self = this
         return (
             <div className="mlsql-editor-area">
-                <div onDragOver={(evt) => evt.preventDefault()} onDrop={this.etOver}><AceEditor
-                    ref={this.aceEditorRef}
-                    mode="sql"
-                    theme="github"
-                    width={"100%"}
-                    height={"500px"}
-                    onChange={this.onChange}
-                    name="mlsql_editor"
-                    fontSize={16}
-                    showPrintMargin={true}
-                    showGutter={true}
-                    highlightActiveLine={true}
-                    value=""
-                    editorProps={{
-                        $blockScrolling: Infinity
-                    }}
-                    setOptions={{
-                        enableBasicAutocompletion: true,
-                        enableLiveAutocompletion: true,
-                        enableSnippets: false,
-                        showLineNumbers: true,
-                        tabSize: 2,
-                    }}
-                /></div>
+
+                <div onDragOver={(evt) => evt.preventDefault()} onDrop={this.etOver}>
+                    <Resizable defaultSize={{height: "500px"}}><AceEditor
+                        ref={this.aceEditorRef}
+                        mode="sql"
+                        theme="github"
+                        width={"100%"}
+                        height={"100%"}
+                        onChange={this.onChange}
+                        name="mlsql_editor"
+                        fontSize={16}
+                        showPrintMargin={true}
+                        showGutter={true}
+                        highlightActiveLine={true}
+                        value=""
+                        editorProps={{
+                            $blockScrolling: Infinity
+                        }}
+                        setOptions={{
+                            enableBasicAutocompletion: true,
+                            enableLiveAutocompletion: true,
+                            enableSnippets: false,
+                            showLineNumbers: true,
+                            tabSize: 2,
+                        }}
+                    /></Resizable>
+                </div>
+
                 <CommandGroup ref={this.commandGroup} parent={this}/>
                 <JobProgress ref={this.jobProgress} parent={this}></JobProgress>
                 <TaskProgress ref={this.taskProgressRef} parent={this}></TaskProgress>

@@ -7,6 +7,7 @@ import {MLSQLQueryDisplay} from "./MLSQLQueryDisplay";
 import {MLSQLDash} from "./query/MLSQLDash";
 import {TabEditor} from "./editor/TabEditor";
 import {MLSQLETQuick} from "./et/MLSQLETQuick";
+import {Resizable} from "re-resizable";
 
 class MLSQLQueryApp extends Component {
 
@@ -88,16 +89,18 @@ class MLSQLQueryApp extends Component {
                         <MLSQLETQuick ref={this.etRef} parent={this}/>
                     </div>
                     <TabEditor ref={this.editorGroup} parent={this}/>
-                    <div className="mlsql-messagebox">
+
+                    <Resizable defaultSize={{height: "300px"}}>
                         <AceEditor
-                            height={"300px"}
+                            height={"100%"}
                             width={"100%"}
                             ref={this.messageBox}
                             mode="text"
                             theme="github"
                             name="message_box"
                         />
-                    </div>
+                    </Resizable>
+
                     <div>
                         <MLSQLDash ref={this.dash} parent={this}/>
                     </div>

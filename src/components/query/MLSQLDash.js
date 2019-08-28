@@ -9,6 +9,7 @@ import MLSQLThreeDimScatterChart from "../dash/MLSQLScatterChart";
 import MLSQLLineChart from "../dash/MLSQLLineChart";
 import MLSQLStream from "../dash/MLSQLStream";
 import MLSQLResource from "../dash/MLSQLResource";
+import MLSQLHTML from "../dash/MLSQLHTML";
 
 
 const Panel = Collapse.Panel;
@@ -76,6 +77,10 @@ export class MLSQLDash extends PureComponent {
 
         if (MLSQLLineChart.isShouldRender(data)) {
             return MLSQLLineChart.render(data)
+        }
+
+        if (MLSQLHTML.isShouldRender(data)) {
+            return MLSQLHTML.render(data)
         }
 
         return <div></div>
