@@ -90,7 +90,7 @@ class MLSQLQueryApp extends Component {
                     </div>
                     <TabEditor ref={this.editorGroup} parent={this}/>
 
-                    <Resizable defaultSize={{height: "300px"}}>
+                    <Resizable defaultSize={{height: "300px"}} onResize={()=>{this.messageBox.current.editor.resize();}}>
                         <AceEditor
                             height={"100%"}
                             width={"100%"}

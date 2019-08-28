@@ -234,7 +234,7 @@ class MLSQLAceEditor extends React.Component {
             <div className="mlsql-editor-area">
 
                 <div onDragOver={(evt) => evt.preventDefault()} onDrop={this.etOver}>
-                    <Resizable defaultSize={{height: "500px"}}><AceEditor
+                    <Resizable defaultSize={{height: "500px"}} onResize={()=>{this.aceEditorRef.current.editor.resize();}}><AceEditor
                         ref={this.aceEditorRef}
                         mode="sql"
                         theme="github"
@@ -246,7 +246,6 @@ class MLSQLAceEditor extends React.Component {
                         showPrintMargin={true}
                         showGutter={true}
                         highlightActiveLine={true}
-                        value=""
                         editorProps={{
                             $blockScrolling: Infinity
                         }}
@@ -256,6 +255,7 @@ class MLSQLAceEditor extends React.Component {
                             enableSnippets: false,
                             showLineNumbers: true,
                             tabSize: 2,
+                            autoScrollEditorIntoView: true
                         }}
                     /></Resizable>
                 </div>
