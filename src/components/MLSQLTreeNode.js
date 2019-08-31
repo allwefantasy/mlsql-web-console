@@ -243,8 +243,8 @@ class CreateScriptDialog extends React.Component {
             return
         }
 
-        if (!params.isDir && !params.fileName.endsWith(".mlsql")) {
-            this.setState({"msg": "filename should be ends with .mlsql"})
+        if (!params.isDir && (!params.fileName.endsWith(".mlsql") && !params.fileName.endsWith(".nb"))) {
+            this.setState({"msg": "filename should be ends with .mlsql or .nb"})
             return
         }
 

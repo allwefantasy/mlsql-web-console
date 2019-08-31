@@ -8,13 +8,14 @@ import {MLSQLDash} from "./query/MLSQLDash";
 import {TabEditor} from "./editor/TabEditor";
 import {MLSQLETQuick} from "./et/MLSQLETQuick";
 import {Resizable} from "re-resizable";
+import ExecuteUnit from "./notebook/ExecuteUnit";
 
 class MLSQLQueryApp extends Component {
 
     constructor(props) {
         super(props);
         // create a ref to store the textInput DOM element
-        this.state = {sqlContent: ""}
+        this.state = {sqlContent: "", displayEditor: "normal"}
         this.directoryTree = React.createRef()
         this.editorGroup = React.createRef()
         this.messageBox = React.createRef()
@@ -37,23 +38,17 @@ class MLSQLQueryApp extends Component {
             this.editorGroup.current.onChange(editorRef.activeKey)
 
         } else {
-            // if (!Object.values(this.fileToEditorMap).includes(this.getCurrentEditor())) {
-            //
-            //     //close current window
-            //     this.editorGroup.current.remove(this.getCurrentEditor().activeKey)
-            //
-            //     const editorRef = this.getCurrentEditor()
-            //     editorRef.ref.text(script.content, script.id)
-            //     self.fileToEditorMap[script.id] = editorRef.ref
-            //     const activeKey = editorRef.activeKey
-            //
-            //
-            // }
             this.editorGroup.current.addFull(script.name, (editorRef) => {
                 editorRef.ref.text(script.content, script.id)
                 self.fileToEditorMap[script.id] = editorRef
             })
 
+        }
+
+        if (script.name.endsWith(".nb")) {
+            self.setState({displayEditor: "notebook"})
+        } else {
+            self.setState({displayEditor: "normal"})
         }
     }
 
@@ -77,6 +72,33 @@ class MLSQLQueryApp extends Component {
         this.dash.current.refresh()
     }
 
+    tableAndDash = () => {
+        if (this.state.displayEditor !== "notebook") {
+            return <div>
+                <Resizable defaultSize={{height: "300px"}} onResize={() => {
+                    this.messageBox.current.editor.resize();
+                }}>
+                    <AceEditor
+                        height={"100%"}
+                        width={"100%"}
+                        ref={this.messageBox}
+                        mode="text"
+                        theme="github"
+                        name="message_box"
+                    />
+                </Resizable>
+
+                <div>
+                    <MLSQLDash ref={this.dash} parent={this}/>
+                </div>
+                <div className="mlsql-query-display">
+                    <MLSQLQueryDisplay ref={this.display} parent={this}/></div>
+            </div>
+        }
+
+    }
+
+
     render() {
         return (
             <div className="mlsql-queryapp">
@@ -89,24 +111,9 @@ class MLSQLQueryApp extends Component {
                         <MLSQLETQuick ref={this.etRef} parent={this}/>
                     </div>
                     <TabEditor ref={this.editorGroup} parent={this}/>
-
-                    <Resizable defaultSize={{height: "300px"}} onResize={()=>{this.messageBox.current.editor.resize();}}>
-                        <AceEditor
-                            height={"100%"}
-                            width={"100%"}
-                            ref={this.messageBox}
-                            mode="text"
-                            theme="github"
-                            name="message_box"
-                        />
-                    </Resizable>
-
-                    <div>
-                        <MLSQLDash ref={this.dash} parent={this}/>
-                    </div>
-                    <div className="mlsql-query-display">
-                        <MLSQLQueryDisplay ref={this.display} parent={this}/></div>
+                    {this.tableAndDash()}
                 </div>
+
             </div>
         )
     }

@@ -1,6 +1,8 @@
 import * as React from "react"
 import {Tabs} from 'antd';
 import MLSQLAceEditor from "../MLSQLAceEditor";
+import ExecuteUnit from "../notebook/ExecuteUnit";
+import NodeBook from "../notebook/NoteBook";
 
 const TabPane = Tabs.TabPane;
 
@@ -42,6 +44,21 @@ export class TabEditor extends React.Component {
     }
 
     onChange = (activeKey) => {
+
+        let currentItem = null
+
+        this.state.panes.forEach(item => {
+            if (item.key === activeKey) {
+                currentItem = item
+            }
+        })
+
+        if (currentItem && !currentItem.title.endsWith(".nb")) {
+            this.parent.setState({displayEditor: "normal"})
+        } else {
+            this.parent.setState({displayEditor: "notebook"})
+        }
+
         this.setState({activeKey});
     }
 
@@ -50,16 +67,29 @@ export class TabEditor extends React.Component {
     }
 
     addFull = (tabName, callback) => {
+        const editor = (activeKey) => {
+            if (tabName.endsWith(".mlsql")) {
+                return <MLSQLAceEditor parent={this.parent} parentCallback={(ref) => {
+                    this.pushRef({ref: ref, activeKey: activeKey})
+                    if (callback) {
+                        callback({ref: ref, activeKey: activeKey})
+                    }
+                }} activeKey={activeKey}/>
+            } else {
+                return <NodeBook parent={this.parent} parentCallback={(ref) => {
+                    this.pushRef({ref: ref, activeKey: activeKey})
+                    if (callback) {
+                        callback({ref: ref, activeKey: activeKey})
+                    }
+                }} activeKey={activeKey}/>
+            }
+        }
+
         const panes = this.state.panes;
         const activeKey = `newTab${this.newTabIndex++}`;
         panes.push({
             title: tabName || 'MLSQL ' + this.newTabIndex,
-            content: <MLSQLAceEditor parent={this.parent} parentCallback={(ref) => {
-                this.pushRef({ref: ref, activeKey: activeKey})
-                if (callback) {
-                    callback({ref: ref, activeKey: activeKey})
-                }
-            }} activeKey={activeKey}/>,
+            content: editor(activeKey),
             key: activeKey
         });
         this.setState({panes, activeKey});

@@ -1,21 +1,23 @@
 import * as React from "react";
 import 'antd/dist/antd.css';
-import {Table,Modal} from 'antd';
-
+import {Table, Modal} from 'antd';
 
 const ReactMarkdown = require('react-markdown')
 
-export class MLSQLQueryDisplay extends React.Component {
+
+export default class DataTable extends React.Component {
+
     constructor(props) {
         super(props)
-        this.state = {columns: [], rows: [], view: {enabled: false}}
+        const [keys, rows] = this.parseData(props.data || [], props.config || {})
+        this.state = {columns: keys, rows: rows, view: {enabled: false}}
     }
 
-    setRender = (keyColumn, data) => {
+    setRender = (keyColumn, data, config) => {
 
         const value = data[0][keyColumn.key]
 
-        if (this.state.config && this.state.config["render"]) {
+        if (config && config["render"]) {
             const render = this.state.config["render"][keyColumn.key]
             if (render) {
                 keyColumn["render"] = render
@@ -52,9 +54,7 @@ export class MLSQLQueryDisplay extends React.Component {
 
     }
 
-    update = (data, config) => {
-        // e.g. [{"a":1}]
-        this.setState({config: config})
+    parseData = (data, config) => {
         let keys = []
         let basket = {}
         let rows = []
@@ -84,8 +84,13 @@ export class MLSQLQueryDisplay extends React.Component {
             new_item["key"] = index
             rows.push(new_item)
         })
+        return [keys, rows]
+    }
 
-        this.setState({columns: keys, data: rows})
+    update = (data, config) => {
+        // e.g. [{"a":1}]
+        const [keys, rows] = this.parseData(data, config)
+        this.setState({columns: keys, data: rows, config: config})
     }
 
     rowDoubleClick = (row, index, event) => {
@@ -122,7 +127,7 @@ export class MLSQLQueryDisplay extends React.Component {
                     }
 
                     columns={this.state.columns}
-                    dataSource={this.state.data}/>
+                    dataSource={this.state.rows}/>
                 <Modal
                     title={"View"}
                     visible={this.state.view.enabled}
