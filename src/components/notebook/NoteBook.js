@@ -1,17 +1,47 @@
 import React from 'react'
 import ExecuteUnit from "./ExecuteUnit";
+import Engine from "./service/Engine";
+
+const CODE_SPLITTER = "set notebooksplitter='notebooksplitter';"
 
 export default class NodeBook extends React.Component {
     constructor(props) {
         super(props)
-        this.executeUnits = [<ExecuteUnit parent={this}/>]
+        this.executeUnitRefs = []
+        this.executeUnits = [this.createNewExecuteUnit("")]
         this.state = {executeUnits: this.executeUnits}
+        this.engine = new Engine(5 * 60 * 1000)
+    }
+
+    createNewExecuteUnit = (initialCode) => {
+        return <ExecuteUnit parent={this} initialCode={initialCode} ref={et => this.addRef(et)}/>
+    }
+
+    addRef = (instance) => {
+        if (instance) {
+            this.executeUnitRefs.push(instance)
+        }
     }
 
     nextExecuteUnit = () => {
-        this.executeUnits.push(<ExecuteUnit parent={this}/>)
-        this.setState({executeUnits: this.executeUnits})
+        const isLastEmpty = () => {
+            return this.executeUnitRefs.slice(-1)[0].codeBlockIsEmpty()
+        }
+        if (!isLastEmpty()) {
+            this.executeUnits.push(this.createNewExecuteUnit())
+            this.setState({executeUnits: this.executeUnits})
+        }
+        this.saveNoteBook()
+    }
 
+    saveNoteBook = () => {
+        console.log(this.executeUnitRefs)
+        const value = this.executeUnitRefs.map((instance) => {
+            return instance.getCodeStr()
+        }).join(CODE_SPLITTER)
+
+        this.engine.saveFile(value, this.scriptId, (msg) => {
+        })
     }
 
     componentDidMount() {
@@ -21,10 +51,15 @@ export default class NodeBook extends React.Component {
     }
 
     text = (value, scriptId) => {
-        this.setState({value: value, scriptId: scriptId}, () => {
-
-        })
-
+        this.scriptId = scriptId
+        this.initialCode = value
+        if (value && value !== "undefined") {
+            this.executeUnitRefs = []
+            this.executeUnits = this.initialCode.split(CODE_SPLITTER).map((initialCode) => {
+                return this.createNewExecuteUnit(initialCode)
+            })
+            this.setState({executeUnits: this.executeUnits})
+        }
     }
 
     render() {

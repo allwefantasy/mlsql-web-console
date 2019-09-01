@@ -15,6 +15,10 @@ import AceEditor from "react-ace";
  */
 export default class CodeBlock extends React.Component {
 
+    constructor(props) {
+        super(props)
+    }
+
     originalEditor = () => {
         return this.editor.editor
     }
@@ -31,6 +35,7 @@ export default class CodeBlock extends React.Component {
                 ref={et => {
                     this.editor = et
                 }}
+                value={this.props.initialCode}
                 mode="sql"
                 theme="github"
 
