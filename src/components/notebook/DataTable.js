@@ -87,10 +87,10 @@ export default class DataTable extends React.Component {
         return [keys, rows]
     }
 
-    update = (data, config) => {
+    refresh = (data, config) => {
         // e.g. [{"a":1}]
         const [keys, rows] = this.parseData(data, config)
-        this.setState({columns: keys, data: rows, config: config})
+        this.setState({columns: keys, rows: rows, config: config})
     }
 
     rowDoubleClick = (row, index, event) => {
@@ -126,17 +126,17 @@ export default class DataTable extends React.Component {
                     }
                     }
 
-                    columns={this.state.columns}
-                    dataSource={this.state.rows}/>
+                    columns={self.state.columns}
+                    dataSource={self.state.rows}/>
                 <Modal
                     title={"View"}
-                    visible={this.state.view.enabled}
-                    onCancel={this.disablePreview}
-                    onOk={this.disablePreview}
+                    visible={self.state.view.enabled}
+                    onCancel={self.disablePreview}
+                    onOk={self.disablePreview}
                     cancelText="Cancel"
                     OkText="Ok"
                 >
-                    <ReactMarkdown source={this.state.view.content || ""}/>
+                    <ReactMarkdown source={self.state.view.content || ""}/>
                 </Modal>
             </div>
         )

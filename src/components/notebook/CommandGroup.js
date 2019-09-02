@@ -11,7 +11,6 @@ export default class CommandGroup extends React.Component {
     evtExecute = () => {
         this.setState({isExecute: true})
         this.state.executeUnit.execute()
-        this.setState({isExecute: false})
     }
 
     cancelExecute = () => {

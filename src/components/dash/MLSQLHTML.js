@@ -32,12 +32,16 @@ export default class MLSQLHTML {
 
 }
 
-class MLSQLHTMLPanel extends React.Component {
+export class MLSQLHTMLPanel extends React.Component {
 
 
     constructor(props) {
         super(props)
-        this.data = this.props.data
+        this.state = {data: this.props.data}
+    }
+
+    refresh = (data) => {
+        this.setState({data: data})
     }
 
     render() {
@@ -47,7 +51,7 @@ class MLSQLHTMLPanel extends React.Component {
                     <iframe
                         sandbox="allow-scripts"
                         style={{width: '100%', height: "100%"}}
-                        srcDoc={this.data["html"]}
+                        srcDoc={this.state.data["html"]}
                         frameBorder="0"
                         scrolling="yes"
                         ref={(f) => {

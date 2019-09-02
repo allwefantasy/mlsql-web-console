@@ -35,7 +35,6 @@ export default class NodeBook extends React.Component {
     }
 
     saveNoteBook = () => {
-        console.log(this.executeUnitRefs)
         const value = this.executeUnitRefs.map((instance) => {
             return instance.getCodeStr()
         }).join(CODE_SPLITTER)
