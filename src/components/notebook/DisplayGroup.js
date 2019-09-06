@@ -1,17 +1,18 @@
 import React from 'react'
 import DataTable from "./DataTable";
 import MLSQLHTML, {MLSQLHTMLPanel} from "../dash/MLSQLHTML";
+import AceEditor from "react-ace";
 
 export default class DisplayGroup extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {}
+        this.state = {errorMsg: ""}
     }
 
 
     refresh = (displayData) => {
-        this.setState({displayData: displayData})
+        this.setState({displayData: displayData, errorMsg: ""})
         if (this.displayTableRef) {
             this.displayTableRef.refresh(this.state.displayData, {})
         }
@@ -21,6 +22,13 @@ export default class DisplayGroup extends React.Component {
             this.displayDashRef.refresh(item)
         }
 
+    }
+
+    fail = (msg) => {
+        this.setState({errorMsg: msg})
+        if (this.editor) {
+            this.editor.editor.setValue(msg)
+        }
     }
 
     displayDash = () => {
@@ -33,6 +41,24 @@ export default class DisplayGroup extends React.Component {
 
     }
 
+    displayError = () => {
+        if (this.state.errorMsg) {
+            return <div><AceEditor
+                maxLines={Infinity}
+                width={"100%"}
+                ref={et => {
+                    this.editor = et
+                }}
+                value={this.state.errorMsg}
+                mode="text"
+                theme="ace/theme/textmate"
+
+            /></div>
+        } else {
+            return <div></div>
+        }
+    }
+
     displayTable = () => {
         if (this.state.displayData) {
             return <DataTable data={this.state.displayData} ref={(et) => this.displayTableRef = et}></DataTable>
@@ -43,9 +69,11 @@ export default class DisplayGroup extends React.Component {
     }
 
     render() {
-        return <div>{
-            this.displayTable()
-        }{this.displayDash()}</div>
+        return <div>
+            {this.displayError()}
+            {
+                this.displayTable()
+            }{this.displayDash()}</div>
 
     }
 }

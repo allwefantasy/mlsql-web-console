@@ -174,12 +174,118 @@ export class MLSQLAPI {
                 'Access-Token': sessionStorage.getItem(HTTP.AccessToken.name) || ''
             },
             body: formBody
+        }).then((res) => {
+            successCallback(new APIResponse(res.status, res.text(), res.headers.get(HTTP.AccessToken.name)))
         })
-            .then((res) => {
-                successCallback(new APIResponse(res.status, res.text(), res.headers.get(HTTP.AccessToken.name)))
-            })
             .catch((res) => {
                 serverErrorCallback(new ServerError(res))
+            })
+    }
+
+    newRunScript(params, sql, okFun, failFun) {
+        const auth = new Auth()
+        const jobName = uuidv4()
+        const self = this
+        auth.user((jsonRes) => {
+            const {userName, backendTags} = jsonRes
+
+            if (!backendTags) {
+                failFun(`
+                
+                ---------------Warning--------------------
+                
+                Please make sure you have backend configured. 
+                If not, please contact admin;
+                
+                ------------------------------------------
+                `)
+                return
+            }
+
+            const finalParams = {
+                sql: sql,
+                owner: userName,
+                jobName: jobName,
+                sessionPerUser: true,
+                show_stack: true,
+                skipAuth: false,
+                tags: backendTags || ""
+            }
+            Object.assign(finalParams, params)
+            const background = params.background || false
+            if (background) {
+                Object.assign(finalParams, {async: true, callback: ""})
+            }
+
+            self.new_request(HTTP.Method.POST, finalParams, okFun, failFun)
+        })
+    }
+
+    new_request(method, body, okFun, failFun) {
+        method = method.toUpperCase();
+
+        let formBody = [];
+        for (let property in body) {
+            let encodedKey = encodeURIComponent(property);
+            let encodedValue = encodeURIComponent(body[property]);
+            formBody.push(encodedKey + "=" + encodedValue);
+        }
+
+        let newurl = this.url
+
+        if (method === "GET") {
+            newurl = newurl + "?" + formBody
+            formBody = undefined
+        } else {
+            formBody = formBody.join("&")
+        }
+        let resStatus = 0
+
+        return fetch(newurl, {
+            method: method,
+            timeout: 1000 * 60 * 60 * 24,
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Accept': 'application/json',
+                'Access-Token': sessionStorage.getItem(HTTP.AccessToken.name) || ''
+            },
+            body: formBody
+        }).then((res) => {
+            resStatus = res.status
+            if (resStatus === 200) {
+                res.json().then((value) => {
+                    okFun(value)
+                })
+            }
+            return res
+        }).then(res => {
+            const extractMsg = () => {
+                res.text().then(value => {
+                        try {
+                            failFun(JSON.parse(value)["msg"])
+                        } catch (e) {
+                            failFun(value)
+                        }
+                    }
+                )
+            }
+
+            switch (resStatus) {
+                case 201:
+                    break
+                case 400:
+                    extractMsg()
+                    break
+                case 500:
+                    extractMsg()
+                    break
+                default:
+                    console.log('unhandled')
+                    break
+            }
+        })
+            .catch((err) => {
+                failFun(err.message)
             })
     }
 }

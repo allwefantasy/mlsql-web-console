@@ -18,6 +18,9 @@ export default class ExecuteUnit extends React.Component {
             this.displayGroup.refresh(msg)
             this.commandGroup.setState({isExecute: false})
             this.notebook.nextExecuteUnit()
+        }, msg => {
+            this.displayGroup.fail(msg)
+            this.commandGroup.setState({isExecute: false})
         })
     }
 

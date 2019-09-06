@@ -17,25 +17,16 @@ export default class Engine {
      * @param {string} sql
      * @param {(msg)=>{}} show_result
      */
-    run = (sql, show_result) => {
+    run = (sql, show_result, fail_result) => {
         const jobName = uuidv4()
         const api = new MLSQLAPI(BackendConfig.RUN_SCRIPT)
-        api.runScript({
+
+        api.newRunScript({
             jobName: jobName,
             timeout: this.timeout
-        }, sql, wow => {
-            try {
-                show_result(wow)
-            } catch (e) {
-                show_result(JSON.stringify(wow, null, 2))
-            }
-        }, fail => {
-            let failRes = fail.toString()
-            try {
-                show_result(JSON.parse(failRes)["msg"])
-            } catch (e) {
-            }
-        })
+        }, sql, show_result, fail_result)
+
+
     }
 
     /**
