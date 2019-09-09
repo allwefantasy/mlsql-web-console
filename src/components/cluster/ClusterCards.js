@@ -5,6 +5,7 @@ import {MLSQLAddClusterBackend} from "./AddClusterBackend";
 import {MLSQLAddTagToRole} from "./AddTagToRole";
 import {MLSQLConfigureDefaultBackend} from "./ConfigureDefaultBackend";
 import {MLSQLAddExistClusterBackendToRole} from "./AddExistClusterBackendToRole";
+import {MLSQLConfigureSchedulerDefaultBackend} from "./ConfigureSchedulerBackend";
 
 
 export class ClusterCards extends React.Component {
@@ -26,12 +27,17 @@ export class ClusterCards extends React.Component {
     render() {
         return <div style={{background: '#ECECEC', padding: '30px'}}>
             <Row gutter={24}>
-                <Col span={12}>
-                    <Card title="Set your default backend tag" bordered={false}>
+                <Col span={8}>
+                    <Card title="Set default backend tag" bordered={false}>
                         <MLSQLConfigureDefaultBackend parent={this}/>
                     </Card>
                 </Col>
-                <Col span={12}>
+                <Col span={8}>
+                    <Card title="Set default scheduler backend tag" bordered={false}>
+                        <MLSQLConfigureSchedulerDefaultBackend parent={this}/>
+                    </Card>
+                </Col>
+                <Col span={8}>
                     <Card title="Add Backend" bordered={false}>
                         <MLSQLAddClusterBackend parent={this}/>
                     </Card>

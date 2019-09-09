@@ -5,14 +5,14 @@ import {
     ADD_TEAMS_ROLE,
     LIST_TEAMS,
     LIST_TEAMS_IN,
-    LIST_TEAMS_JOINED,
+    LIST_TEAMS_JOINED, USER_SCHEDULER_TAGS_UPDATE,
     USER_TAGS_UPDATE
 } from "../../service/BackendConfig";
 import TeamService from "../team/remote/Service";
 import ClusterService from "./remote/Service";
 import {Views} from "../team/remote/Views";
 
-class ConfigureDefaultBackend extends React.Component {
+class ConfigureSchedulerBackend extends React.Component {
     constructor(props) {
         super(props)
         this.teamCards = props.parent
@@ -30,7 +30,7 @@ class ConfigureDefaultBackend extends React.Component {
         this.props.form.validateFields((err, params) => {
             if (!err) {
                 const api = new MLSQLAPI(USER_TAGS_UPDATE)
-                api.request2({backendTags: params.tag}, (resJson) => {
+                api.request2({backendTags: params.tag, isScheduler: true}, (resJson) => {
                     console.log(resJson)
                     console.log(params.tag)
                     if (resJson["backendTags"].includes(params.tag)) {
@@ -64,7 +64,7 @@ class ConfigureDefaultBackend extends React.Component {
         ClusterService.fetchBackends(this, {tag: teamName + "_" + roleName}, "backends", () => {
             if (self.state.backends.length > 0) {
                 self.setState({tags: [teamName + "_" + roleName]})
-            }else {
+            } else {
                 self.setState({tags: []})
             }
         })
@@ -125,4 +125,4 @@ class ConfigureDefaultBackend extends React.Component {
     }
 }
 
-export const MLSQLConfigureDefaultBackend = Form.create({name: 'configure_default_backend'})(ConfigureDefaultBackend);
+export const MLSQLConfigureSchedulerDefaultBackend = Form.create({name: 'configure_default_backend'})(ConfigureSchedulerBackend);
