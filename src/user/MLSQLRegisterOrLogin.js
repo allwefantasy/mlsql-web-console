@@ -4,9 +4,10 @@ import './MLSQLRegister.scss'
 import {MLSQLAuth as Auth} from './MLSQLAuth'
 import * as HTTP from "../service/HTTPMethod";
 import MLSQLQueryApp from "../components/MLSQLQueryApp";
-import {VIEW_CLUSTER, VIEW_CONSOLE, VIEW_DEMO, VIEW_TEAM} from "../common/ViewConst";
+import {VIEW_CLUSTER, VIEW_CONSOLE, VIEW_DEMO, VIEW_SCRIPT_PLUGINS, VIEW_TEAM} from "../common/ViewConst";
 import {MLSQLDemoApp} from "../components/MLSQLDemoApp";
 import {MLSQLManagerApp} from "../components/MLSQLManagerApp";
+import {MLSQLScriptPluginsApp} from "../components/script_plugins/MLSQLScriptPluginsApp";
 
 
 export const LOGIN = "login"
@@ -96,6 +97,7 @@ export class MLSQLRegisterOrLogin extends React.Component {
         if (this.auth.isLogin() && this.currentView() === VIEW_CONSOLE) return <MLSQLQueryApp/>
         if (this.auth.isLogin() && this.currentView() === VIEW_DEMO) return <MLSQLDemoApp/>
         if (this.auth.isLogin() && this.currentView() === VIEW_TEAM) return <MLSQLManagerApp/>
+        if (this.auth.isLogin() && this.currentView() === VIEW_SCRIPT_PLUGINS) return <MLSQLScriptPluginsApp/>
         return (
             <div className="mlsql-register">
                 <div className="mlsql-register-form">

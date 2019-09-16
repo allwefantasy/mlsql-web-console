@@ -3,7 +3,7 @@ import './App.scss';
 import {Alignment, Button, Navbar} from "@blueprintjs/core";
 import {notification} from 'antd';
 import {LOGIN, MLSQLRegisterOrLogin, WelcomeMessage} from "./user/MLSQLRegisterOrLogin";
-import {VIEW_CLUSTER, VIEW_CONSOLE, VIEW_DEMO, VIEW_TEAM} from "./common/ViewConst"
+import {VIEW_CLUSTER, VIEW_CONSOLE, VIEW_DEMO, VIEW_SCRIPT_PLUGINS, VIEW_TEAM} from "./common/ViewConst"
 import {MLSQLAuth} from "./user/MLSQLAuth";
 
 const s = require('stripmargin');
@@ -42,6 +42,10 @@ class App extends Component {
         this.setState({currentView: VIEW_DEMO})
     }
 
+    switchToScriptPlugins = () => {
+        this.setState({currentView: VIEW_SCRIPT_PLUGINS})
+    }
+
     switchToCnDoc = () => {
         window.open("http://docs.mlsql.tech/zh/", "_blank")
     }
@@ -57,6 +61,8 @@ class App extends Component {
                         <Button className="bp3-minimal" icon="home" text="Console" onClick={this.switchToConsole}/>
                         <Button className="bp3-minimal" icon="document" text="Demo Center" onClick={this.switchToDemo}/>
                         <Button className="bp3-minimal" icon="document" text="Team" onClick={this.switchToTeam}/>
+                        <Button className="bp3-minimal" icon="document" text="Script Plugins"
+                                onClick={this.switchToScriptPlugins}/>
                         <Button className="bp3-minimal" icon="document" text="中文文档"
                                 onClick={this.switchToCnDoc}/>
                     </Navbar.Group>
