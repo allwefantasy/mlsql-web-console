@@ -26,6 +26,7 @@ class MLSQLAceEditor extends React.Component {
 
     constructor(props) {
         super(props)
+        this.language = this.props.language || "sql"
         this.queryApp = this.props.parent
         this.aceEditorRef = React.createRef()
         this.commandGroup = React.createRef()
@@ -236,7 +237,7 @@ class MLSQLAceEditor extends React.Component {
                 <div onDragOver={(evt) => evt.preventDefault()} onDrop={this.etOver}>
                     <Resizable defaultSize={{height: "500px"}} onResize={()=>{this.aceEditorRef.current.editor.resize();}}><AceEditor
                         ref={this.aceEditorRef}
-                        mode="sql"
+                        mode={this.language}
                         theme="github"
                         width={"100%"}
                         height={"100%"}

@@ -1,8 +1,8 @@
 import * as React from "react"
 import {Tabs} from 'antd';
 import MLSQLAceEditor from "../MLSQLAceEditor";
-import ExecuteUnit from "../notebook/ExecuteUnit";
 import NodeBook from "../notebook/NoteBook";
+import PythonEditor from "../python/PythonEditor";
 
 const TabPane = Tabs.TabPane;
 
@@ -53,10 +53,12 @@ export class TabEditor extends React.Component {
             }
         })
 
-        if (currentItem && !currentItem.title.endsWith(".nb")) {
+        if (currentItem && !currentItem.title.endsWith(".mlsql")) {
             this.parent.setState({displayEditor: "normal"})
-        } else {
+        } else if(currentItem && !currentItem.title.endsWith(".nb")) {
             this.parent.setState({displayEditor: "notebook"})
+        }else {
+            this.parent.setState({displayEditor: "pythoneditor"})
         }
 
         this.setState({activeKey});
@@ -75,8 +77,15 @@ export class TabEditor extends React.Component {
                         callback({ref: ref, activeKey: activeKey})
                     }
                 }} activeKey={activeKey}/>
-            } else {
+            } else if(tabName.endsWith(".nb")) {
                 return <NodeBook parent={this.parent} parentCallback={(ref) => {
+                    this.pushRef({ref: ref, activeKey: activeKey})
+                    if (callback) {
+                        callback({ref: ref, activeKey: activeKey})
+                    }
+                }} activeKey={activeKey}/>
+            }else if(tabName.endsWith(".py")) {
+                return <PythonEditor parent={this.parent} parentCallback={(ref) => {
                     this.pushRef({ref: ref, activeKey: activeKey})
                     if (callback) {
                         callback({ref: ref, activeKey: activeKey})

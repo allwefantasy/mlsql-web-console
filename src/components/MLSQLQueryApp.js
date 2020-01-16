@@ -47,6 +47,8 @@ class MLSQLQueryApp extends Component {
 
         if (script.name.endsWith(".nb")) {
             self.setState({displayEditor: "notebook"})
+        }else if (script.name.endsWith(".py")) {
+            self.setState({displayEditor: "pythoneditor"})
         } else {
             self.setState({displayEditor: "normal"})
         }
@@ -73,7 +75,7 @@ class MLSQLQueryApp extends Component {
     }
 
     tableAndDash = () => {
-        if (this.state.displayEditor !== "notebook") {
+        if (this.state.displayEditor !== "notebook" || this.state.displayEditor !== "pythoneditor") {
             return <div>
                 <Resizable defaultSize={{height: "300px"}} onResize={() => {
                     this.messageBox.current.editor.resize();
