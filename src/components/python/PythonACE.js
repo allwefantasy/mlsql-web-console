@@ -8,14 +8,15 @@ import 'brace/ext/language_tools';
 
 import '../MLSQLAceEditor.scss'
 import 'antd/dist/antd.css';
-import {Button, Tooltip, Progress} from 'antd';
-import {MLSQLAPI} from "../../service/MLSQLAPI";
+import { Button, Tooltip, Progress } from 'antd';
+import { MLSQLAPI } from "../../service/MLSQLAPI";
 import * as BackendConfig from "../../service/BackendConfig";
 import * as HTTP from "../../service/HTTPMethod";
-import {Select} from 'antd';
-import {Resizable} from "re-resizable";
+import { Select } from 'antd';
+import { Resizable } from "re-resizable";
+import {ActionProxy} from '../../backend_service/ActionProxy'
 
-const {Option} = Select;
+const { Option } = Select;
 
 const uuidv4 = require('uuid/v4');
 
@@ -26,14 +27,20 @@ class PythonACE extends React.Component {
         super(props)
         this.language = this.props.language || "sql"
         this.queryApp = this.props.parent.queryApp
-        this.aceEditorRef = React.createRef()
-        this.commandGroup = React.createRef()        
-        this.state = {value: "", loading: false}
+
+        this.state = { value: "", loading: false }
+        
+        this.executeQuery = this.executeQuery.bind(this)
+        this.cancelQuery = this.cancelQuery.bind(this)
+        this.queryLog = this.queryLog.bind(this)
+        this.cancelQueryLog = this.cancelQueryLog.bind(this)
+        
+        this.log = {}
     }
 
     text = (value, scriptId) => {
-        this.setState({value: value, scriptId: scriptId}, () => {
-            this.aceEditorRef.current.editor.setValue(value, 1)
+        this.setState({ value: value, scriptId: scriptId }, () => {
+            this.aceEditorRef.editor.setValue(value, 1)
         })
 
     }
@@ -79,12 +86,10 @@ class PythonACE extends React.Component {
 
     }
 
-    executeQuery = () => {
-
-        const jobName = uuidv4()
-
-        this.enterLoading(jobName)
-        const api = new MLSQLAPI(BackendConfig.RUN_SCRIPT)
+    async executeQuery() {
+        this.commandGroup.setState({loading:true})
+        this.jobName = uuidv4()        
+        const api = new ActionProxy()
         const self = this
         self.getMessageBoxAceEditor().setValue("")
         self.getDisplay().update(JSON.parse("[]"))
@@ -97,38 +102,67 @@ class PythonACE extends React.Component {
             finalSQL = select
         }
 
-        const startTime = new Date().getTime();
-
-        function measureTime() {
-            self.exitLoading()
-            const endTime = new Date().getTime()
-            return endTime - startTime
-        }
-    
         const scriptId = self.state.scriptId
+        this.queryLog()
 
-        api.runScript({
-            jobName: jobName,
-            background: (this.state.background || false),            
+        const res = await api.runScript(finalSQL, this.jobName, {
             scriptId: scriptId,
             runMode: "python",
-            executeMode:"python"
-        }, finalSQL, (wow) => {
-            try {                
-                self.appendLog(wow.join("\n"))
-            } catch (e) {
-                console.log(e)
-                self.appendLog("Can not display the result. raw data:\n" + JSON.stringify(wow, null, 2))
-            }
-            self.exitLoading()
-
-        }, (fail) => {
-            self.exitLoading()
-            let failRes = fail.toString()
-            self.appendLog(failRes)            
-            
+            executeMode: "python"
         })
+        
+        if (res.status !== 200) {
+            this.cancelQueryLog()
+            this.appendLog(res.content) 
+            this.commandGroup.setState({loading:false})           
+            return
+        }
+        try {
+            this.appendLog(res.content.join("\n"))
+        }catch(ex){
+            this.appendLog(res.content["msg"])
+        }
+        
+        this.commandGroup.setState({loading:false})
+    }
 
+    async cancelQuery() {
+        if (!this.jobName) return
+        const jobName = uuidv4()
+        const api = new ActionProxy()
+        const res = await api.runScript("!kill " + this.jobName+";", jobName, {})                        
+        try {
+            this.appendLog(res.content[0]['description'])                
+        }catch(e){
+            this.appendLog(res.content)
+        }
+        
+        this.jobName = null
+        this.cancelQueryLog()
+    }
+
+    async cancelQueryLog(){
+        if(this.intervalTimer){
+            clearInterval(this.intervalTimer)
+            this.intervalTimer = null
+        }
+    }
+
+    async queryLog() {    
+        this.cancelQueryLog()
+        this.intervalTimer = setInterval(async () => {
+            const jobName = uuidv4()
+            const api = new ActionProxy()
+            console.log(`load _mlsql_.\`log/${this.log['offset']}\` where filePath="engine_log" as output;`)
+            const res = await api.runScript(`load _mlsql_.\`log/${this.log['offset'] || -1}\` where filePath="engine_log" as output;`, jobName, {})
+            const jsonObj = res.content[0]    
+            if (jsonObj['value'].length > 0) {
+                this.appendLog(jsonObj['value'].map(item=>{
+                    return item.split("__MMMMMM__")[1]
+                }).join("\n"))
+            }
+            this.log['offset'] = jsonObj["offset"]
+        },2000)        
     }
 
     getAllText = () => {
@@ -149,7 +183,7 @@ class PythonACE extends React.Component {
     }
 
     getAceEditor = () => {
-        return this.aceEditorRef.current.editor
+        return this.aceEditorRef.editor
     }
 
     getMessageBoxAceEditor = () => {
@@ -173,24 +207,14 @@ class PythonACE extends React.Component {
         return this.queryApp.display.current
     }
 
-    enterLoading = (jobName) => {
-        
-    }
-
-    exitLoading = () => {
-              
-    }
-    etOver = (evt) => {       
-    }
-
     render() {
         const self = this
         return (
             <div className="mlsql-editor-area">
 
                 <div onDragOver={(evt) => evt.preventDefault()} onDrop={this.etOver}>
-                    <Resizable defaultSize={{height: "500px"}} onResize={()=>{this.aceEditorRef.current.editor.resize();}}><AceEditor
-                        ref={this.aceEditorRef}
+                    <Resizable defaultSize={{ height: "500px" }} onResize={() => { this.aceEditorRef.current.editor.resize(); }}><AceEditor
+                        ref={item => this.aceEditorRef=item}
                         mode={this.language}
                         theme="github"
                         width={"100%"}
@@ -215,16 +239,9 @@ class PythonACE extends React.Component {
                     /></Resizable>
                 </div>
 
-                <CommandGroup ref={this.commandGroup} parent={this}/>                
+                <CommandGroup ref={item => this.commandGroup=item} parent={this} />
             </div>
         )
-    }
-
-    startLogging = () => {
-      
-    }
-    stopLogging = () => {
-
     }
 
 }
@@ -232,20 +249,23 @@ class PythonACE extends React.Component {
 class CommandGroup extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {loading: false, timeout: "-1"}
+        this.state = { loading: false, timeout: "-1" }
         this.parent = props.parent
     }
 
     onChange = (value) => {
-        this.setState({timeout: value})
+        this.setState({ timeout: value })
     }
+    
 
     render() {
         return (
             <div className="mslql-editor-buttons">
                 <Button onClick={this.parent.executeQuery}
-                        loading={this.state.loading}>Run</Button>
-                <Button onClick={this.parent.executeSave}>Save</Button>                                
+                    loading={this.state.loading}>Run</Button>
+                <Button onClick={this.parent.cancelQuery}>Cancel</Button>
+                <Button onClick={this.parent.executeSave}>Save</Button>
+
             </div>
         )
     }
