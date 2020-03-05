@@ -16,6 +16,7 @@ import {assert} from "../common/tool"
 import {ButtonToCommand} from "./et/ButtonToCommand";
 import {Select} from 'antd';
 import {Resizable} from "re-resizable";
+import { LogMonitor } from "../common/LogMonitor";
 
 const {Option} = Select;
 
@@ -33,6 +34,8 @@ class MLSQLAceEditor extends React.Component {
         this.resourceProgressRef = React.createRef()
         this.jobProgress = React.createRef()
         this.taskProgressRef = React.createRef()
+
+        this.logMonitor = new LogMonitor(this.appendLog)
         this.state = {value: "", loading: false}
     }
 
@@ -85,6 +88,7 @@ class MLSQLAceEditor extends React.Component {
     }
 
     executeQuery = () => {
+        this.logMonitor.queryLog()
         const jobName = uuidv4()
 
         this.enterLoading(jobName)
@@ -116,6 +120,7 @@ class MLSQLAceEditor extends React.Component {
             background: (this.state.background || false),
             timeout: timeout
         }, finalSQL, (wow) => {
+            this.logMonitor.cancelQueryLog()
             try {
                 self.queryApp.setData(wow)
                 self.getDisplay().update(wow)
@@ -127,6 +132,7 @@ class MLSQLAceEditor extends React.Component {
             self.exitLoading()
 
         }, (fail) => {
+            this.logMonitor.cancelQueryLog()
             self.exitLoading()
             let failRes = fail.toString()
             try {
@@ -184,19 +190,14 @@ class MLSQLAceEditor extends React.Component {
         this.commandGroup.current.setState({loading: true});
         this.resourceProgressRef.current.enter({jobName: jobName})
         this.jobProgress.current.enter({jobName: jobName})
-        this.taskProgressRef.current.enter({jobName: jobName})
-        // this.logProgress = new LogProgress(this)
-        // this.logProgress.enter()
+        this.taskProgressRef.current.enter({jobName: jobName})        
     }
 
     exitLoading = () => {
         this.commandGroup.current.setState({loading: false});
         this.jobProgress.current.exit()
         this.resourceProgressRef.current.exit()
-        this.taskProgressRef.current.exit()
-        // if (this.logProgress) {
-        //     this.logProgress.exit()
-        // }
+        this.taskProgressRef.current.exit()        
     }
     etOver = (evt) => {
         const et = this.queryApp.etRef.current
@@ -269,19 +270,6 @@ class MLSQLAceEditor extends React.Component {
         )
     }
 
-    startLogging = () => {
-        if (!this.logProgress) {
-            this.logProgress = new LogProgress(this)
-        }
-        this.logProgress.enter()
-    }
-    stopLogging = () => {
-        if (this.logProgress) {
-            this.logProgress.exit()
-        }
-
-    }
-
 }
 
 class CommandGroup extends React.Component {
@@ -300,9 +288,7 @@ class CommandGroup extends React.Component {
             <div className="mslql-editor-buttons">
                 <Button onClick={this.parent.executeQuery}
                         loading={this.state.loading}>Run</Button>
-                <Button onClick={this.parent.executeSave}>Save</Button>
-                <Button onClick={this.parent.startLogging}>Start logging</Button>
-                <Button onClick={this.parent.stopLogging}>Stop logging</Button>
+                <Button onClick={this.parent.executeSave}>Save</Button>                
                 Job Timeout:<Select
                 onChange={this.onChange}
                 style={{width: "120px"}}
@@ -320,69 +306,6 @@ class CommandGroup extends React.Component {
     }
 
 }
-
-class LogProgress {
-    constructor(msgBox) {
-        this.msgBox = msgBox
-        this.logProgress = "loaded"
-    }
-
-    enter = (params) => {
-        const self = this
-        if (self.intervalTimer) {
-            return
-        }
-        this.mark = true
-        this.offset = -1
-        setTimeout(() => {
-            if (self.mark) {
-                self.loading = true
-                self.intervalTimer = setInterval(() => {
-                        if (self.logProgress === "loading") {
-                            return
-                        }
-                        self.logProgress = "loading"
-                        const api = new MLSQLAPI(BackendConfig.RUN_SCRIPT)
-
-                        api.runScript({}, `load _mlsql_.\`log/${self.offset}\` where filePath="engine_log" as output;`, (jsonArray) => {
-                            const jsonObj = jsonArray[0]
-                            if (jsonObj['value'].length > 0) {
-                                this.msgBox.appendLog(jsonObj['value'].join("\n"))
-                            }
-                            self.offset = jsonObj["offset"]
-                            self.logProgress = "loaded"
-                        }, (str) => {
-                            self.logProgress = "loaded"
-                            try {
-                                this.msgBox.appendLog(str)
-                            } catch (e) {
-                                console.log(e)
-                            }
-
-                        })
-
-                    }
-
-                    , 1000)
-            }
-
-        }, 1000)
-
-    }
-
-    exit = () => {
-        const self = this
-        self.loading = false
-        self.mark = false
-        if (self.intervalTimer) {
-            clearInterval(self.intervalTimer)
-            self.intervalTimer = null
-        }
-
-    }
-
-}
-
 
 class JobProgress extends React.Component {
     constructor(props) {

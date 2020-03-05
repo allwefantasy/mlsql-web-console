@@ -15,6 +15,7 @@ import * as HTTP from "../../service/HTTPMethod";
 import { Select } from 'antd';
 import { Resizable } from "re-resizable";
 import {ActionProxy} from '../../backend_service/ActionProxy'
+import { LogMonitor } from "../../common/LogMonitor";
 
 const { Option } = Select;
 
@@ -32,8 +33,8 @@ class PythonACE extends React.Component {
         
         this.executeQuery = this.executeQuery.bind(this)
         this.cancelQuery = this.cancelQuery.bind(this)
-        this.queryLog = this.queryLog.bind(this)
-        this.cancelQueryLog = this.cancelQueryLog.bind(this)
+        
+        this.logMonitor = new LogMonitor(this.appendLog)        
         
         this.log = {}
     }
@@ -103,26 +104,24 @@ class PythonACE extends React.Component {
         }
 
         const scriptId = self.state.scriptId
-        this.queryLog()
-
+        this.logMonitor.queryLog()
         const res = await api.runScript(finalSQL, this.jobName, {
             scriptId: scriptId,
             runMode: "python",
             executeMode: "python"
-        })
-        
+        })        
         if (res.status !== 200) {
-            this.cancelQueryLog()
+            this.logMonitor.cancelQueryLog()            
             this.appendLog(res.content) 
             this.commandGroup.setState({loading:false})           
             return
         }
-        try {
+        try {            
             this.appendLog(res.content.join("\n"))
         }catch(ex){
             this.appendLog(res.content["msg"])
         }
-        
+        this.logMonitor.cancelQueryLog()
         this.commandGroup.setState({loading:false})
     }
 
@@ -138,31 +137,7 @@ class PythonACE extends React.Component {
         }
         
         this.jobName = null
-        this.cancelQueryLog()
-    }
-
-    async cancelQueryLog(){
-        if(this.intervalTimer){
-            clearInterval(this.intervalTimer)
-            this.intervalTimer = null
-        }
-    }
-
-    async queryLog() {    
-        this.cancelQueryLog()
-        this.intervalTimer = setInterval(async () => {
-            const jobName = uuidv4()
-            const api = new ActionProxy()
-            console.log(`load _mlsql_.\`log/${this.log['offset']}\` where filePath="engine_log" as output;`)
-            const res = await api.runScript(`load _mlsql_.\`log/${this.log['offset'] || -1}\` where filePath="engine_log" as output;`, jobName, {})
-            const jsonObj = res.content[0]    
-            if (jsonObj['value'].length > 0) {
-                this.appendLog(jsonObj['value'].map(item=>{
-                    return item.split("__MMMMMM__")[1]
-                }).join("\n"))
-            }
-            this.log['offset'] = jsonObj["offset"]
-        },2000)        
+        this.logMonitor.cancelQueryLog()
     }
 
     getAllText = () => {
