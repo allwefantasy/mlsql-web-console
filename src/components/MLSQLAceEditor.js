@@ -5,6 +5,7 @@ import AceEditor from 'react-ace';
 import 'brace/mode/sql';
 import 'brace/theme/github';
 import 'brace/ext/language_tools';
+import CodeIntellegence from '../service2/CodeIntellegence'
 
 import './MLSQLAceEditor.scss'
 import 'antd/dist/antd.css';
@@ -17,6 +18,7 @@ import {ButtonToCommand} from "./et/ButtonToCommand";
 import {Select} from 'antd';
 import {Resizable} from "re-resizable";
 import { LogMonitor } from "../common/LogMonitor";
+import {ActionProxy} from '../backend_service/ActionProxy'
 
 const {Option} = Select;
 
@@ -36,6 +38,10 @@ class MLSQLAceEditor extends React.Component {
         this.taskProgressRef = React.createRef()
 
         this.logMonitor = new LogMonitor(this.appendLog)
+
+        this.cancelQuery = this.cancelQuery.bind(this)
+        this.executeQuery = this.executeQuery.bind(this)
+
         this.state = {value: "", loading: false}
     }
 
@@ -50,6 +56,25 @@ class MLSQLAceEditor extends React.Component {
         if (this.props.parentCallback) {
             this.props.parentCallback(this)
         }
+
+        var staticWordCompleter = {
+            getCompletions: async function(editor, session, pos, prefix, callback) {
+                var wordList = await CodeIntellegence.getSuggestList(editor.getValue(),pos.row,pos.column)
+                callback(null, wordList.map(function(word) {
+                    let desc = ""
+                    if("desc" in word.extra){
+                        desc= word.extra["desc"]
+                    }
+                    return {
+                        caption: word.name,
+                        value: word.name,
+                        meta: desc
+                    };
+                }));
+        
+            }
+        }
+        this.getAceEditor().completers = [staticWordCompleter]
     }
 
     onChange(newValue) {
@@ -87,12 +112,11 @@ class MLSQLAceEditor extends React.Component {
 
     }
 
-    executeQuery = () => {
+    async executeQuery(){
         this.logMonitor.queryLog()
         const jobName = uuidv4()
 
-        this.enterLoading(jobName)
-        const api = new MLSQLAPI(BackendConfig.RUN_SCRIPT)
+        this.enterLoading(jobName)    
         const self = this
         self.getMessageBoxAceEditor().setValue("")
         self.getDisplay().update(JSON.parse("[]"))
@@ -114,34 +138,61 @@ class MLSQLAceEditor extends React.Component {
         }
 
         const timeout = this.commandGroup.current.state.timeout
+        this.jobName = jobName
 
-        api.runScript({
+        const api = new ActionProxy()
+        const res = await api.runScript(finalSQL, jobName, {
             jobName: jobName,
             background: (this.state.background || false),
             timeout: timeout
-        }, finalSQL, (wow) => {
+        }) 
+        
+        //clean status
+        try {
             this.logMonitor.cancelQueryLog()
+            self.exitLoading() 
+            this.jobName = null
+        }catch(e){
+
+        }                
+        if(res.status !== 200){            
+            let failRes = ""
             try {
-                self.queryApp.setData(wow)
-                self.getDisplay().update(wow)
+                failRes = JSON.parse(res.content)[0]["msg"]
+            } catch (e) {
+                failRes = res.content
+            }            
+            self.appendLog(failRes + "\nTime cost:" + measureTime() + "ms")            
+            return 
+        }
+
+        if(res.status === 200){
+            try {
+                self.queryApp.setData(res.content)
+                self.getDisplay().update(res.content)
                 self.appendLog("\nTime cost:" + measureTime() + "ms")
             } catch (e) {
                 console.log(e)
-                self.appendLog("Can not display the result. raw data:\n" + JSON.stringify(wow, null, 2))
+                self.appendLog("Can not display the result. raw data:\n" + JSON.stringify(res.content, null, 2))
             }
-            self.exitLoading()
+                                   
+        }        
 
-        }, (fail) => {
-            this.logMonitor.cancelQueryLog()
-            self.exitLoading()
-            let failRes = fail.toString()
-            try {
-                failRes = JSON.parse(failRes)["msg"]
-            } catch (e) {
-            }
-            self.appendLog(failRes + "\nTime cost:" + measureTime() + "ms")
-        })
+    }
 
+    async cancelQuery() {
+        if (!this.jobName) return
+        const jobName = uuidv4()
+        const api = new ActionProxy()
+        const res = await api.runScript("!kill " + this.jobName+";", jobName, {})                        
+        try {
+            this.appendLog(res.content[0]['description'])                
+        }catch(e){
+            this.appendLog(res.content)
+        }
+        
+        this.jobName = null
+        this.logMonitor.cancelQueryLog()
     }
 
     getAllText = () => {
@@ -288,6 +339,7 @@ class CommandGroup extends React.Component {
             <div className="mslql-editor-buttons">
                 <Button onClick={this.parent.executeQuery}
                         loading={this.state.loading}>Run</Button>
+                <Button onClick={this.parent.cancelQuery}>Cancel</Button>      
                 <Button onClick={this.parent.executeSave}>Save</Button>                
                 Job Timeout:<Select
                 onChange={this.onChange}

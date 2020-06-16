@@ -75,21 +75,7 @@ export class MLSQLAPI {
         const jobName = uuidv4()
         const self = this
         auth.user((jsonRes) => {
-            const {userName, backendTags} = jsonRes
-
-            if (!backendTags) {
-                serverErrorCallback(`
-                
-                ---------------Warning--------------------
-                
-                Please make sure you have backend configured. 
-                If not, please contact admin;
-                
-                ------------------------------------------
-                `)
-                return
-            }
-
+            const {userName, backendTags} = jsonRes            
             const finalParams = {
                 sql: sql,
                 owner: userName,

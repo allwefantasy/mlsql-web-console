@@ -22,8 +22,7 @@ export default class MainPage extends React.Component {
 
     componentDidMount() {
         const api = new MLSQLAPI(RUN_SCRIPT)
-        api.newRunScript({}, `load delta.\`__mlsql__.plugins\` as plugins;
-select * from plugins where pluginType="script" as output;`, json => {
+        api.newRunScript({}, `!plugin list "script";`, json => {
             this.setState({data_menu: json}, () => {
                 if (json.length > 0) {
                     this.showTut(json[0]['pluginName'])
