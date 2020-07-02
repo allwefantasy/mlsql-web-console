@@ -5,7 +5,7 @@ import AceEditor from 'react-ace';
 import 'brace/mode/sql';
 import 'brace/theme/github';
 import 'brace/ext/language_tools';
-import CodeIntellegence from '../service2/CodeIntellegence'
+import CodeIntellegence from '../v1/service/CodeIntellegence'
 
 import './MLSQLAceEditor.scss'
 import 'antd/dist/antd.css';
