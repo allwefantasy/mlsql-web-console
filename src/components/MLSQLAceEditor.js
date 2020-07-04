@@ -12,13 +12,10 @@ import 'antd/dist/antd.css';
 import {Button, Tooltip, Progress} from 'antd';
 import {MLSQLAPI} from "../service/MLSQLAPI";
 import * as BackendConfig from "../service/BackendConfig";
-import * as HTTP from "../service/HTTPMethod";
 import {assert} from "../common/tool"
 import {ButtonToCommand} from "./et/ButtonToCommand";
 import {Select} from 'antd';
 import {Resizable} from "re-resizable";
-import { LogMonitor } from "../common/LogMonitor";
-import {ActionProxy} from '../backend_service/ActionProxy'
 import EditorOp from "../v1/comp_op/EditorOp";
 import AsyncExecuter from "../v1/async_execute/AsyncExecuter";
 
@@ -38,8 +35,6 @@ class MLSQLAceEditor extends React.Component {
         this.resourceProgressRef = React.createRef()
         this.jobProgress = React.createRef()
         this.taskProgressRef = React.createRef()
-
-        this.logMonitor = new LogMonitor(this.appendLog)
 
         this.cancelQuery = this.cancelQuery.bind(this)
         this.executeQuery = this.executeQuery.bind(this)
@@ -83,56 +78,30 @@ class MLSQLAceEditor extends React.Component {
 
     }
 
-    executeSave = () => {
-        const api = new MLSQLAPI(BackendConfig.CREATE_SCRIPT_FILE)
-        const self = this
-
-        const messageBox = this.getMessageBoxAceEditor()
-
-        if (!self.state.scriptId) {
-            messageBox.setValue("no file are opened, cannot executeSave")
-            return
-        }
-
-        api.request(HTTP.Method.POST, {
-            id: self.state.scriptId,
-            content: self.getAceEditor().getValue()
-        }, (ok) => {
-            if (ok.status != 200) {
-                ok.json((wow) => {
-                    self.appendLog(wow["msg"])
-                }, (jsonErr) => {
-                    self.appendLog(jsonErr)
-                })
-            } else {
-                self.appendLog("saved")
-            }
-
-        }, (fail) => {
-            self.appendLog(fail)
-        })
-
+    async executeSave(){
+        const executor = new AsyncExecuter(this)
+        const res = await executor.saveFile({})
+        return res  
     }
 
     async executeQuery(){
-        const executor = new AsyncExecuter(this)
-        const res = await executor.run({})
+        if(this.executor && !this.executor.closed){
+            this.log(`Job ${this.jobName} is still running.`)
+            this.log(`Try to kill this job or wait it to finish`)
+            return
+        }
+        this.executor = new AsyncExecuter(this)
+        const res = await this.executor.run({})
+        if(!this.executor.closed){
+            this.executor.closed = true
+        }
         return res
     }
 
     async cancelQuery() {
-        if (!this.jobName) return
-        const jobName = uuidv4()
-        const api = new ActionProxy()
-        const res = await api.runScript("!kill " + this.jobName+";", jobName, {})                        
-        try {
-            this.appendLog(res.content[0]['description'])                
-        }catch(e){
-            this.appendLog(res.content)
-        }
-        
-        this.jobName = null
-        this.logMonitor.cancelQueryLog()
+       if(this.executor){
+          this.executor.killJob()
+       } 
     }
 
     getAllText = () => {

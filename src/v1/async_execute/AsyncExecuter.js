@@ -16,12 +16,15 @@ export default class AsyncExecuter {
       this.resourceProgressRef = this.queryPanel.resourceProgressRef.current
       this.jobProgressRef = this.queryPanel.jobProgress.current
       this.taskProgressRef = this.queryPanel.taskProgressRef.current
-      console.log(this.queryPanel.queryApp)
+      
       this.displayRef = this.queryPanel.queryApp.display.current
       this.dashRef = this.queryPanel.queryApp.dash.current
 
 
       this.timeout = this.commandGroupRef.state.timeout
+      this.logInfo = {}
+
+      this.closed = false
     
 
       
@@ -56,10 +59,32 @@ export default class AsyncExecuter {
         const endTime = new Date().getTime()
         return endTime - startTime
     }
+
+
+
+    async saveFile(params){
+      const scriptId = this.queryPanel.state.scriptId
+      if(!scriptId){
+         this.log("No file are opened, cannot execute save action")
+         return
+      }
+      const res = await this.client.post(RemoteAction.SAVE_SCRIPT_FILE,{
+        id: scriptId,
+        content: this.editorOp.getText()
+      })
+      if(res.status !== 200){
+          this.log(res.content)
+      }
+      if(res.status === 200){
+          this.log(`File[${scriptId}] have been saved.`)
+      }
+      return res
+
+    }
+
     async run(params) {
         this.prepare()
         const startTime = new Date().getTime()
-        console.log("Execute "+this.jobName+ "\n"+this.sql)
         const res = await this.client.runScript(this.sql, this.jobName, Object.assign(params,{
             jobName: this.jobName,
             async: true,
@@ -71,34 +96,67 @@ export default class AsyncExecuter {
             return []
         }
 
-        this.intervalTimer = setInterval(async () => {
-            const jobName = uuidv4()
-            const res = await this.client.get(RemoteAction.JOB_DETAIL,{jobName:this.jobName})
-            const jobInfo = res.content
-            // job fail
-            if(jobInfo.status === 3){
-               this.cancelCheckJob() 
-               this.exitLoading() 
-               this.log(jobInfo.response)
-            }
-            // job success
-            if(jobInfo.status === 2){
-                this.cancelCheckJob()
-                this.exitLoading() 
-                this.displayRef.update(JSON.parse(jobInfo.response)) 
-            }
-        }, 2000)
+        this.intervalTimer = setInterval(async () => {            
+            await this.monitorJob()
+            await this.monitorLog()
+        }, 1000)
 
         //refresh job list in dash
         if(this.dashRef.queryHistory){
             this.dashRef.queryHistory.reload()  
         }
-        return res.content
+        return res
     }
-    async cancelCheckJob() {
+    async cancelMonitor() {
         if (this.intervalTimer) {
             clearInterval(this.intervalTimer)
             this.intervalTimer = null
         }
+    }
+
+    async monitorJob(){
+        const res = await this.client.get(RemoteAction.JOB_DETAIL,{jobName:this.jobName})
+        const jobInfo = res.content
+        // job fail
+        if(jobInfo.status === 3){
+           this.closed = true
+           this.cancelMonitor() 
+           this.exitLoading() 
+           this.log(jobInfo.reason)
+        }
+        // job success
+        if(jobInfo.status === 2){
+            this.closed = true
+            this.cancelMonitor()
+            this.exitLoading() 
+            this.displayRef.update(JSON.parse(jobInfo.response)) 
+        }
+    }
+
+    async monitorLog(){
+        const jobName = uuidv4()               
+        const res = await this.client.runScript(`load _mlsql_.\`log/${this.logInfo['offset'] || -1}\` where filePath="engine_log" as output;`, jobName, {})
+        const jsonObj = res.content[0]
+        if (jsonObj['value'].length > 0) {
+            this.log(jsonObj['value'].map(item => {
+                return item.split("__MMMMMM__")[1]
+            }).join("\n"))
+        }
+        this.logInfo['offset'] = jsonObj["offset"]
+    }
+
+    
+
+    async killJob(){
+        if (!this.jobName) return
+        const jobName = uuidv4()
+        const res = await this.client.runScript("!kill " + this.jobName+";", jobName, {})                        
+        try {
+            this.log(res.content[0]['description'])                
+        }catch(e){
+            this.log(res.content)
+        }
+        this.closed = true
+        this.jobName = null
     }
 }
