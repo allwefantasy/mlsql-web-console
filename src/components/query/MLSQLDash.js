@@ -10,6 +10,7 @@ import MLSQLLineChart from "../dash/MLSQLLineChart";
 import MLSQLStream from "../dash/MLSQLStream";
 import MLSQLResource from "../dash/MLSQLResource";
 import MLSQLHTML from "../dash/MLSQLHTML";
+import QueryHistory from "../../v1/async_execute/QueryHistory"
 
 
 const Panel = Collapse.Panel;
@@ -108,6 +109,9 @@ export class MLSQLDash extends PureComponent {
                     <TabPane tab="Dashboard" key="2">{this.renderDash()}</TabPane>
                     <TabPane tab="RawData" key="3">
                         <pre>{MLSQLStream.renderRawData(this.state.data)}</pre>
+                    </TabPane>
+                    <TabPane tab="History" key="4">
+                        <QueryHistory ref={(et)=>this.queryHistory=et}/>
                     </TabPane>
                 </Tabs>
             </Panel>

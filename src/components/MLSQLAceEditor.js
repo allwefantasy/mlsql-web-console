@@ -19,6 +19,8 @@ import {Select} from 'antd';
 import {Resizable} from "re-resizable";
 import { LogMonitor } from "../common/LogMonitor";
 import {ActionProxy} from '../backend_service/ActionProxy'
+import EditorOp from "../v1/comp_op/EditorOp";
+import AsyncExecuter from "../v1/async_execute/AsyncExecuter";
 
 const {Option} = Select;
 
@@ -113,71 +115,9 @@ class MLSQLAceEditor extends React.Component {
     }
 
     async executeQuery(){
-        this.logMonitor.queryLog()
-        const jobName = uuidv4()
-
-        this.enterLoading(jobName)    
-        const self = this
-        self.getMessageBoxAceEditor().setValue("")
-        self.getDisplay().update(JSON.parse("[]"))
-
-        const select = self.getSelection()
-        let finalSQL = self.getAllText()
-
-
-        if (select !== '') {
-            finalSQL = select
-        }
-
-        const startTime = new Date().getTime();
-
-        function measureTime() {
-            self.exitLoading()
-            const endTime = new Date().getTime()
-            return endTime - startTime
-        }
-
-        const timeout = this.commandGroup.current.state.timeout
-        this.jobName = jobName
-
-        const api = new ActionProxy()
-        const res = await api.runScript(finalSQL, jobName, {
-            jobName: jobName,
-            background: (this.state.background || false),
-            timeout: timeout
-        }) 
-        
-        //clean status
-        try {
-            this.logMonitor.cancelQueryLog()
-            self.exitLoading() 
-            this.jobName = null
-        }catch(e){
-
-        }                
-        if(res.status !== 200){            
-            let failRes = ""
-            try {
-                failRes = JSON.parse(res.content)[0]["msg"]
-            } catch (e) {
-                failRes = res.content
-            }            
-            self.appendLog(failRes + "\nTime cost:" + measureTime() + "ms")            
-            return 
-        }
-
-        if(res.status === 200){
-            try {
-                self.queryApp.setData(res.content)
-                self.getDisplay().update(res.content)
-                self.appendLog("\nTime cost:" + measureTime() + "ms")
-            } catch (e) {
-                console.log(e)
-                self.appendLog("Can not display the result. raw data:\n" + JSON.stringify(res.content, null, 2))
-            }
-                                   
-        }        
-
+        const executor = new AsyncExecuter(this)
+        const res = await executor.run({})
+        return res
     }
 
     async cancelQuery() {
@@ -200,33 +140,31 @@ class MLSQLAceEditor extends React.Component {
     }
 
     getSelection = () => {
-        let selectionRange = this.getAceEditor().getSelectionRange()
-        let content = this.getAceEditor().session.getTextRange(selectionRange);
-        return content
+        return this.getEditorOp().getSelection()
     }
 
     appendToEditor = (str) => {
-        const editor = this.getAceEditor()
-        const p = editor.getCursorPosition()
-        editor.session.insert(p, str)
-        editor.focus();
+        return this.getEditorOp().insertAfterCursor(str)
+    }
+
+    getEditorOp=()=>{
+        return new EditorOp(this.aceEditorRef.current)
+    }
+
+    getConsoleOp=()=>{
+        return new EditorOp(this.queryApp.messageBox.current) 
     }
 
     getAceEditor = () => {
-        return this.aceEditorRef.current.editor
+        return this.getEditorOp().editor
     }
 
     getMessageBoxAceEditor = () => {
-        return this.queryApp.messageBox.current.editor
+        return this.getConsoleOp().editor
     }
 
     appendLog = (msg) => {
-        const editor = this.getMessageBoxAceEditor()
-        const session = editor.session
-        session.insert({
-            row: session.getLength(),
-            column: 0
-        }, "\n" + msg)
+        return this.getConsoleOp().append(msg)
     }
 
     getDashBoard = () => {
