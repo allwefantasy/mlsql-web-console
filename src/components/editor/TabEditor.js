@@ -64,11 +64,11 @@ export class TabEditor extends React.Component {
         this.setState({activeKey});
     }
 
-    onEdit = (targetKey, action) => {
+    onEdit = (targetKey, action) => {        
         this[action](targetKey);
     }
 
-    addFull = (tabName, callback) => {
+    addFull = (tabName, callback) => {    
         const editor = (activeKey) => {
             if (tabName.endsWith(".mlsql")) {
                 return <MLSQLAceEditor parent={this.parent} parentCallback={(ref) => {
@@ -105,7 +105,7 @@ export class TabEditor extends React.Component {
     }
 
     add = () => {
-        this.addFull()
+        this.addFull('MLSQL ' + (this.newTabIndex+1),(params)=>{})
     }
 
     getPaneIndexByActiveKey = (targetKey) => {

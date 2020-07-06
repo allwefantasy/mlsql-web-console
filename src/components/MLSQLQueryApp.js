@@ -9,6 +9,7 @@ import {TabEditor} from "./editor/TabEditor";
 import {MLSQLETQuick} from "./et/MLSQLETQuick";
 import {Resizable} from "re-resizable";
 import ExecuteUnit from "./notebook/ExecuteUnit";
+import LeftTreePane from '../v1/async_execute/LeftTreePane';
 
 class MLSQLQueryApp extends Component {
 
@@ -16,7 +17,7 @@ class MLSQLQueryApp extends Component {
         super(props);
         // create a ref to store the textInput DOM element
         this.state = {sqlContent: "", displayEditor: "normal"}
-        this.directoryTree = React.createRef()
+        
         this.editorGroup = React.createRef()
         this.messageBox = React.createRef()
         this.display = React.createRef()
@@ -105,9 +106,9 @@ class MLSQLQueryApp extends Component {
         return (
             <div className="mlsql-queryapp">
 
-                <div className="mlsql-directory-tree">
-                    <ScriptNodeTree ref={this.directoryTree} parent={this}/>
-                </div>
+               <div>
+                   <LeftTreePane ref={(et)=>this.leftTreePaneRef = et} parent={this}></LeftTreePane>
+               </div>
                 <div className="mlsql-editor">
                     <div style={{marginBottom: "10px"}}>
                         <MLSQLETQuick ref={this.etRef} parent={this}/>

@@ -15,7 +15,7 @@ export default class AsyncExecuter {
 
       this.commandGroupRef = this.queryPanel.commandGroup.current
       this.resourceProgressRef = this.queryPanel.resourceProgressRef.current
-      this.jobProgressRef = this.queryPanel.jobProgress.current
+      this.jobProgressRef = this.queryPanel.jobProgressRef
       this.taskProgressRef = this.queryPanel.taskProgressRef.current
       
       this.displayRef = this.queryPanel.queryApp.display.current
@@ -39,13 +39,13 @@ export default class AsyncExecuter {
     enterLoading = () => {
         this.commandGroupRef.setState({loading: true});
         //this.resourceProgressRef.enter({jobName: this.jobName})
-        //this.jobProgressRef.enter({jobName: this.jobName})
+        this.jobProgressRef.enter({jobName: this.jobName})
         //this.taskProgressRef.enter({jobName: this.jobName})        
     }
 
     exitLoading = () => {
         this.commandGroupRef.setState({loading: false});
-        //this.jobProgressRef.exit()
+        this.jobProgressRef.exit()
         //this.resourceProgressRef.exit()
         //this.taskProgressRef.exit()        
     }
@@ -161,5 +161,8 @@ export default class AsyncExecuter {
         }
         this.closed = true
         this.jobName = null
+        this.cancelMonitor() 
+        this.exitLoading()
+        
     }
 }

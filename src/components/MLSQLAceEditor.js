@@ -18,6 +18,7 @@ import {Select} from 'antd';
 import {Resizable} from "re-resizable";
 import EditorOp from "../v1/comp_op/EditorOp";
 import AsyncExecuter from "../v1/async_execute/AsyncExecuter";
+import JobProgress from "../v1/async_execute/JobProgress";
 
 const {Option} = Select;
 
@@ -33,7 +34,7 @@ class MLSQLAceEditor extends React.Component {
         this.aceEditorRef = React.createRef()
         this.commandGroup = React.createRef()
         this.resourceProgressRef = React.createRef()
-        this.jobProgress = React.createRef()
+        
         this.taskProgressRef = React.createRef()
 
         this.cancelQuery = this.cancelQuery.bind(this)
@@ -147,13 +148,13 @@ class MLSQLAceEditor extends React.Component {
     enterLoading = (jobName) => {
         this.commandGroup.current.setState({loading: true});
         this.resourceProgressRef.current.enter({jobName: jobName})
-        this.jobProgress.current.enter({jobName: jobName})
+        this.jobProgressRef.enter({jobName: jobName})
         this.taskProgressRef.current.enter({jobName: jobName})        
     }
 
     exitLoading = () => {
         this.commandGroup.current.setState({loading: false});
-        this.jobProgress.current.exit()
+        this.jobProgressRef.exit()
         this.resourceProgressRef.current.exit()
         this.taskProgressRef.current.exit()        
     }
@@ -220,8 +221,8 @@ class MLSQLAceEditor extends React.Component {
                     /></Resizable>
                 </div>
 
-                <CommandGroup ref={this.commandGroup} parent={this}/>
-                <JobProgress ref={this.jobProgress} parent={this}></JobProgress>
+                <CommandGroup ref={this.commandGroup} parent={this}/>            
+                <JobProgress ref={(et)=>{this.jobProgressRef=et}} parent={this}></JobProgress>
                 <TaskProgress ref={this.taskProgressRef} parent={this}></TaskProgress>
                 <ResourceProgress ref={this.resourceProgressRef} parent={this}></ResourceProgress>
             </div>
@@ -266,79 +267,7 @@ class CommandGroup extends React.Component {
 
 }
 
-class JobProgress extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {loading: false, percent: 0, successPercent: 0, mark: false}
-        this.parent = props.parent
-    }
 
-    enter = (params) => {
-        const self = this
-        this.setState({mark: true})
-        setTimeout(() => {
-                if (self.state.mark) {
-                    self.setState({loading: true})
-                    self.intervalTimer = setInterval(() => {
-                            if (self.resourceCompute === "loading") {
-                                return
-                            }
-                            self.resourceCompute = "loading"
-                            const api = new MLSQLAPI(BackendConfig.RUN_SCRIPT)
-                            assert(params.hasOwnProperty("jobName"), "jobName is required")
-                            const jobName = params["jobName"]
-                            api.runScript({},
-                                `load _mlsql_.\`jobs/get/${jobName}\` as wow;`, (jsonArray) => {
-                                    const jsonObj = jsonArray[0]
-                                    console.log(jsonObj)
-                                    const p = jsonObj.progress.currentJobIndex / jsonObj.progress.totalJob * 100
-                                    self.setState({
-                                        percent: p,
-                                        successPercent: p,
-                                        title: `Jobs: current/Total: ${jsonObj.progress.currentJobIndex}/${jsonObj.progress.totalJob })`
-                                    })
-                                    self.resourceCompute = "loaded"
-                                }, (str) => {
-                                    self.resourceCompute = "loaded"
-                                    try {
-                                        self.parent.appendLog(str)
-                                    } catch (e) {
-                                        console.log(e)
-                                    }
-
-                                })
-
-                        }
-                        ,
-                        1000
-                    )
-                }
-
-            }
-
-            ,
-            1000
-        )
-
-    }
-
-    exit = () => {
-        this.setState({loading: false, percent: 0, successPercent: 0, mark: false})
-        if (this.intervalTimer) {
-            clearInterval(this.intervalTimer);
-        }
-    }
-
-    render() {
-        if (!this.state.loading) return <div></div>
-        return (
-            <div>{this.state.title}
-                <Progress percent={this.state.percent} successPercent={this.state.successPercent}/>
-            </div>
-        )
-    }
-
-}
 
 class ResourceProgress extends React.Component {
     constructor(props) {

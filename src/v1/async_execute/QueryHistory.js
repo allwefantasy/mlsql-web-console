@@ -10,9 +10,10 @@ import EngineService from '../service/EngineService';
 export default class QueryHistory extends React.Component {
     constructor(props){
       super(props)
-      this.queryApp = props.parent.queryApp
+      // here the queryApp is actually MLSQLACEEditor
+      this.queryApp = props.parent.queryApp      
       this.client = new ActionProxy()
-      this.state = {showDetail:false}
+      this.state = {showDetail:false,executeAgainStatus:{}}
       
 
       let defaultRender =  (value,record)=>{
@@ -44,17 +45,26 @@ export default class QueryHistory extends React.Component {
         let cssStyle = {}
         switch (value) {
           case "fail": t = "danger"; break;
+          case "killed": t = "danger"; break;
           case "success": t = "primary"; cssStyle ={backgroundColor:"green"}; break;
-          case "running": t = "primary"; cssStyle ="";break;
+          case "running": t = "primary";break;
         }
         
         return <Button type={t} style={cssStyle}>{value}</Button>
       }
 
-      let killJobRender = (value)=>{  
-        if(!value)  return <div></div>
-        return <Button onClick={async (evt)=>{           
-           const res = await EngineService.killJob(value)
+      let killJobRender = (value,record)=>{  
+        const jobName = record.name
+        if(record.status!=="running"){
+            return <Button type="primary" key={jobName} loading={this.state.executeAgainStatus[jobName]} onClick={async (evt)=>{  
+               this.state.executeAgainStatus[jobName] = true 
+               this.setState(this.state.executeAgainStatus)
+               await EngineService.runJob(record.content)
+               this.reload()
+            }}>Execute again</Button>
+        }
+        return <Button key={jobName} onClick={async (evt)=>{           
+           const res = await EngineService.killJob(jobName)
            this.reload()
          }}>Kill</Button>
       }
@@ -62,7 +72,7 @@ export default class QueryHistory extends React.Component {
       let showTableRender = (value,record)=>{
         return <Button type="link" onClick={async (evt)=>{               
           await this.showResponse(record.name)
-        }}>{value}</Button>      
+        }}><span style={{whiteSpace:"normal",wordWrap:"break-word",width:"100px"}}>{value}</span></Button>      
       }
 
       this.renderConfig = {
@@ -77,6 +87,7 @@ export default class QueryHistory extends React.Component {
     }
 
     async reload(){
+      this.setState({executeAgainStatus:{}})
       const res = await this.client.get(RemoteAction.JOB_LIST,{}) 
       if(res.status == 200){
         if(this.display){
@@ -136,6 +147,7 @@ export default class QueryHistory extends React.Component {
                     onCancel={this.toggleDetail}
                     onOk={this.toggleDetail}
                     cancelText="Cancel"
+                    width="100%"
                     OkText="Ok">                    
          <AceEditor ref={(et)=>this.detailConsole=et}
                         height={"300px"}
@@ -151,6 +163,7 @@ export default class QueryHistory extends React.Component {
                     onCancel={this.toggleResponse}
                     onOk={this.toggleResponse}
                     cancelText="Cancel"
+                    width="100%"
                     OkText="Ok">                    
         <MLSQLQueryDisplay ref={(_display)=>{this.respDisplay = _display}} parent={this}/>
         </Modal> 
