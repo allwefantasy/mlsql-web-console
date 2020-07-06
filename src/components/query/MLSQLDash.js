@@ -111,8 +111,12 @@ export class MLSQLDash extends PureComponent {
                         <pre>{MLSQLStream.renderRawData(this.state.data)}</pre>
                     </TabPane>
                     <TabPane tab="History" key="4">
-                        <QueryHistory ref={(et)=>this.queryHistory=et}/>
+                        <QueryHistory ref={(et)=>this.queryHistory=et} parent={this}/>
                     </TabPane>
+
+                    {/* <TabPane tab="Running jobs" key="5">
+                        <QueryHistory ref={(et)=>this.queryHistory=et}/>
+                    </TabPane> */}
                 </Tabs>
             </Panel>
         </Collapse>)

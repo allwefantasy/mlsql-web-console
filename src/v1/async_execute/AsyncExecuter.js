@@ -1,5 +1,6 @@
 import { ActionProxy } from "../../backend_service/ActionProxy"
 import RemoteAction from "../../backend_service/RemoteAction"
+import EngineService from "../service/EngineService";
 const uuidv4 = require('uuid/v4');
 
 export default class AsyncExecuter {
@@ -114,8 +115,11 @@ export default class AsyncExecuter {
         }
     }
 
-    async monitorJob(){
-        const res = await this.client.get(RemoteAction.JOB_DETAIL,{jobName:this.jobName})
+    async monitorJob(){        
+        const res = await this.client.get(RemoteAction.JOB_DETAIL,
+            {
+                jobName:this.jobName,                
+            })
         const jobInfo = res.content
         // job fail
         if(jobInfo.status === 3){
@@ -135,7 +139,7 @@ export default class AsyncExecuter {
 
     async monitorLog(){
         const jobName = uuidv4()               
-        const res = await this.client.runScript(`load _mlsql_.\`log/${this.logInfo['offset'] || -1}\` where filePath="engine_log" as output;`, jobName, {})
+        const res = await this.client.runScript(`load _mlsql_.\`log/${this.logInfo['offset'] || -1}\` where filePath="engine_log" as output;`, jobName, {"queryType":"robot"})
         const jsonObj = res.content[0]
         if (jsonObj['value'].length > 0) {
             this.log(jsonObj['value'].map(item => {
@@ -149,8 +153,7 @@ export default class AsyncExecuter {
 
     async killJob(){
         if (!this.jobName) return
-        const jobName = uuidv4()
-        const res = await this.client.runScript("!kill " + this.jobName+";", jobName, {})                        
+        const res = await EngineService.killJob(this.jobName)
         try {
             this.log(res.content[0]['description'])                
         }catch(e){

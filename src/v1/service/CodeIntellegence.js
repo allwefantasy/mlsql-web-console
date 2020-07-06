@@ -11,7 +11,8 @@ export default class CodeIntellegence {
         sql: sql, 
         lineNum: lineNum +1,
         columnNum: columnNum,
-        isDebug: true 
+        isDebug: false,
+        queryType: "robot" 
     })
 
     if(res && res.status == 200){
