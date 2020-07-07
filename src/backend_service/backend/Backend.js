@@ -62,8 +62,7 @@ export class Backend {
 
         const final_config = { ...basic_config, ...this.fetch_config }
 
-        try {
-            console.log(newurl)
+        try {            
             const response = await fetch(newurl, final_config);
             if (!response.ok) {
                 const error = await response.text()

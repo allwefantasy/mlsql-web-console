@@ -11,13 +11,14 @@ import MLSQLStream from "../dash/MLSQLStream";
 import MLSQLResource from "../dash/MLSQLResource";
 import MLSQLHTML from "../dash/MLSQLHTML";
 import QueryHistory from "../../v1/async_execute/QueryHistory"
+import ResourceProgress from '../../v1/async_execute/ResourceProgress';
 
 
 const Panel = Collapse.Panel;
 const TabPane = Tabs.TabPane;
 
 function callback(key) {
-
+    
 }
 
 export class MLSQLDash extends PureComponent {
@@ -101,8 +102,15 @@ export class MLSQLDash extends PureComponent {
 
     render() {
         return (<Collapse onChange={callback}>
-            <Panel header="Tools/Dashboard" key="1">
-                <Tabs defaultActiveKey="1" onChange={callback}>
+            <Panel header="Tools/Dashboard" key="0">
+                <Tabs defaultActiveKey="0" onChange={callback} onTabClick={(key)=>{
+                        if(key==="0"){                            
+                            this.resourceProgressRef.reload()
+                        }                        
+                    }}>
+                    <TabPane tab="Cluster Info" key="0">
+                     <ResourceProgress ref={(et)=>this.resourceProgressRef=et} parent={this}></ResourceProgress>
+                    </TabPane>
                     <TabPane tab="Upload" key="1">
                         <UploadDropzone/>
                     </TabPane>

@@ -14,7 +14,7 @@ export default class AsyncExecuter {
       this.sql = selectSQL || this.editorOp.getText() 
 
       this.commandGroupRef = this.queryPanel.commandGroup.current
-      this.resourceProgressRef = this.queryPanel.resourceProgressRef.current
+      //this.resourceProgressRef = this.queryPanel.resourceProgressRef
       this.jobProgressRef = this.queryPanel.jobProgressRef
       this.taskProgressRef = this.queryPanel.taskProgressRef.current
       
@@ -38,14 +38,13 @@ export default class AsyncExecuter {
 
     enterLoading = () => {
         this.commandGroupRef.setState({loading: true});
-        //this.resourceProgressRef.enter({jobName: this.jobName})
-        this.jobProgressRef.enter({jobName: this.jobName})
+        //this.resourceProgressRef.enter({jobName: this.jobName})        
         //this.taskProgressRef.enter({jobName: this.jobName})        
     }
 
     exitLoading = () => {
         this.commandGroupRef.setState({loading: false});
-        this.jobProgressRef.exit()
+        // this.jobProgressRef.exit()
         //this.resourceProgressRef.exit()
         //this.taskProgressRef.exit()        
     }
@@ -106,6 +105,7 @@ export default class AsyncExecuter {
         if(this.dashRef.queryHistory){
             this.dashRef.queryHistory.reload()  
         }
+        this.jobProgressRef.enter()
         return res
     }
     async cancelMonitor() {
@@ -126,6 +126,7 @@ export default class AsyncExecuter {
            this.closed = true
            this.cancelMonitor() 
            this.exitLoading() 
+           this.jobProgressRef.exit()
            this.log(jobInfo.reason)
         }
         // job success
@@ -133,6 +134,7 @@ export default class AsyncExecuter {
             this.closed = true
             this.cancelMonitor()
             this.exitLoading() 
+            this.jobProgressRef.exit()
             this.displayRef.update(JSON.parse(jobInfo.response)) 
         }
     }

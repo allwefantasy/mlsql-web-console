@@ -1,0 +1,17 @@
+.rp-main {
+    margin: 20px 0px 20px 0px;
+    display: flex;
+    flex-direction: column;
+}
+.rp-block {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+}
+.rp-name {
+    margin-right: 20px;
+}
+
+.rp-progress {
+   max-width: 300px;
+}

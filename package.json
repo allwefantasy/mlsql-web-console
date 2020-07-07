@@ -10,6 +10,7 @@
     "randomcolor": "^0.5.4",
     "re-resizable": "^6.0.0",
     "react": "^16.5.2",
+    "react-compound-timer": "^1.2.0",
     "react-confirm-alert": "^2.4.0",
     "react-dom": "^16.5.2",
     "react-dropzone": "^8.1.0",

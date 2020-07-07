@@ -147,7 +147,7 @@ export default class QueryHistory extends React.Component {
                     onCancel={this.toggleDetail}
                     onOk={this.toggleDetail}
                     cancelText="Cancel"
-                    width="100%"
+                    width="60%"
                     OkText="Ok">                    
          <AceEditor ref={(et)=>this.detailConsole=et}
                         height={"300px"}
@@ -163,7 +163,7 @@ export default class QueryHistory extends React.Component {
                     onCancel={this.toggleResponse}
                     onOk={this.toggleResponse}
                     cancelText="Cancel"
-                    width="100%"
+                    width="60%"
                     OkText="Ok">                    
         <MLSQLQueryDisplay ref={(_display)=>{this.respDisplay = _display}} parent={this}/>
         </Modal> 

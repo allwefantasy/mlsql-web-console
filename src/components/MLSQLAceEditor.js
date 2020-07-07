@@ -19,6 +19,7 @@ import {Resizable} from "re-resizable";
 import EditorOp from "../v1/comp_op/EditorOp";
 import AsyncExecuter from "../v1/async_execute/AsyncExecuter";
 import JobProgress from "../v1/async_execute/JobProgress";
+import ResourceProgress from "../v1/async_execute/ResourceProgress";
 
 const {Option} = Select;
 
@@ -32,8 +33,7 @@ class MLSQLAceEditor extends React.Component {
         this.language = this.props.language || "sql"
         this.queryApp = this.props.parent
         this.aceEditorRef = React.createRef()
-        this.commandGroup = React.createRef()
-        this.resourceProgressRef = React.createRef()
+        this.commandGroup = React.createRef()        
         
         this.taskProgressRef = React.createRef()
 
@@ -223,8 +223,7 @@ class MLSQLAceEditor extends React.Component {
 
                 <CommandGroup ref={this.commandGroup} parent={this}/>            
                 <JobProgress ref={(et)=>{this.jobProgressRef=et}} parent={this}></JobProgress>
-                <TaskProgress ref={this.taskProgressRef} parent={this}></TaskProgress>
-                <ResourceProgress ref={this.resourceProgressRef} parent={this}></ResourceProgress>
+                <TaskProgress ref={this.taskProgressRef} parent={this}></TaskProgress>                
             </div>
         )
     }
@@ -261,80 +260,6 @@ class CommandGroup extends React.Component {
                 <Option value="28800000">8h</Option>
                 <Option value="-1">unlimited</Option>
             </Select>
-            </div>
-        )
-    }
-
-}
-
-
-
-class ResourceProgress extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {loading: false, percent: 0, successPercent: 0, mark: false}
-        this.parent = props.parent
-    }
-
-    enter = (params) => {
-        const self = this
-        this.setState({mark: true})
-        setTimeout(() => {
-                if (self.state.mark) {
-                    self.setState({loading: true})
-                    self.intervalTimer = setInterval(() => {
-                            if (self.resourceCompute === "loading") {
-                                return
-                            }
-                            self.resourceCompute = "loading"
-                            const api = new MLSQLAPI(BackendConfig.RUN_SCRIPT)
-                            assert(params.hasOwnProperty("jobName"), "jobName is required")
-                            const jobName = params["jobName"]
-                            api.runScript({},
-                                `load _mlsql_.\`resource/${jobName}\` as output;`, (jsonArray) => {
-                                    const jsonObj = jsonArray[0]
-                                    self.setState({
-                                        percent: jsonObj.activeTasks / jsonObj.totalCores * 100,
-                                        successPercent: jsonObj.currentJobGroupActiveTasks / jsonObj.totalCores * 100,
-                                        title: `Resource (for all users): taken/Total: ${jsonObj.activeTasks}/${jsonObj.totalCores}(${jsonObj.currentJobGroupActiveTasks} you took)`
-                                    })
-                                    self.resourceCompute = "loaded"
-                                }, (str) => {
-                                    self.resourceCompute = "loaded"
-                                    try {
-                                        self.parent.appendLog(str)
-                                    } catch (e) {
-                                        console.log(e)
-                                    }
-
-                                })
-
-                        }
-                        ,
-                        1000
-                    )
-                }
-
-            }
-
-            ,
-            1000
-        )
-
-    }
-
-    exit = () => {
-        this.setState({loading: false, percent: 0, successPercent: 0, mark: false})
-        if (this.intervalTimer) {
-            clearInterval(this.intervalTimer);
-        }
-    }
-
-    render() {
-        if (!this.state.loading) return <div></div>
-        return (
-            <div>{this.state.title}
-                <Progress percent={this.state.percent} successPercent={this.state.successPercent}/>
             </div>
         )
     }
