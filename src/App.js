@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import './App.scss';
 import {Alignment, Button, Navbar} from "@blueprintjs/core";
-import {notification} from 'antd';
+import {notification,Menu, Dropdown} from 'antd';
+import { DownOutlined } from '@ant-design/icons';
 import {LOGIN, MLSQLRegisterOrLogin, WelcomeMessage} from "./user/MLSQLRegisterOrLogin";
-import {VIEW_CLUSTER, VIEW_CONSOLE, VIEW_DEMO, VIEW_SCRIPT_PLUGINS, VIEW_TEAM} from "./common/ViewConst"
+import {ANALYSIS_WORKSHOP, VIEW_CONSOLE, VIEW_DEMO, VIEW_SCRIPT_PLUGINS, VIEW_TEAM} from "./common/ViewConst"
 import {MLSQLAuth} from "./user/MLSQLAuth";
 
 const s = require('stripmargin');
@@ -21,7 +22,7 @@ class App extends Component {
         super(props)
         this.menuRef = React.createRef()
         this.registerOrLoginRef = React.createRef()
-        this.state = {currentView: VIEW_CONSOLE}
+        this.state = {currentView: ANALYSIS_WORKSHOP}
     }
 
     updateLoginoutStatus = () => {
@@ -46,12 +47,39 @@ class App extends Component {
         this.setState({currentView: VIEW_SCRIPT_PLUGINS})
     }
 
+    switchToAnalysisWorkshop = () => {
+        this.setState({currentView: ANALYSIS_WORKSHOP})
+    }
+
     switchToCnDoc = () => {
         window.open("http://docs.mlsql.tech/zh/", "_blank")
     }
 
 
     render() {
+
+        const more = (
+            <Menu>
+              <Menu.Item>
+              <Button className="bp3-minimal" icon="document" text="Demo Center" onClick={this.switchToDemo}/>
+              </Menu.Item>
+              <Menu.Item>
+              <Button className="bp3-minimal" icon="document" text="Team" onClick={this.switchToTeam}/>
+              </Menu.Item>
+              <Menu.Item>
+              <Button className="bp3-minimal" icon="document" text="Script Plugins"
+                                onClick={this.switchToScriptPlugins}/>
+              </Menu.Item>
+              <Menu.Item>
+              <Button className="bp3-minimal" icon="document" text="中文文档"
+                                onClick={this.switchToCnDoc}/>
+              </Menu.Item>
+            </Menu>
+          );
+          const dropdownMore = <Dropdown overlay={more}>
+          <Button className="bp3-minimal" onClick={e => e.preventDefault()}>More..</Button>
+        </Dropdown>
+
         return (
             <div>
                 <Navbar>
@@ -59,12 +87,8 @@ class App extends Component {
                         <Navbar.Heading>MLSQL Web Console</Navbar.Heading>
                         <Navbar.Divider/>
                         <Button className="bp3-minimal" icon="home" text="Console" onClick={this.switchToConsole}/>
-                        <Button className="bp3-minimal" icon="document" text="Demo Center" onClick={this.switchToDemo}/>
-                        <Button className="bp3-minimal" icon="document" text="Team" onClick={this.switchToTeam}/>
-                        <Button className="bp3-minimal" icon="document" text="Script Plugins"
-                                onClick={this.switchToScriptPlugins}/>
-                        <Button className="bp3-minimal" icon="document" text="中文文档"
-                                onClick={this.switchToCnDoc}/>
+                        <Button className="bp3-minimal" icon="document" text="Analysis Workshop" onClick={this.switchToAnalysisWorkshop}/>
+                        {dropdownMore}                       
                     </Navbar.Group>
                     <Navbar.Group align={Alignment.RIGHT}>
                         <WelcomeMessage ref={this.menuRef} parent={this}/>
