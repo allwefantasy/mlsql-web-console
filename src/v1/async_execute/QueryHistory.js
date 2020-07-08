@@ -146,8 +146,8 @@ export default class QueryHistory extends React.Component {
                     visible={this.state.showDetail}
                     onCancel={this.toggleDetail}
                     onOk={this.toggleDetail}
-                    cancelText="Cancel"
-                    width="60%"
+                    cancelText="Cancel" 
+                    width="70%"                   
                     OkText="Ok">                    
          <AceEditor ref={(et)=>this.detailConsole=et}
                         height={"300px"}
@@ -162,10 +162,10 @@ export default class QueryHistory extends React.Component {
                     visible={this.state.showResponse}
                     onCancel={this.toggleResponse}
                     onOk={this.toggleResponse}
-                    cancelText="Cancel"
-                    width="60%"
+                    cancelText="Cancel" 
+                    width="70%"
                     OkText="Ok">                    
-        <MLSQLQueryDisplay ref={(_display)=>{this.respDisplay = _display}} parent={this}/>
+        <MLSQLQueryDisplay style={{overflow:"scroll"}} ref={(_display)=>{this.respDisplay = _display}} parent={this}/>
         </Modal> 
         <div style={{ marginBottom: 16 }}>
           <Button type="primary" onClick={()=>{this.reload()}}>

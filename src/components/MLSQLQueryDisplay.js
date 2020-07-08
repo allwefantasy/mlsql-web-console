@@ -8,6 +8,7 @@ const ReactMarkdown = require('react-markdown')
 export class MLSQLQueryDisplay extends React.Component {
     constructor(props) {
         super(props)
+        this.tableStyle = props.style || {}
         this.state = {columns: [], rows: [], view: {enabled: false}}
     }
 
@@ -114,7 +115,7 @@ export class MLSQLQueryDisplay extends React.Component {
 
     render() {
         const self = this
-        return (<div>
+        return (<div style={this.tableStyle}>
                 <Table
                     onRow={(row, index) => {
                         return {

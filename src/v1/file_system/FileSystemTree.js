@@ -12,7 +12,7 @@ export default class FileSystemTree extends React.Component{
 
     getFileList = async(path)=> {
       const res = await EngineService.ls(path)        
-      if(res.status===200){           
+      if(res.status===200 && !res.content[0]._corrupt_record){           
            const root = res.content.map(item => {               
                item["is_dir"] = this.isDir(item)
                item["key"] = item.path

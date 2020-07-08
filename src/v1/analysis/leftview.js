@@ -3,11 +3,12 @@ import { Tabs } from 'antd';
 import { ScriptNodeTree } from "../../components/MLSQLTreeNode";
 import DeltaLakeTree from "../detla_lake/DeltaLakeTree";
 import FileSystemTree from "../file_system/FileSystemTree";
+import ADeltaLakeTree from "./ADeltaLakeTree";
 const { TabPane } = Tabs;
-export default class LeftTreePane extends React.Component {
+export default class LeftView extends React.Component {
     constructor(props){
         super(props)
-        this.queryApp = props.parent
+        this.workshop = props.parent        
     }
     render(){
        return <Tabs defaultActiveKey="1" style={{maxWidth:"350px"}} onTabClick={(key)=>{
@@ -17,22 +18,16 @@ export default class LeftTreePane extends React.Component {
             }
         }                        
     }}>
-       <TabPane tab="Script" key="1">
-       <div className="mlsql-directory-tree">
-           <ScriptNodeTree ref={(et)=> this.scriptTreeRef = et} parent={this.queryApp}/>
+       <TabPane tab="DeltaLake" key="1">
+       <div className="mlsql-directory-tree">           
+           <ADeltaLakeTree ref={(et)=> this.deltaLakeTreeRef = et} ></ADeltaLakeTree>
        </div>
        </TabPane>
-       <TabPane tab="DeltaLake" key="2">
-       <div className="mlsql-directory-tree">
-           <DeltaLakeTree ref={(et)=> this.deltaLakeTreeRef = et} ></DeltaLakeTree>
-       </div>
-       </TabPane>
-       <TabPane tab="FileSystem" key="3">
+       <TabPane tab="FileSystem" key="2">
        <div className="mlsql-directory-tree">
            <FileSystemTree ref={(et)=> this.fileSystemTreeRef = et}></FileSystemTree>
        </div>
-       </TabPane> 
-         
+       </TabPane>                 
      </Tabs>
     }
 }

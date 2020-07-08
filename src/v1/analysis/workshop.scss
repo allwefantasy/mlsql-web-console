@@ -1,0 +1,30 @@
+.ws-app {
+    display: flex;
+    margin-top: 30px;
+    flex-wrap: nowrap
+}
+  
+.ws-left-pane {
+display: flex;
+width: 30%;
+justify-content: left;
+}
+
+.ws-right-pane {
+    display: flex;
+    flex-direction: column;
+    width: 60%;
+    justify-content: left;
+}
+
+.ws-operate-pane {
+   display: flex;
+   width: 100%;
+   margin-bottom: 30px;
+ 
+}
+
+.ws-table-pane {
+    display: flex; 
+    width: 100%;  
+}

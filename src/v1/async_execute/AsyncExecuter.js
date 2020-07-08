@@ -143,7 +143,7 @@ export default class AsyncExecuter {
         const jobName = uuidv4()               
         const res = await this.client.runScript(`load _mlsql_.\`log/${this.logInfo['offset'] || -1}\` where filePath="engine_log" as output;`, jobName, {"queryType":"robot"})
         const jsonObj = res.content[0]
-        if (jsonObj['value'].length > 0) {
+        if (jsonObj["value"] && jsonObj['value'].length > 0) {
             this.log(jsonObj['value'].map(item => {
                 return item.split("__MMMMMM__")[1]
             }).join("\n"))
