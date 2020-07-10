@@ -1,15 +1,16 @@
 import * as React from "react";
 import { Tabs, Radio } from 'antd';
-import './JoinStation.scss'
-import './common.scss'
-import ApplyOrSave from "./ApplyOrSave";
-import SelectFields from "./project/SelectFields"
-import Tools from "../../common/Tools";
+import '../common.scss'
+import ApplyOrSave from "../ApplyOrSave";
+import SelectFields from "./SelectFields"
+import Tools from "../../../common/Tools";
+import mix from "../../../common/mixin"
+import { StationCommonOp } from "../commonops/StationCommonOp";
 
 const { TabPane } = Tabs;
 
 
-export default class ProjectStation extends React.Component {
+export default class ProjectStation extends mix(React.Component).with(StationCommonOp) {
     constructor(props) {
         super(props)
         this.workshop = props.parent.workshop
@@ -34,7 +35,7 @@ export default class ProjectStation extends React.Component {
                 
                 <Tabs defaultActiveKey="1" >
                     <TabPane tab="Select" key="1">
-                    <ApplyOrSave ref={(et)=>this.ApplyOrSaveRef=et}  onApply={this.onApply} style={{marginBottom:"30px"}}></ApplyOrSave>
+                    <ApplyOrSave handleTableInput={this.handleTableInput} ref={(et)=>this.ApplyOrSaveRef=et} onSave={this.onSave} onApply={this.onApply} style={{marginBottom:"30px"}}></ApplyOrSave>
                         <SelectFields ref={(et)=>this.selectFieldsRef=et} parent={this}></SelectFields>
                     </TabPane>
                     <TabPane tab="Rename" key="2">

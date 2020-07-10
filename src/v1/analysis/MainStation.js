@@ -1,8 +1,6 @@
 import * as React from "react";
 import mix from "../../common/mixin"
 import { Tabs, Radio, Menu, Button, Modal } from 'antd';
-import './JoinStation.scss'
-import './common.scss'
 import ApplyOrSave from "./ApplyOrSave";
 
 const { SubMenu } = Menu;

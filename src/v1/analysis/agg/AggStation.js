@@ -1,17 +1,16 @@
 import * as React from "react";
-import mix from "../../common/mixin"
+import mix from "../../../common/mixin"
 import { Tabs, Switch, Menu, Button, Modal } from 'antd';
-import './AggStation.scss'
-import './common.scss'
-import ApplyOrSave from "./ApplyOrSave";
-import ColumnOperate from "./ColumnOperate";
+import ApplyOrSave from "../ApplyOrSave";
+import ColumnOperate from "../ColumnOperate";
 import { AggStationOp } from "./AggStationOp";
-import ApplyFuncToField from "./ApplyFuncToField";
+import ApplyFuncToField from "../ApplyFuncToField";
+import { StationCommonOp } from "../commonops/StationCommonOp";
 
 const { SubMenu } = Menu;
 
 
-export default class AggStation extends mix(React.Component).with(AggStationOp) {
+export default class AggStation extends mix(React.Component).with(StationCommonOp,AggStationOp) {
     constructor(props) {
         super(props)
         this.workshop = props.parent.workshop

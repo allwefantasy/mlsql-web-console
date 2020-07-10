@@ -1,5 +1,5 @@
 import AggStation from "./AggStation";
-import Tools from "../../common/Tools";
+import Tools from "../../../common/Tools";
 export const AggStationOp = (superclass) => class extends superclass {
     enableGroupByField = (checked, record) => {
         const fieldName = record.field
@@ -36,14 +36,6 @@ export const AggStationOp = (superclass) => class extends superclass {
             this.workshop.refreshOperateStation()
          }         
     }
-    handleTableInput = (tableName)=>{
-       this.tableNameForSave = tableName.target.value
-    }
-    onSave = async ()=>{               
-       const status = await this.workshop.save(this.tableNameForSave)   
-       if(status===200){
-           this.workshop.refreshOperateStation()
-           this.workshop.refreshTableWorkshop()
-       }
-    }
+    
+    
 }
