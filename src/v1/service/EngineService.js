@@ -23,6 +23,11 @@ export default class EngineService {
         return res
     }
 
+    static async showFunctions(){        
+        const res = await client.runScript("",uuidv4(),{executeMode:"sqlFunctions"})
+        return res
+    }
+
     static async jobs(){
         const jobName = uuidv4()
         const res = await client.runScript(`load _mlsql_.\`jobs\` as wow;`,jobName ,{"queryType":"robot"}) 
@@ -32,6 +37,11 @@ export default class EngineService {
     static async tablesInDeltaLake(){
         const jobName = uuidv4()
         const res = await client.runScript(`!delta show tables;`,jobName ,{"queryType":"robot"}) 
+        return res
+    }
+
+    static async tablesInWorkshop(){        
+        const res = await client.get(RemoteAction.ANALYSIS_TABLES ,{}) 
         return res
     }
 

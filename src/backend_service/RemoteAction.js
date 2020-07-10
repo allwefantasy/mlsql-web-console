@@ -6,4 +6,8 @@ export default class RemoteAction{
     static JOB_KILL = "/api_v1/job/kill"
 
     static SAVE_SCRIPT_FILE = "/api_v1/script_file"
+
+    static ANALYSIS_TABLES= "/api_v1/analysis/tables"
+    static ANALYSIS_SAVE = "/api_v1/analysis/tables/save"
+
 }

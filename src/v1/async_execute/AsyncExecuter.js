@@ -49,7 +49,7 @@ export default class AsyncExecuter {
         //this.taskProgressRef.exit()        
     }
 
-    prepare(){
+    prepare(){        
         this.enterLoading()
         this.consoleOp.setText("")
         this.displayRef.update(JSON.parse("[]"))
@@ -113,6 +113,7 @@ export default class AsyncExecuter {
             clearInterval(this.intervalTimer)
             this.intervalTimer = null
         }
+        this.jobProgressRef.exit()
     }
 
     async monitorJob(){        

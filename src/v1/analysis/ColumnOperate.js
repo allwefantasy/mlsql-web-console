@@ -5,7 +5,7 @@ import {Table,Modal} from 'antd';
 
 const ReactMarkdown = require('react-markdown')
 
-export class MLSQLQueryDisplay extends React.Component {
+export default class ColumnOperate extends React.Component {
     constructor(props) {
         super(props)
         this.tableStyle = props.style || {}
