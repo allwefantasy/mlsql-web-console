@@ -14,7 +14,8 @@ export default class ApplyFuncToField extends React.Component {
             data: [],
             value: undefined,
             funcPopUp: false,
-            func: {}
+            func: {},
+            key: Math.random()
         }
     }
 
@@ -25,8 +26,9 @@ export default class ApplyFuncToField extends React.Component {
                 return {
                     value: item.key.table,
                     text: item.key.table,
-                    returnValue: item.columns[0],
-                    params: item.columns.slice(1, item.columns.length)
+                    funcValue: item.columns[0],
+                    returnValue: item.columns[1],
+                    params: item.columns.slice(2, item.columns.length)
                 }
             })
             this.setState({ data })
@@ -47,7 +49,7 @@ export default class ApplyFuncToField extends React.Component {
 
     render() {
         const options = this.state.data.map(d => <Option key={d.value}>{d.text}</Option>)
-        return <Form  className="login-form">
+        return <Form  className="login-form" key={this.state.key}>
             <Form.Item>
             <Select
                 showSearch

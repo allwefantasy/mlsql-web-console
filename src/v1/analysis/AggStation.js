@@ -52,6 +52,7 @@ export default class AggStation extends mix(React.Component).with(AggStationOp) 
       const {name,newName} = this.applyFuncToFieldRef.collect
       this.generateProjectField(name,newName)
       this.setState({ funcPopUp: false })
+      this.applyFuncToFieldRef.setState({key:Math.random()})
     }
 
     render() {
@@ -60,8 +61,13 @@ export default class AggStation extends mix(React.Component).with(AggStationOp) 
                 <Modal
                     title={`Apply function to [${this.operateField}]`}
                     visible={this.state.funcPopUp}
-                    onCancel={() => { this.setState({ funcPopUp: false }) }}
-                    onOk={this.handleFunc}
+                    onCancel={() => { 
+                        this.setState({ funcPopUp: false }) 
+                        this.applyFuncToFieldRef.setState({key:Math.random()})
+                    }}
+                    onOk={
+                        this.handleFunc
+                    }
                     cancelText="Cancel"
                     width="50%"
                     OkText="Ok">

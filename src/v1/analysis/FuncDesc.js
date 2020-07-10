@@ -11,19 +11,24 @@ export default class FuncDesc extends React.Component {
         this.setState({ func })
     }
 
-    returnValue = () => {
-        return <List.Item key="Return value" >
-            <List.Item.Meta title="Return value" description={this.state.func.returnValue.extra.zhDoc}>
-
+    funcValue = () => {
+        return <List.Item key="Func" >
+            <List.Item.Meta title="Func" description={this.state.func.funcValue.extra.zhDoc}>
             </List.Item.Meta>
         </List.Item>
     }
 
+    returnValue = () => {
+        return <List.Item key="Return value" >
+            <List.Item.Meta title="Return value" description={this.state.func.returnValue.extra.zhDoc}>
+            </List.Item.Meta>
+        </List.Item>
+    }
+  
     parameters = () => {
         return this.state.func.params.map(item => {
             return <List.Item key={item.name} >
-                <List.Item.Meta title={item.name} description={item.extra.zhDoc}>
-
+                <List.Item.Meta title={item.name} description={item.extra.zhDoc}>                    
                 </List.Item.Meta>
             </List.Item>
         })
@@ -37,6 +42,7 @@ export default class FuncDesc extends React.Component {
                 footer={<div></div>}
                 bordered
             >
+                {this.funcValue()}
                 {this.returnValue()}
                 {this.parameters()}
             </List>

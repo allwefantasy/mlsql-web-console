@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Spin ,Modal,Result,Button} from "antd"
+import { Spin, Modal, Result, Button } from "antd"
 import './workshop.scss'
 import LeftView from "./leftview";
 import { MLSQLQueryDisplay } from "../../components/MLSQLQueryDisplay"
@@ -12,15 +12,20 @@ import AceEditor from 'react-ace';
 import { WorkshopMessageOp } from "./WorkshopMessageOp";
 import { WorkshopUIOp } from "./WorkshopUIOp";
 import Tools from "../../common/Tools";
-import {Resizable} from "re-resizable";
+import { Resizable } from "re-resizable";
 
-export default class AnalysisWorkshop extends mix(React.Component).with(WorkshopOp, WorkshopAutoSql,WorkshopMessageOp,WorkshopUIOp) {
+export default class AnalysisWorkshop extends mix(React.Component).
+    with(WorkshopOp,
+        WorkshopAutoSql,
+        WorkshopMessageOp,
+        WorkshopUIOp) {
+
     constructor(props) {
         super(props)
         this.client = new ActionProxy()
         this.state = { tableLoading: false }
         // {tableName:...  sql:...}
-        this.sqls = []        
+        this.sqls = []
     }
 
     componentDidMount() {
@@ -28,28 +33,28 @@ export default class AnalysisWorkshop extends mix(React.Component).with(Workshop
         this.newSession("delta", "public", "jack")
     }
 
-    operateStationView(){
-        if(this.sessionId){
-           return <OperateStation ref={(et) => this.stationRef = et} parent={this}></OperateStation>
-        }else {
-            return  <Result style={{width:"100%"}}            
-            title="No Aanalysis Session Is Opened"
-            subTitle="Right click the table in the left panel(DeltaLake/FileSystem) to begin your analysis"            
-          />
+    operateStationView() {
+        if (this.sessionId) {
+            return <OperateStation ref={(et) => this.stationRef = et} parent={this}></OperateStation>
+        } else {
+            return <Result style={{ width: "100%" }}
+                title="No Aanalysis Session Is Opened"
+                subTitle="Right click the table in the left panel(DeltaLake/FileSystem) to begin your analysis"
+            />
         }
     }
 
     render() {
         return <div className="ws-app">
             <div className="ws-left-pane">
-            <Resizable defaultSize={{height: "500px"}} style={{paddingRight:"30px",borderRight:"solid"}}>
-            <LeftView ref={(et) => this.leftTreePaneRef = et} parent={this}></LeftView>
-            </Resizable>                
+                <Resizable defaultSize={{ height: "500px" }} style={{ paddingRight: "30px", borderRight: "solid" }}>
+                    <LeftView ref={(et) => this.leftTreePaneRef = et} parent={this}></LeftView>
+                </Resizable>
             </div>
             <div className="ws-right-pane">
                 <Modal
                     title={"Message"}
-                    visible={this.state.showMessage||false}
+                    visible={this.state.showMessage || false}
                     onCancel={this.toggleMessage}
                     onOk={this.toggleMessage}
                     cancelText="Cancel"

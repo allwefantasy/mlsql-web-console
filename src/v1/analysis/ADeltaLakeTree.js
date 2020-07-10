@@ -81,8 +81,7 @@ export default class ADeltaLakeTree extends DeltaLakeTree {
                     visible={this.state.showNewSession}
                     onCancel={this.toggleNewSession}
                     onOk={this.showTable}
-                    cancelText="Cancel" 
-                    width="70%"
+                    cancelText="Cancel"                     
                     OkText="Ok">                    
                    wowowowowow
                  </Modal>

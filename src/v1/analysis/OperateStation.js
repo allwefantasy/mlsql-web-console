@@ -5,6 +5,7 @@ import { Tabs, Radio } from 'antd';
 import JoinStation from "./JoinStation";
 import MainStation from "./MainStation";
 import AggStation from "./AggStation";
+import ProjectStation from "./ProjectStation";
 const { TabPane } = Tabs;
 
 export default class OperateStation extends React.Component {
@@ -17,12 +18,12 @@ export default class OperateStation extends React.Component {
     render() {
         return <div className="os-pane">
             <div className="os-tabs">
-                <Tabs defaultActiveKey="0" tabPosition="left" key={this.state.key}>
+                <Tabs defaultActiveKey="1" tabPosition="left" key={this.state.key}>
                 <TabPane tab="Main" key={0} >
                     <MainStation ></MainStation>
                 </TabPane>
                 <TabPane tab="Project" key={1} >
-                    <JoinStation></JoinStation>
+                    <ProjectStation parent={this}></ProjectStation>
                 </TabPane>
                 <TabPane tab="Filter" key={2} >
                     <AggStation parent={this}></AggStation>

@@ -5,7 +5,7 @@ export const WorkshopAutoSql = (superclass) => class extends superclass {
    getLastApplyTable = () => {
       return this.sqls[this.sqls.length - 1]
    }
-   
+
 
    /**
    * generate sql
@@ -26,14 +26,18 @@ export const WorkshopAutoSql = (superclass) => class extends superclass {
    }
 
    save = async (tableName) => {
-      if(this.sqls.length === 0 ) {
+      if (this.sqls.length === 0) {
          this.showMessage("Sorry, current session have no applies.")
          return 500
       }
-      const sql = this.sqls.map(item => item.sql).join("\n")
-      const res = await this.client.post(RemoteAction.ANALYSIS_SAVE,{
-         tableName,sql,sessionId:this.sessionId
-      })     
+      const sql = `select * from ${this.getLastApplyTable().tableName} as ${tableName};`
+      this.sqls.push({ tableName, sql })
+      const finalSql = this.sqls.map(item => item.sql).join("\n")
+      const res = await this.client.post(RemoteAction.ANALYSIS_SAVE, {
+         tableName,
+         sql: finalSql,
+         sessionId: this.sessionId
+      })
       return res.status
    }
 }
