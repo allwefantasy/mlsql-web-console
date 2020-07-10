@@ -36,7 +36,8 @@ export const WorkshopAutoSql = (superclass) => class extends superclass {
       const res = await this.client.post(RemoteAction.ANALYSIS_SAVE, {
          tableName,
          sql: finalSql,
-         sessionId: this.sessionId
+         sessionId: this.sessionId,
+         schema: JSON.stringify(this.currentTable.schema)
       })
       return res.status
    }

@@ -79,7 +79,7 @@ class MLSQLAceEditor extends React.Component {
 
     }
 
-    async executeSave(){
+     executeSave = async ()=>{
         const executor = new AsyncExecuter(this)
         const res = await executor.saveFile({})
         return res  
