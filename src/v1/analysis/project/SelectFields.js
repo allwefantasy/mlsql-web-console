@@ -1,44 +1,46 @@
 import * as React from "react";
 import { Transfer,Input } from 'antd';
-export default class ProjectStation extends React.Component {
+export default class SelectFields extends React.Component {
   constructor(props) {
     super(props)
-    this.workshop = props.parent.workshop
-    this.state = {}
+    this.workshop = props.parent.workshop       
+    this.state = this.wow(props)
   }
-  componentDidMount() {
-    this.getData()
-  }
-
-  getData= () => {
-    const schemaFields = this.workshop.currentTable.schema.fields.map(item=>{
+   
+  
+  wow(props){
+    const schemaFields = props.schemaFields.map(item=>{
       return {
         title:item.name,
         key: item.name,                     
       }
     })
     const targetKeys = [];
-    const data = schemaFields;  
-    
-    this.setState({ data, targetKeys });
-  };
+    const data = schemaFields; 
+    return {data,targetKeys}
+  }
+
+  componentDidUpdate(prevProps) {
+    // Typical usage (don't forget to compare props):
+    if (this.props.schemaFields !== prevProps.schemaFields) {
+        this.setState({...this.wow(this.props)})
+    }
+  }
 
   filterOption = (inputValue, option) => option.title.indexOf(inputValue) > -1;
 
   handleChange = targetKeys => {
     this.setState({ targetKeys });
-  };
+    if(this.props.handleChange){
+      this.props.handleChange({ targetKeys })
+    }
+  }
 
   getSelectFields = ()=>{
     return this.state.targetKeys || []
   }
 
-  // handleSearch = (dir, value) => {
-  //   console.log('search:', dir, value);
-  // };
-
-  
-
+ 
   render() {
     return <Transfer
       dataSource={this.state.data}

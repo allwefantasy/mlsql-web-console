@@ -15,9 +15,8 @@ export const WorkshopAutoSql = (superclass) => class extends superclass {
       this.sqls.push(params)
       const view = this.sqls.map(item => item.sql).join("")
       const res = await this.client.runScript(view, Tools.getJobName(), Tools.robotFetchParam())
-      if (res.status != 200) {
-         this.toggleMessage()
-         this.showMessage(res.content)
+      if (res.status != 200) {                
+         this.toggleMessage(res.content)
          return 500
       }
       const { data, schema } = res.content
@@ -27,7 +26,7 @@ export const WorkshopAutoSql = (superclass) => class extends superclass {
 
    save = async (tableName) => {
       if (this.sqls.length === 0) {
-         this.showMessage("Sorry, current session have no applies.")
+         this.toggleMessage("Sorry, current session have no applies.")
          return 500
       }
       const sql = `select * from ${this.getLastApplyTable().tableName} as ${tableName};`

@@ -59,13 +59,16 @@ export default class AnalysisWorkshop extends mix(React.Component).
                     onOk={this.toggleMessage}
                     cancelText="Cancel"
                     width="60%"
-                    OkText="Ok">
-                    <AceEditor ref={(et) => this.messageConsoleRef = et}
+                    OkText="Ok"                    
+                    
+                    >
+                    <AceEditor                         
                         height={"300px"}
                         width={"100%"}
                         mode="text"
                         theme="github"
                         name="detail_box"
+                        value={this.state.consoleMessage||""}
                     ></AceEditor>
                 </Modal>
                 <div className="ws-operate-pane">

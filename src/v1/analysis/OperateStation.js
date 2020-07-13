@@ -14,6 +14,10 @@ export default class OperateStation extends React.Component {
         this.workshop = props.parent
         this.state = { key: Math.random() }
     } 
+
+    reload = ()=>{
+        this.setState({key:Math.random()})
+    }
        
     render() {
         return <div className="os-pane">
@@ -28,8 +32,8 @@ export default class OperateStation extends React.Component {
                 <TabPane tab="Filter" key={2} >
                     <AggStation parent={this}></AggStation>
                 </TabPane>
-                <TabPane tab="Join" key={3} >
-                    <JoinStation parent={this}></JoinStation>
+                <TabPane tab="Join" key={3}>
+                    <JoinStation  parent={this}></JoinStation>
                 </TabPane>
                 <TabPane tab="Agg" key={4} >
                     <AggStation parent={this}></AggStation>

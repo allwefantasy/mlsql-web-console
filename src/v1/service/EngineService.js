@@ -45,6 +45,11 @@ export default class EngineService {
         return res
     }
 
+    static async tableInfo(tableName){        
+        const res = await client.get(RemoteAction.ANALYSIS_TABLE_INFO ,{tableName}) 
+        return res
+    }
+
     static async jobProgress(jobName){
         const res = await client.runScript(`load _mlsql_.\`jobs/get/${jobName}\` as wow;`,uuidv4(),{"queryType":"robot"})
         const empty_res =  {currentJobIndex:0,totalJobs:1}

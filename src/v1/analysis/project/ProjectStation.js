@@ -36,7 +36,7 @@ export default class ProjectStation extends mix(React.Component).with(StationCom
                 <Tabs defaultActiveKey="1" >
                     <TabPane tab="Select" key="1">
                     <ApplyOrSave handleTableInput={this.handleTableInput} ref={(et)=>this.ApplyOrSaveRef=et} onSave={this.onSave} onApply={this.onApply} style={{marginBottom:"30px"}}></ApplyOrSave>
-                        <SelectFields ref={(et)=>this.selectFieldsRef=et} parent={this}></SelectFields>
+                        <SelectFields schemaFields={this.workshop.currentTable.schema.fields} ref={(et)=>this.selectFieldsRef=et} parent={this}></SelectFields>
                     </TabPane>
                     <TabPane tab="Rename" key="2">
                         Content of Tab Pane 2
