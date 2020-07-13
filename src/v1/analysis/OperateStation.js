@@ -6,6 +6,7 @@ import JoinStation from "./join/JoinStation";
 import MainStation from "./MainStation";
 import AggStation from "./agg/AggStation";
 import ProjectStation from "./project/ProjectStation";
+import FilterStation from "./filter/FilterStation";
 const { TabPane } = Tabs;
 
 export default class OperateStation extends React.Component {
@@ -22,15 +23,12 @@ export default class OperateStation extends React.Component {
     render() {
         return <div className="os-pane">
             <div className="os-tabs">
-                <Tabs defaultActiveKey="3" tabPosition="left" key={this.state.key}>
-                <TabPane tab="Main" key={0} >
-                    <MainStation ></MainStation>
-                </TabPane>
-                <TabPane tab="Project" key={1} >
+                <Tabs defaultActiveKey="1" tabPosition="left" key={this.state.key}>                
+                <TabPane tab="Project"  key={1} >
                     <ProjectStation parent={this}></ProjectStation>
                 </TabPane>
                 <TabPane tab="Filter" key={2} >
-                    <AggStation parent={this}></AggStation>
+                    <FilterStation parent={this}></FilterStation>
                 </TabPane>
                 <TabPane tab="Join" key={3}>
                     <JoinStation  parent={this}></JoinStation>
@@ -38,8 +36,9 @@ export default class OperateStation extends React.Component {
                 <TabPane tab="Agg" key={4} >
                     <AggStation parent={this}></AggStation>
                 </TabPane>
-                </Tabs></div>
-            <div className="os-main"></div>
+                </Tabs>
+                </div>
+            
         </div>
     }
 }
