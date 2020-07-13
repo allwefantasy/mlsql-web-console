@@ -26,15 +26,17 @@ export default class QueryHistory extends React.Component {
           const currentTH = evt.target.parentNode
           // another way get row index and column index
           // console.log(`${currentTH.parentElement.rowIndex}:${currentTH.cellIndex} `)
-          const domTree = evt.target.parentNode.parentNode      
+          // const domTree = evt.target.parentNode.parentNode      
           // const jobName = domTree.children[1].innerText
-          const num = [].slice.call(domTree.children).indexOf(currentTH)
+          // const num = [].slice.call(domTree.children).indexOf(currentTH)
+          const num = currentTH.parentNode.cellIndex
           let field = ""
           switch (num){
             case 2: field= "content";break;
             case 4: field= "reason";break;
             case 7: field= "response";break;
-          }          
+          } 
+          console.log(num)         
           await this.showDetail(record.name,field)
           
         }} ><span style={{whiteSpace:"normal",wordWrap:"break-word",width:"100px"}}>{value}</span></Button>
@@ -106,16 +108,11 @@ export default class QueryHistory extends React.Component {
     }
 
     async showDetail(jobName,field){  
-      const res = await this.client.get(RemoteAction.JOB_DETAIL,{jobName:jobName})
-      this.setState({
-        detailContent:res.content[field],
-        showDetail: true
-      })
-      
-      if(this.detailConsole){            
-        const op = new EditorOp(this.detailConsole)
-        op.setText(res.content[field])
-      }      
+      const res = await this.client.get(RemoteAction.JOB_DETAIL,{jobName:jobName})      
+      this.setState({        
+        showDetail: true,
+        detailConsoleMessage:res.content[field] 
+      })           
     }
 
     async showResponse(jobName){  
@@ -149,12 +146,12 @@ export default class QueryHistory extends React.Component {
                     cancelText="Cancel" 
                     width="70%"                   
                     OkText="Ok">                    
-         <AceEditor ref={(et)=>this.detailConsole=et}
-                        height={"300px"}
+         <AceEditor height={"300px"}
                         width={"100%"}                        
                         mode="text"
                         theme="github"
                         name="detail_box"
+                        value={this.state.detailConsoleMessage||""}
         ></AceEditor>
         </Modal> 
         <Modal  

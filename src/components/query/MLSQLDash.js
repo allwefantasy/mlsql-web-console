@@ -4,7 +4,6 @@ import {UploadDropzone} from '../upload/UploadDropZone'
 import MLSQLThreeDimScatterChart from "../dash/MLSQLScatterChart";
 import MLSQLLineChart from "../dash/MLSQLLineChart";
 import MLSQLStream from "../dash/MLSQLStream";
-import MLSQLResource from "../dash/MLSQLResource";
 import MLSQLHTML from "../dash/MLSQLHTML";
 import QueryHistory from "../../v1/async_execute/QueryHistory"
 import ResourceProgress from '../../v1/async_execute/ResourceProgress';
@@ -60,10 +59,7 @@ export class MLSQLDash extends PureComponent {
 
 
     renderDash = () => {
-        const data = this.state.data
-        if (MLSQLResource.isShouldRender(data)) {
-            return <MLSQLResource data={data} parent={this}/>
-        }
+        const data = this.state.data        
         if (MLSQLStream.isShouldRender(data)) {
             return <MLSQLStream data={data} parent={this}/>
         }
