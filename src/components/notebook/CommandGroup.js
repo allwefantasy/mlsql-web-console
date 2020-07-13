@@ -1,5 +1,5 @@
 import React from 'react'
-import {Icon} from "antd";
+import { Icon } from '@ant-design/compatible';
 
 export default class CommandGroup extends React.Component {
 

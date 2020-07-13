@@ -1,10 +1,6 @@
 import React, {Component, PureComponent} from 'react';
-import {Collapse} from 'antd';
+import {Collapse,Tabs} from 'antd';
 import {UploadDropzone} from '../upload/UploadDropZone'
-import 'ant-design-pro/dist/ant-design-pro.css';
-import {Tabs} from 'antd';
-import Bar from "../../../node_modules/ant-design-pro/lib/Charts/Bar";
-
 import MLSQLThreeDimScatterChart from "../dash/MLSQLScatterChart";
 import MLSQLLineChart from "../dash/MLSQLLineChart";
 import MLSQLStream from "../dash/MLSQLStream";
@@ -12,6 +8,9 @@ import MLSQLResource from "../dash/MLSQLResource";
 import MLSQLHTML from "../dash/MLSQLHTML";
 import QueryHistory from "../../v1/async_execute/QueryHistory"
 import ResourceProgress from '../../v1/async_execute/ResourceProgress';
+import {
+    BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
+  } from 'recharts';
 
 
 const Panel = Collapse.Panel;

@@ -1,5 +1,6 @@
 import * as React from "react";
-import {Button, Form, Icon, Input, message, Select} from "antd";
+import {Button, Form, Input, message, Select} from "antd";
+import { Icon } from '@ant-design/compatible';
 import {MLSQLAPI} from "../../service/MLSQLAPI";
 import {CHNAGE_PASSWORD} from "../../service/BackendConfig";
 
@@ -37,7 +38,7 @@ class ChangePassword extends React.Component {
     render() {
         const {getFieldDecorator} = this.props.form;
         return (
-            <Form onSubmit={this.handleSubmit} className="login-form">
+            <Form ref={this.formRef} onSubmit={this.handleSubmit} className="login-form">
 
 
                 <Form.Item>
@@ -71,4 +72,4 @@ class ChangePassword extends React.Component {
     }
 }
 
-export const MLSQLChangePassword = Form.create({name: 'change_password'})(ChangePassword);
+export const MLSQLChangePassword = ChangePassword;

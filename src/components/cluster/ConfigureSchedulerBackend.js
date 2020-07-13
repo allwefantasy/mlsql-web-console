@@ -74,7 +74,7 @@ class ConfigureSchedulerBackend extends React.Component {
         const {getFieldDecorator} = this.props.form;
         const self = this
         return (
-            <Form onSubmit={this.handleSubmit} className="login-form">
+            <Form ref={this.formRef} onSubmit={this.handleSubmit} className="login-form">
 
                 <Form.Item>
                     {getFieldDecorator('teamName', {
@@ -125,4 +125,4 @@ class ConfigureSchedulerBackend extends React.Component {
     }
 }
 
-export const MLSQLConfigureSchedulerDefaultBackend = Form.create({name: 'configure_default_backend'})(ConfigureSchedulerBackend);
+export const MLSQLConfigureSchedulerDefaultBackend = ConfigureSchedulerBackend;

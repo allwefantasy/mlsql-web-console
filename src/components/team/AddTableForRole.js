@@ -90,7 +90,7 @@ class AddTableForRole extends React.Component {
     render() {
         const {getFieldDecorator} = this.props.form;
         return (
-            <Form onSubmit={this.handleSubmit} className="login-form">
+            <Form ref={this.formRef} onSubmit={this.handleSubmit} className="login-form">
 
                 <Form.Item>
                     {getFieldDecorator('teamName', {
@@ -172,4 +172,4 @@ class AddTableForRole extends React.Component {
     }
 }
 
-export const MLSQLAddTableForRole = Form.create({name: 'add_table_for_role'})(AddTableForRole);
+export const MLSQLAddTableForRole = AddTableForRole;

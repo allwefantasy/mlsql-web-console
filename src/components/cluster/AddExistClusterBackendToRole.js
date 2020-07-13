@@ -46,7 +46,7 @@ class AddExistClusterBackendToRole extends React.Component {
     render() {
         const {getFieldDecorator} = this.props.form;
         return (
-            <Form onSubmit={this.handleSubmit} className="login-form">
+            <Form ref={this.formRef} onSubmit={this.handleSubmit} className="login-form">
 
                 <Form.Item>
                     {getFieldDecorator('teamName', {
@@ -96,4 +96,4 @@ class AddExistClusterBackendToRole extends React.Component {
     }
 }
 
-export const MLSQLAddExistClusterBackendToRole = Form.create({name: 'AddExistClusterBackendToRole'})(AddExistClusterBackendToRole);
+export const MLSQLAddExistClusterBackendToRole = AddExistClusterBackendToRole;

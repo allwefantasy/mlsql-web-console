@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Tree, Spin, Menu, Icon, Modal } from 'antd';
+import { Tree, Spin, Menu, Modal } from 'antd';
 import DeltaLakeTree from "../detla_lake/DeltaLakeTree";
 const { TreeNode, DirectoryTree } = Tree;
 export default class ADeltaLakeTree extends DeltaLakeTree {
@@ -26,30 +26,7 @@ export default class ADeltaLakeTree extends DeltaLakeTree {
             </TreeNode>
         })
     }
-
-    contextMenu() {
-        if (!this.state.rightClickNodeTreeItem) {
-            return <div></div>
-        }
-        const menu = <Menu style={{border:"solid"}}>
-            <Menu.Item key='1'><Icon type='plus-circle' />"Open new session with this table"</Menu.Item>
-            <Menu.Item key='2'><Icon type='plus-circle-o' />{'加下级'}</Menu.Item>
-            <Menu.Item key='4'><Icon type='edit' />{'修改'}</Menu.Item>
-            <Menu.Item key='3'><Icon type='minus-circle-o' />{'删除目录'}</Menu.Item>
-        </Menu>
-        const {pageX,pageY,db,table} = this.state.rightClickNodeTreeItem
-        const tmpStyle = {
-            position:"absolute", 
-           left: `${pageX+30}px`,
-           top: `${pageY-95}px`,
-           backgroundColor: "yellow"
-        }
-        return <div style={tmpStyle}>{menu}</div>
-    }    
-    cancelConctextMenu=()=>{
-        this.setState({rightClickNodeTreeItem:undefined})  
-    }
-
+    
     toggleNewSession = ()=>{
       this.setState({showNewSession:!this.state.showNewSession})
     }

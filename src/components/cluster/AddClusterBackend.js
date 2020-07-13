@@ -1,5 +1,6 @@
 import * as React from "react";
-import {Button, Form, Icon, Input, message, Select} from "antd";
+import {Button, Form, Input, message, Select} from "antd";
+import { Icon } from '@ant-design/compatible';
 import {MLSQLAPI} from "../../service/MLSQLAPI";
 import {ADD_TEAMS_ROLE, LIST_TEAMS} from "../../service/BackendConfig";
 import TeamService from "../team/remote/Service";
@@ -77,7 +78,7 @@ class AddClusterBackend extends React.Component {
     render() {
         const {getFieldDecorator} = this.props.form;
         return (
-            <Form onSubmit={this.handleSubmit} className="login-form">
+            <Form ref={this.formRef} onSubmit={this.handleSubmit} className="login-form">
 
                 <Form.Item>
                     {getFieldDecorator('name', {
@@ -144,4 +145,4 @@ class AddClusterBackend extends React.Component {
     }
 }
 
-export const MLSQLAddClusterBackend = Form.create({name: 'add_backend_for_cluster'})(AddClusterBackend);
+export const MLSQLAddClusterBackend = AddClusterBackend;

@@ -66,7 +66,7 @@ class AddMemberForRole extends React.Component {
         const {getFieldDecorator} = this.props.form;
         const self = this
         return (
-            <Form onSubmit={this.handleSubmit} className="login-form">
+            <Form ref={this.formRef} onSubmit={this.handleSubmit} className="login-form">
 
                 <Form.Item>
                     {getFieldDecorator('teamName', {
@@ -113,4 +113,4 @@ class AddMemberForRole extends React.Component {
     }
 }
 
-export const MLSQLAddMemberForRole = Form.create({name: 'add_member_for_role'})(AddMemberForRole);
+export const MLSQLAddMemberForRole = AddMemberForRole;

@@ -1,8 +1,9 @@
 import * as React from "react";
 import "./form.scss"
 import {
-    Form, Select, Button, message, Input, Icon
+    Form, Select, Button, message, Input
 } from 'antd';
+import { Icon } from '@ant-design/compatible';
 import {MLSQLAPI} from "../../service/MLSQLAPI";
 import {ADD_TEAMS_MEMBER, ADD_TEAMS_ROLE, CREATE_TEAM, LIST_TEAMS} from "../../service/BackendConfig";
 
@@ -60,7 +61,7 @@ class AddRoleForTeam extends React.Component {
     render() {
         const {getFieldDecorator} = this.props.form;
         return (
-            <Form onSubmit={this.handleSubmit} className="login-form">
+            <Form ref={this.formRef} onSubmit={this.handleSubmit} className="login-form">
 
                 <Form.Item>
                     {getFieldDecorator('teamName', {
@@ -99,4 +100,4 @@ class AddRoleForTeam extends React.Component {
     }
 }
 
-export const MLSQLAddRoleForTeam = Form.create({name: 'add_role_for_team'})(AddRoleForTeam);
+export const MLSQLAddRoleForTeam =AddRoleForTeam;

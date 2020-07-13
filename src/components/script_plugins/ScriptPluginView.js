@@ -71,7 +71,7 @@ class ScriptPluginView extends React.Component {
                 <div className="steps-content"
                      style={{"margin-top": "30px"}}>
                     <Card bordered={true}>
-                        <Form {...formTailLayout} style={{width: "600px"}}>
+                        <Form ref={this.formRef} {...formTailLayout} style={{width: "600px"}}>
                             {this.buildForm(this.state.steps[current])}
                         </Form>
                     </Card>
@@ -103,4 +103,4 @@ class ScriptPluginView extends React.Component {
     }
 }
 
-export const ScriptPluginViewForm = Form.create({name: "plugin-tutorial"})(ScriptPluginView);
+export const ScriptPluginViewForm = ScriptPluginView;

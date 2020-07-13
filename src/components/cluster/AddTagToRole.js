@@ -81,7 +81,7 @@ class AddTagToRole extends React.Component {
     render() {
         const {getFieldDecorator} = this.props.form;
         return (
-            <Form onSubmit={this.handleSubmit} className="login-form">
+            <Form ref={this.formRef} onSubmit={this.handleSubmit} className="login-form">
 
                 <Form.Item>
                     {getFieldDecorator('teamName', {
@@ -142,4 +142,4 @@ class AddTagToRole extends React.Component {
     }
 }
 
-export const MLSQLAddTagToRole = Form.create({name: 'add_tag_to_role'})(AddTagToRole);
+export const MLSQLAddTagToRole = AddTagToRole;

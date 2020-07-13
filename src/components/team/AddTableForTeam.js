@@ -1,10 +1,11 @@
 import * as React from "react";
 import "./form.scss"
 import {
-    Form, Select, Button, message, Input, Icon
+    Form, Select, Button, message, Input
 } from 'antd';
-import {MLSQLAPI} from "../../service/MLSQLAPI";
-import {ADD_TEAMS_MEMBER, ADD_TEAMS_ROLE, ADD_TEAMS_TABLE, CREATE_TEAM, LIST_TEAMS} from "../../service/BackendConfig";
+import { Icon } from '@ant-design/compatible';
+import { MLSQLAPI } from "../../service/MLSQLAPI";
+import { ADD_TEAMS_MEMBER, ADD_TEAMS_ROLE, ADD_TEAMS_TABLE, CREATE_TEAM, LIST_TEAMS } from "../../service/BackendConfig";
 import Service from "./remote/Service";
 
 
@@ -67,20 +68,20 @@ class AddTableForTeam extends React.Component {
 
 
     render() {
-        const {getFieldDecorator} = this.props.form;
+        const { getFieldDecorator } = this.props.form;
         return (
-            <Form onSubmit={this.handleSubmit} className="login-form">
+            <Form ref={this.formRef} onSubmit={this.handleSubmit} className="login-form">
 
                 <Form.Item>
                     {getFieldDecorator('teamName', {
                         rules: [
-                            {required: true, message: 'Please choose the team name'}
+                            { required: true, message: 'Please choose the team name' }
                         ],
                     })(
                         <Select
                             placeholder="Team name"
                             size={"large"}
-                            style={{width: 200}}
+                            style={{ width: 200 }}
                         >
                             {this.renderTeams()}
                         </Select>
@@ -90,11 +91,11 @@ class AddTableForTeam extends React.Component {
                 <Form.Item>
                     {getFieldDecorator('name', {
                         rules: [
-                            {required: true, message: 'Please input the table name'}
+                            { required: true, message: 'Please input the table name' }
                         ],
                     })(
-                        <Input prefix={<Icon type="table" style={{color: 'rgba(0,0,0,.25)'}}/>}
-                               placeholder="table name"/>
+                        <Input prefix={<Icon type="table" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                            placeholder="table name" />
                     )}
                 </Form.Item>
 
@@ -102,8 +103,8 @@ class AddTableForTeam extends React.Component {
                     {getFieldDecorator('db', {
                         rules: [],
                     })(
-                        <Input prefix={<Icon type="table" style={{color: 'rgba(0,0,0,.25)'}}/>}
-                               placeholder="db name"/>
+                        <Input prefix={<Icon type="table" style={{ color: 'rgba(0,0,0,.25)' }} />}
+                            placeholder="db name" />
                     )}
                 </Form.Item>
 
@@ -111,13 +112,13 @@ class AddTableForTeam extends React.Component {
                 <Form.Item>
                     {getFieldDecorator('tableType', {
                         rules: [
-                            {required: true, message: 'Please input the table type you want to create'}
+                            { required: true, message: 'Please input the table type you want to create' }
                         ],
                     })(
                         <Select
                             placeholder="table Type"
                             size={"large"}
-                            style={{width: 200}}
+                            style={{ width: 200 }}
                         >
                             {this.renderTableTypes()}
                         </Select>
@@ -131,7 +132,7 @@ class AddTableForTeam extends React.Component {
                         <Select
                             placeholder="source Type"
                             size={"large"}
-                            style={{width: 200}}
+                            style={{ width: 200 }}
                         >
                             {this.renderSourceTypes()}
                         </Select>
@@ -148,4 +149,4 @@ class AddTableForTeam extends React.Component {
     }
 }
 
-export const MLSQLAddTableForTeam = Form.create({name: 'add_table_for_team'})(AddTableForTeam);
+export const MLSQLAddTableForTeam = AddTableForTeam;
