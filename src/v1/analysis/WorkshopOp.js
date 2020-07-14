@@ -42,8 +42,7 @@ export const WorkshopOp = (superclass) => class extends superclass {
                 }).join(" and ")
             } else whereBlock = ""
 
-            sql = `load ${db}.\`${table}\` ${whereBlock}  as ${tableName};`
-            console.log(sql)
+            sql = `load ${db}.\`${table}\` ${whereBlock}  as ${tableName};`            
         }
 
         this.sqls.push({ tableName, sql })

@@ -24,7 +24,7 @@ export const WorkshopAutoSql = (superclass) => class extends superclass {
       this.sqls.push(params)
       const view = this.sqls.map(item => item.sql).join("")
       const res = await this.client.runScript(view, Tools.getJobName(), Tools.robotFetchParam())
-      if (res.status != 200) {
+      if (res.status !== 200) {
          this.toggleMessage(res.content)
          return 500
       }

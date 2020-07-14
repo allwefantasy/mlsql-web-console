@@ -3,6 +3,9 @@ export const NewSessionOp = superclass=> class extends(superclass){
         this.setState({showNewSession:!this.state.showNewSession})
       }
       showNewSession = (evt)=>{
+        if(!evt.node.props['table']){
+          return
+        }
         const currentTable = {table: evt.node.props['table'],db: evt.node.props['db']}
         this.setState({showNewSession:true,currentTable})
       }
