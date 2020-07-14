@@ -51,11 +51,11 @@ export default class JoinStation extends mix(React.Component).with(
         this.ApplyOrSaveRef.enter()                
         const tableRes = await EngineService.tableInfo(joinTable)        
         const joinTableInfo = tableRes.content
-        const leftProjectFieldsStr = leftProjectFields.map(item => `${currentTableName}.${item}`).join(",")
-        const rightProjectFieldsStr = rightProjectFields.map(item => `${joinTable}.${item}`).join(",")
+        const leftProjectFieldsStr = leftProjectFields.map(item => `${currentTableName}.\`${item}\``).join(",")
+        const rightProjectFieldsStr = rightProjectFields.map(item => `${joinTable}.\`${item}\``).join(",")
 
-        const leftFieldStr = `${currentTableName}.${leftField}`
-        const rightFieldStr = `${joinTable}.${rightField}`
+        const leftFieldStr = `${currentTableName}.\`${leftField}\``
+        const rightFieldStr = `${joinTable}.\`${rightField}\``
 
         const joinStr = `${joinType} ${joinTable} on ${leftFieldStr} = ${rightFieldStr}`
 

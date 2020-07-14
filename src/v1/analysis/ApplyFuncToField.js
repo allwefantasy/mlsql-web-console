@@ -64,7 +64,9 @@ export default class ApplyFuncToField extends React.Component {
         this.state.currentFunc.params.forEach(item => {
             const v = this.funcParams[item.name]
             if (v) {
-                if (item.dataType == "number" || item.extra.column === "yes") {
+                if (item.extra.column === "yes") {
+                    
+                }else if(item.dataType == "number" ||item.dataType == "boolean" ){
                     params.push(v)
                 }
                 else {

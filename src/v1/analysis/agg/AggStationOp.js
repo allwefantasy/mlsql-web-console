@@ -15,23 +15,23 @@ export const AggStationOp = (superclass) => class extends superclass {
        this.aggFields.push({name,newName})
     }
     onApply = async ()=>{
-         this.applyOrSaveRef.enter()
+         this.ApplyOrSaveRef.enter()
          const tableName = Tools.getTempTableName()
          
          let newFields = this.aggFields.map(item=>{
-            return `${item.name} as ${item.newName}`
+            return `\`${item.name}\` as \`${item.newName}\``
          })
 
          let groupByFields = ""
          
          if(this.groupByFields.length !==0 ){
-            groupByFields = `group by ${this.groupByFields.join(",")}`            
-            newFields = this.groupByFields.concat(newFields)
+            groupByFields = `group by ${this.groupByFields.map(item=>`\`${item}\``).join(",")}`            
+            newFields = this.groupByFields.map(item=>`\`${item}\``).concat(newFields)
          }
 
          const sql = `select ${newFields.join(",")} from ${this.workshop.getLastApplyTable().tableName} ${groupByFields} as ${tableName};`        
          const status = await this.workshop.apply({tableName,sql})
-         this.applyOrSaveRef.exit()
+         this.ApplyOrSaveRef.exit()
          if(status === 200){
             this.workshop.refreshOperateStation()
          }         

@@ -48,11 +48,11 @@ export default class AggStation extends mix(React.Component).with(StationCommonO
     }
     
     handleFunc = ()=>{
-      const {name,newName} = this.applyFuncToFieldRef.collect
-      this.generateProjectField(name,newName)
+      const { field, transformCode, columnName } = this.applyFuncToFieldRef.getTransform()
+      this.generateProjectField(transformCode,columnName)
       this.setState({ funcPopUp: false })
-      this.applyFuncToFieldRef.setState({key:Math.random()})
-    }
+      this.applyFuncToFieldRef.reload()
+    }    
 
     render() {
         return <div>
@@ -70,27 +70,11 @@ export default class AggStation extends mix(React.Component).with(StationCommonO
                     cancelText="Cancel"
                     width="50%"
                     OkText="Ok">
-                    <ApplyFuncToField ref={(et)=>this.applyFuncToFieldRef=et} operateField={this.operateField}></ApplyFuncToField>
+                    <ApplyFuncToField parent={this} ref={(et)=>this.applyFuncToFieldRef=et} operateField={this.operateField}></ApplyFuncToField>
                 </Modal>
                 
                 <div className="station-menu">
-                    <ApplyOrSave onApply={this.onApply} handleTableInput={this.handleTableInput} onSave={this.onSave} ref={et=>this.applyOrSaveRef=et}></ApplyOrSave>
-                    <Menu mode="horizontal">
-                        <SubMenu title="Navigation Three - Submenu">
-                            <Menu.ItemGroup title="Item 1">
-                                <Menu.Item key="setting:1">Option 1</Menu.Item>
-                                <Menu.Item key="setting:2">Option 2</Menu.Item>
-                            </Menu.ItemGroup>
-                            <Menu.ItemGroup title="Item 2">
-                                <Menu.Item key="setting:3">Option 3</Menu.Item>
-                                <Menu.Item key="setting:4">Option 4</Menu.Item>
-                            </Menu.ItemGroup>
-                        </SubMenu>
-                        <Menu.Item key="alipay">
-                            <a href="https://ant.design" target="_blank" rel="noopener noreferrer">
-                                Navigation Four - Link</a>
-                        </Menu.Item>
-                    </Menu>
+                   <ApplyOrSave handlePersit={this.handlePersit} handleTableInput={this.handleTableInput} ref={(et)=>this.ApplyOrSaveRef=et} onSave={this.onSave} onApply={this.onApply} style={{marginBottom:"30px"}}></ApplyOrSave>
                 </div>
             </div>
             <div>
