@@ -10,6 +10,7 @@ import {MLSQLETQuick} from "./et/MLSQLETQuick";
 import {Resizable} from "re-resizable";
 import ExecuteUnit from "./notebook/ExecuteUnit";
 import LeftTreePane from '../v1/async_execute/LeftTreePane';
+import '../v1/analysis/workshop.scss'
 
 class MLSQLQueryApp extends Component {
 
@@ -104,12 +105,15 @@ class MLSQLQueryApp extends Component {
 
     render() {
         return (
-            <div className="mlsql-queryapp">
+            <div className="ws-app">
 
-               <div>
-                   <LeftTreePane ref={(et)=>this.leftTreePaneRef = et} parent={this}></LeftTreePane>
+               <div className="ws-left-pane">
+               <Resizable  style={{ paddingRight: "30px", borderRight: "solid" }}>
+               <LeftTreePane  ref={(et)=>this.leftTreePaneRef = et} parent={this}></LeftTreePane>
+               </Resizable>
+                   
                </div>
-                <div className="mlsql-editor">
+                <div className="ws-right-pane">
                     <div style={{marginBottom: "10px"}}>
                         <MLSQLETQuick ref={this.etRef} parent={this}/>
                     </div>

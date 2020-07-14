@@ -4,6 +4,7 @@ import { Tree, Spin, Menu, Icon, Modal } from 'antd';
 import EngineService from "../service/EngineService";
 import { NewSessionOp } from "./NewSessionOp";
 import mix from "../../common/mixin"
+import {TableOutlined} from '@ant-design/icons'
 const { TreeNode, DirectoryTree } = Tree;
 
 export default class WorkshopTableTree extends mix(React.Component).with(NewSessionOp) {
@@ -35,7 +36,7 @@ export default class WorkshopTableTree extends mix(React.Component).with(NewSess
     return Object.entries(this.state.dbs).map(([key, value]) => {
       return <TreeNode title={key} key={key}>
         {value.map(item => {
-          return <TreeNode table={value} db={key} title={item} key={item} isLeaf />
+          return <TreeNode icon={<TableOutlined />}  table={value} db={key} title={item} key={item} isLeaf />
         })}
       </TreeNode>
     })

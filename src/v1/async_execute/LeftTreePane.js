@@ -3,6 +3,7 @@ import { Tabs } from 'antd';
 import { ScriptNodeTree } from "../../components/MLSQLTreeNode";
 import DeltaLakeTree from "../detla_lake/DeltaLakeTree";
 import FileSystemTree from "../file_system/FileSystemTree";
+import "../../v1/analysis/leftview.scss"
 const { TabPane } = Tabs;
 export default class LeftTreePane extends React.Component {
     constructor(props){
@@ -18,17 +19,17 @@ export default class LeftTreePane extends React.Component {
         }                        
     }}>
        <TabPane tab="Script" key="1">
-       <div className="mlsql-directory-tree">
+       <div className="leftview-box">
            <ScriptNodeTree ref={(et)=> this.scriptTreeRef = et} parent={this.queryApp}/>
        </div>
        </TabPane>
        <TabPane tab="DeltaLake" key="2">
-       <div className="mlsql-directory-tree">
+       <div className="leftview-box">
            <DeltaLakeTree ref={(et)=> this.deltaLakeTreeRef = et} ></DeltaLakeTree>
        </div>
        </TabPane>
        <TabPane tab="FileSystem" key="3">
-       <div className="mlsql-directory-tree">
+       <div className="leftview-box">
            <FileSystemTree ref={(et)=> this.fileSystemTreeRef = et}></FileSystemTree>
        </div>
        </TabPane> 

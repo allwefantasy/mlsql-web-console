@@ -47,7 +47,7 @@ export default class AnalysisWorkshop extends mix(React.Component).
     render() {
         return <div className="ws-app">
             <div className="ws-left-pane">
-                <Resizable defaultSize={{ height: "500px" }} style={{ paddingRight: "30px", borderRight: "solid" }}>
+                <Resizable  style={{ paddingRight: "30px", borderRight: "solid" }}>
                     <LeftView ref={(et) => this.leftTreePaneRef = et} parent={this}></LeftView>
                 </Resizable>
             </div>

@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Tree ,Spin} from 'antd';
 import EngineService from "../service/EngineService";
+import {TableOutlined} from '@ant-design/icons'
 
 const { TreeNode, DirectoryTree } = Tree;
 export default class DeltaLakeTree extends React.Component{
@@ -31,7 +32,7 @@ export default class DeltaLakeTree extends React.Component{
         return Object.entries(this.state.dbs).map(([key,value])=>{                   
             return <TreeNode title={key} key={key}>
                {value.map(item=>{                   
-                   return <TreeNode title={item} key={item} isLeaf />
+                   return <TreeNode icon={<TableOutlined />} title={item} key={item} isLeaf />
                })} 
             </TreeNode>
         })
