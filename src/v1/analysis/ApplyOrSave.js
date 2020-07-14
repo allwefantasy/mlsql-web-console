@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Menu, Button, Modal, Form, Input, FuncDesc } from 'antd';
+import { Menu, Button, Modal, Form, Input, FuncDesc, Switch } from 'antd';
 import './ApplyOrSave.scss'
 
 const { SubMenu } = Menu;
@@ -25,6 +25,7 @@ export default class ApplyOrSave extends React.Component {
     }
     
     handleTableInput = ()=>{}
+    handlePersit = ()=>{}
 
     render() {
         return <div style={this.props.style} className={this.props.className || "aos-box"}>
@@ -37,6 +38,7 @@ export default class ApplyOrSave extends React.Component {
                 OkText="Ok">
                 <Form className="login-form">
                     <Form.Item><Input addonBefore="tableName" onChange={this.props.handleTableInput || this.handleTableInput} placeholder="" /></Form.Item>
+                    <Form.Item label="Persist table(take more space):"><Switch onChange={this.props.handlePersit || this.handlePersit}></Switch></Form.Item>
                 </Form>
             </Modal>
             <div className="aos-button"><Button loading={this.state.applyLoading} onClick={this.props.onApply} type="primary">Apply</Button></div>

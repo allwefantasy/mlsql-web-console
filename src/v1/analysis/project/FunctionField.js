@@ -6,8 +6,20 @@ export default class FunctionField extends React.Component {
     constructor(props) {
         super(props)
         this.workshop = props.parent.workshop
+        this.state = this.wow(props)
+    }
 
-        const fields = this.workshop.currentTable.schema.fields
+    componentDidUpdate(prevProps) {
+        // Typical usage (don't forget to compare props):
+        if (this.props.schemaFields !== prevProps.schemaFields) {
+          this.setState({ ...this.wow(this.props) },()=>{
+            this.reload()
+          })
+        }
+      }
+
+      wow = (props)=>{
+        const fields = props.schemaFields
 
         const data = fields.map(item => {
             return { field: item.name, func: "", transformCode: "", "columnName": "" }
@@ -26,16 +38,15 @@ export default class FunctionField extends React.Component {
                 }
             }
         }
-        this.state = { funcPopUp: false, data, config }
-    }
+        return { funcPopUp: false, data, config }
+      }
 
     showAggFuncsAndApply = (record) => {
         this.operateField = record.field
         this.setState({ funcPopUp: true })
     }
 
-    reload = () => {
-        console.log(this.state.data)
+    reload = () => {        
         this.columnsRef.update(this.state.data, this.state.config)
     }
 

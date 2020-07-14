@@ -13,6 +13,7 @@ import { WorkshopMessageOp } from "./WorkshopMessageOp";
 import { WorkshopUIOp } from "./WorkshopUIOp";
 import Tools from "../../common/Tools";
 import { Resizable } from "re-resizable";
+import ColumnOperate from "./ColumnOperate";
 
 export default class AnalysisWorkshop extends mix(React.Component).
     with(WorkshopOp,
@@ -30,7 +31,7 @@ export default class AnalysisWorkshop extends mix(React.Component).
 
     componentDidMount() {
         // for testing should remove
-        this.newSession("delta", "public", "jack")
+        this.newSession("file", "csv", "/tmp/upload/ConsumerComplaints.csv",{header:"true"})
     }
 
     operateStationView() {
@@ -77,7 +78,7 @@ export default class AnalysisWorkshop extends mix(React.Component).
                 <div className="ws-table-pane">
                     {/* <Spin tip="Loading..." spinning={this.state.tableLoading} style={{ width: "100%" }}>                        
                 <div style={{ height: "300px" }}></div></Spin> */}
-                    <MLSQLQueryDisplay style={{ width: "100%" }} ref={(et) => this.displayRef = et} parent={this} />
+                    <ColumnOperate style={{ width: "100%" }} ref={(et) => this.displayRef = et} parent={this} />
 
                 </div>
             </div>

@@ -23,16 +23,16 @@ export default class ProjectStation extends mix(React.Component).with(StationCom
             <div className={"station-menu"}>                
                 <Tabs defaultActiveKey="3" className={"station-tabs"}>
                     <TabPane tab="Select Columns" key="1">
-                    <ApplyOrSave handleTableInput={this.handleTableInput} ref={(et)=>this.ApplyOrSaveRef=et} onSave={this.onSave} onApply={this.onSelectApply} style={{marginBottom:"30px"}}></ApplyOrSave>                        
+                    <ApplyOrSave handlePersit={this.handlePersit} handleTableInput={this.handleTableInput} ref={(et)=>this.ApplyOrSaveRef=et} onSave={this.onSave} onApply={this.onSelectApply} style={{marginBottom:"30px"}}></ApplyOrSave>                        
                         <SelectFields schemaFields={this.workshop.currentTable.schema.fields} ref={(et)=>this.selectFieldsRef=et} parent={this}></SelectFields>
                     </TabPane>
                     <TabPane tab="Rename Columns" key="2">
-                    <ApplyOrSave handleTableInput={this.handleTableInput} ref={(et)=>this.ApplyOrSaveRef=et} onSave={this.onSave} onApply={this.onRenameApply} style={{marginBottom:"30px"}}></ApplyOrSave>
+                    <ApplyOrSave handlePersit={this.handlePersit} handleTableInput={this.handleTableInput} ref={(et)=>this.ApplyOrSaveRef=et} onSave={this.onSave} onApply={this.onRenameApply} style={{marginBottom:"30px"}}></ApplyOrSave>
                         <RenameFields schemaFields={this.workshop.currentTable.schema.fields} ref={(et)=>this.renameFieldsRef=et} parent={this}></RenameFields>
                     </TabPane>
                     <TabPane tab="Transform Columns" key="3">
-                    <ApplyOrSave handleTableInput={this.handleTableInput} ref={(et)=>this.ApplyOrSaveRef=et} onSave={this.onSave} onApply={this.onFuncApply} style={{marginBottom:"30px"}}></ApplyOrSave>                        
-                       <FunctionField ref={(et)=>this.functionFieldRef=et} parent={this}></FunctionField>
+                    <ApplyOrSave handlePersit={this.handlePersit} handleTableInput={this.handleTableInput} ref={(et)=>this.ApplyOrSaveRef=et} onSave={this.onSave} onApply={this.onFuncApply} style={{marginBottom:"30px"}}></ApplyOrSave>                        
+                       <FunctionField  schemaFields={this.workshop.currentTable.schema.fields} ref={(et)=>this.functionFieldRef=et} parent={this}></FunctionField>
                     </TabPane>
                 </Tabs>
             </div>

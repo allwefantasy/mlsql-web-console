@@ -15,7 +15,7 @@ export default class CodeIntellegence {
         queryType: "robot" 
     })
 
-    if(res && res.status == 200){
+    if(res && res.status === 200){
         const wordList = res.content
         return wordList
     }else {

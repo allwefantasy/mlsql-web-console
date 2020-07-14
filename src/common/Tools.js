@@ -14,4 +14,23 @@ export default class Tools{
             includeSchema: true
         }
     }
+
+    static robotFetchParamWithCollect = ()=>{
+        return {
+            queryType:  "robot",                       
+            includeSchema: true
+        }
+    }
+
+    static distinct=(arrays,field)=>{
+        const tempF = {}
+        return arrays.filter(item=>{
+            if(item[field] in tempF){
+                return false
+            }else {
+                tempF[item[field]] = item[field]
+                return true
+            }
+        })
+    }
 }

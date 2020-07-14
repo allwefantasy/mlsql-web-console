@@ -5,6 +5,8 @@ import {
     Select, Form, Icon, Input, Button, Checkbox, Col, Row
 } from 'antd';
 import {ETLoadParams} from "./ETLoadParams";
+import { ActionProxy } from "../../backend_service/ActionProxy";
+import Tools from "../../common/Tools";
 
 const InputGroup = Input.Group;
 const Option = Select.Option;
@@ -20,20 +22,16 @@ export class ETPopLoad extends React.Component {
     }
 
 
-    componentDidMount() {
+    componentDidMount = async () => {
         const self = this
-        const api = new MLSQLAPI(RUN_SCRIPT)
-
-        api.runScript({}, "load _mlsql_.`datasources` as output;", (data) => {
-            const datasourcesRender = []
-            data.forEach(item => {
-                datasourcesRender.push(<Option key={item.name} value={item.name}>{item.name}</Option>)
-            })
-            self.setState({datasourcesRender: datasourcesRender})
-        }, fail => {
-
+        const client = new ActionProxy()
+        const res = await client.runScript("load _mlsql_.`datasources` as output;",Tools.getJobName(),Tools.robotFetchParamWithCollect())
+        const data = Tools.distinct(res.content.data,"name")
+        const datasourcesRender = []
+        data.forEach(item => {
+            datasourcesRender.push(<Option key={item.name} value={item.name}>{item.name}</Option>)
         })
-
+        this.setState({datasourcesRender: datasourcesRender})
     }
 
     params = (evt) => {
@@ -48,9 +46,9 @@ export class ETPopLoad extends React.Component {
         api.runScript({}, `load _mlsql_.\`datasources/params/${value}\` as output;`, (data) => {
             const dataForRender = []
             data.forEach(item => {
-                dataForRender.push(<Row key={item.param}>
+                dataForRender.push(<Row key={`row-${item.param}`}>
                     <Col>
-                        <Input style={{marginBottom: "10px"}} name={item.param} onChange={self.params} type="text"
+                        <Input key={`input-${item.param}`} style={{marginBottom: "10px"}} name={item.param} onChange={self.params} type="text"
                                addonBefore={item.param}
                                placeholder={item.description}/>
                     </Col>
@@ -107,23 +105,25 @@ export class ETPopLoad extends React.Component {
                 </Row>
             </InputGroup>
             <br/>
-            <InputGroup compact={true}>
+            {this.props.ignorePath? <div></div> : <InputGroup compact={true}>
                 <Row>
                     <Col>
                         <Input onChange={this.path} type="text" label="Path" addonBefore="Path"
                                placeholder="File path or tableName"/>
                     </Col>
                 </Row>
-            </InputGroup>
+            </InputGroup>}
             <br/>
-            <InputGroup compact={true}>
-                <Row>
-                    <Col>
-                        <Input type="text" onChange={this.tableName} label="tableName" addonBefore="tableName"
-                               placeholder="tableName"/>
-                    </Col>
-                </Row>
-            </InputGroup>
+             {
+                 this.props.ignoreTableName? <div></div>: <InputGroup compact={true}>
+                 <Row>
+                     <Col>
+                         <Input type="text" onChange={this.tableName} label="tableName" addonBefore="tableName"
+                                placeholder="tableName"/>
+                     </Col>
+                 </Row>
+             </InputGroup>
+             }
             <br/>
             <ETLoadParams parent={this} ref={this.loadParamsRef}/>
         </div>

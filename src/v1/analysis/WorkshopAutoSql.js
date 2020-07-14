@@ -15,7 +15,7 @@ export const WorkshopAutoSql = (superclass) => class extends superclass {
       this.sqls.push(params)
       const view = this.sqls.map(item => item.sql).join("")
       const res = await this.client.runScript(view, Tools.getJobName(), Tools.robotFetchParam())
-      if (res.status != 200) {                
+      if (res.status != 200) {
          this.toggleMessage(res.content)
          return 500
       }
@@ -24,7 +24,7 @@ export const WorkshopAutoSql = (superclass) => class extends superclass {
       return 200
    }
 
-   save = async (tableName) => {
+   save = async (tableName, persist) => {
       if (this.sqls.length === 0) {
          this.toggleMessage("Sorry, current session have no applies.")
          return 500
@@ -32,12 +32,27 @@ export const WorkshopAutoSql = (superclass) => class extends superclass {
       const sql = `select * from ${this.getLastApplyTable().tableName} as ${tableName};`
       this.sqls.push({ tableName, sql })
       const finalSql = this.sqls.map(item => item.sql).join("\n")
-      const res = await this.client.post(RemoteAction.ANALYSIS_SAVE, {
+
+      const persistJobName = Tools.getJobName()
+      let extraParams = { status: 5 }// 5 view
+      if (persist) {
+         const persistSQL = `${finalSql}
+         save overwrite ${tableName} as parquet.\`/__persisted__/${tableName}\`;`
+         
+         await this.client.runScript(persistSQL, persistJobName, {
+            persistJobName,
+            async: true
+         })
+         extraParams = { jobName: persistJobName, status: 1 }// 1 running
+      }
+
+      const res = await this.client.post(RemoteAction.ANALYSIS_SAVE, Object.assign({
          tableName,
          sql: finalSql,
          sessionId: this.sessionId,
-         schema: JSON.stringify(this.currentTable.schema)
-      })
+         schema: JSON.stringify(this.currentTable.schema),
+      }, extraParams))
+
       return res.status
    }
 }

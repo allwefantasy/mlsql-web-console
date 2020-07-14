@@ -17,11 +17,13 @@ export default class ColumnOperate extends React.Component {
 
         const value = data[0][keyColumn.key]
 
-        if (this.config && this.config["render"]) {
-            const render = this.config["render"][keyColumn.key]
-            if (render) {
-                keyColumn["render"] = render
-            }
+        if (this.config && this.config["render"]) {            
+            Object.keys(this.config).map(k=>{
+                const v = this.config[k][keyColumn.key] 
+                if(v){
+                    keyColumn[k] = v
+                }
+            })
             return
         }
 
@@ -117,19 +119,12 @@ export default class ColumnOperate extends React.Component {
     render() {
         const self = this
         return (<div style={this.tableStyle}>
-                <Table
-                    onRow={(row, index) => {
-                        return {
-                            onDoubleClick: (event) => {
-                                self.rowDoubleClick(row, index, event)
-
-                            }
-                        }
-                    }
-                    }
-
+                <Table    
+                    size ='default'
                     columns={this.state.columns}
-                    dataSource={this.state.data}/>
+                    dataSource={this.state.data}
+                    scroll = {{x:'70vw',y:600}}                                      
+                    />
                 <Modal
                     title={"View"}
                     visible={this.state.view.enabled}

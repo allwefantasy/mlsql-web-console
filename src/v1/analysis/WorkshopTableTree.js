@@ -4,14 +4,16 @@ import { Tree, Spin, Menu, Icon, Modal } from 'antd';
 import EngineService from "../service/EngineService";
 import { NewSessionOp } from "./NewSessionOp";
 import mix from "../../common/mixin"
-import {TableOutlined} from '@ant-design/icons'
+import { TableOutlined } from '@ant-design/icons'
+import Form from "antd/lib/form/Form";
+import { ActionProxy } from "../../backend_service/ActionProxy";
 const { TreeNode, DirectoryTree } = Tree;
 
 export default class WorkshopTableTree extends mix(React.Component).with(NewSessionOp) {
   constructor(props) {
     super(props)
     this.state = { dbs: {}, loading: false }
-    this.workshop = props.parent.workshop  
+    this.workshop = props.parent.workshop
 
   }
 
@@ -36,7 +38,7 @@ export default class WorkshopTableTree extends mix(React.Component).with(NewSess
     return Object.entries(this.state.dbs).map(([key, value]) => {
       return <TreeNode title={key} key={key}>
         {value.map(item => {
-          return <TreeNode icon={<TableOutlined />}  table={value} db={key} title={item} key={item} isLeaf />
+          return <TreeNode icon={<TableOutlined />} table={value} db={key} title={item} key={item} isLeaf />
         })}
       </TreeNode>
     })
@@ -46,8 +48,6 @@ export default class WorkshopTableTree extends mix(React.Component).with(NewSess
     await this.reload()
   }
 
-  
-
   render() {
     return (
       <div>
@@ -55,13 +55,13 @@ export default class WorkshopTableTree extends mix(React.Component).with(NewSess
           title={`Open new session with [${this.currentTableName()}]?`}
           visible={this.state.showNewSession}
           onCancel={this.toggleNewSession}
-          onOk={()=>{this.showTable("temp")}}
+          onOk={() => { this.showTable("temp") }}
           cancelText="Cancel"
           OkText="Ok">
-          wowowowowow
-                 </Modal>
+
+        </Modal>
         <Spin tip="Loading..." spinning={this.state.loading}>
-          <DirectoryTree  onRightClick={this.showNewSession}>
+          <DirectoryTree onRightClick={this.showNewSession}>
             {this.show()}
           </DirectoryTree>
         </Spin>

@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Tabs } from 'antd';
-import FileSystemTree from "../file_system/FileSystemTree";
+import AFileSystemTree from "./AFileSystemTree";
 import ADeltaLakeTree from "./ADeltaLakeTree";
 import WorkshopTableTree from "./WorkshopTableTree";
 import "./leftview.scss"
@@ -31,7 +31,7 @@ export default class LeftView extends React.Component {
        </TabPane>
        <TabPane tab="FileSystem" key="3">
        <div className="leftview-box">
-           <FileSystemTree ref={(et)=> this.fileSystemTreeRef = et} parent={this}></FileSystemTree>
+           <AFileSystemTree ref={(et)=> this.fileSystemTreeRef = et} parent={this}></AFileSystemTree>
        </div>
        </TabPane> 
                        
