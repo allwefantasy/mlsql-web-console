@@ -25,12 +25,23 @@ export const ProjectStationSQLOp = superclass => class extends(superclass) {
              this.ApplyOrSaveRef.exit()
              return
          }
-         const newFields = fields.map(item=>{                        
-             if(item["transformCode"]){
-                 return `\`${item["transformCode"]}\` as \`${item["columnName"]}\``
-             } else return `\`${item["field"]}\` as \`${item["field"]}\``
-             
-         })        
+
+         const isAggExists = fields.filter(item=>item.isAgg).length > 0
+         let newFields = []
+         
+         if(!isAggExists){
+            newFields = fields.map(item=>{                        
+                if(item["transformCode"]){
+                    return `${item["transformCode"]} as \`${item["columnName"]}\``
+                } else return `\`${item["field"]}\` as \`${item["field"]}\``
+                
+            }) 
+         }else {
+            newFields = fields.filter(item=>item.isAgg).map(item=>`${item["transformCode"]} as \`${item["columnName"]}\``)
+         }
+         
+         
+         
          const tableName = Tools.getTempTableName()  
          const sql = `select ${newFields.join(",")} from ${this.workshop.getLastApplyTable().tableName} as ${tableName};`        
          await this.workshop.apply({tableName,sql})

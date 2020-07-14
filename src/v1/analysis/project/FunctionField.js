@@ -55,10 +55,10 @@ export default class FunctionField extends React.Component {
     }
 
     handleFunc = () => {
-        const { field, transformCode, columnName } = this.applyFuncToFieldRef.getTransform()
+        const { field, transformCode, columnName,isAgg } = this.applyFuncToFieldRef.getTransform()
         const data = this.state.data.map(item => {
             if (item.field === field) {
-                return { field, func: "", transformCode, columnName }
+                return { field, func: "", transformCode, columnName,isAgg}
             }
             return item
         })        

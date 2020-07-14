@@ -43,6 +43,7 @@ export default class ApplyOrSave extends React.Component {
             </Modal>
             <div className="aos-button"><Button loading={this.state.applyLoading} onClick={this.props.onApply} type="primary">Apply</Button></div>
             <div className="aos-button"><Button disabled={this.state.applyLoading} onClick={this.toggle} type="primary">Save As</Button></div>
+            <div className="aos-button"><Button disabled={this.state.applyLoading} onClick={this.props.onRollback} >Rollback</Button></div>
         </div>
     }
 }

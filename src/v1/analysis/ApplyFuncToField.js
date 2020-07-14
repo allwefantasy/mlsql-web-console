@@ -3,6 +3,7 @@ import { Select, Form, Input } from 'antd';
 import mix from "../../common/mixin"
 import EngineService from "../service/EngineService";
 import FuncDesc from "./FuncDesc";
+import Tools from "../../common/Tools";
 const { Option } = Select;
 
 export default class ApplyFuncToField extends React.Component {
@@ -65,7 +66,7 @@ export default class ApplyFuncToField extends React.Component {
             const v = this.funcParams[item.name]
             if (v) {
                 if (item.extra.column === "yes") {
-                    
+                    params.push(Tools.getField(v))
                 }else if(item.dataType == "number" ||item.dataType == "boolean" ){
                     params.push(v)
                 }
@@ -75,7 +76,8 @@ export default class ApplyFuncToField extends React.Component {
             }
         })
         const field = this.operateField
-        return {field, transformCode: `${this.state.currentFunc.value}(${params.join(",")})`, columnName: this.newFuncName }
+        const isAgg = this.state.currentFunc.funcValue.extra.agg === "yes"
+        return {field,isAgg, transformCode: `${this.state.currentFunc.value}(${params.join(",")})`, columnName: this.newFuncName }
     }
     reload = () => {
         this.setState({

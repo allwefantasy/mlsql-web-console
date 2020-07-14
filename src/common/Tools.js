@@ -22,6 +22,11 @@ export default class Tools{
         }
     }
 
+    static getField =(v)=>{
+        if(v.startsWith("`") && v.endsWith("`")) return v
+        return `\`${v}\`` 
+    }
+
     static distinct=(arrays,field)=>{
         const tempF = {}
         return arrays.filter(item=>{

@@ -19,7 +19,7 @@ export const AggStationOp = (superclass) => class extends superclass {
          const tableName = Tools.getTempTableName()
          
          let newFields = this.aggFields.map(item=>{
-            return `\`${item.name}\` as \`${item.newName}\``
+            return `${Tools.getField(item.name)} as \`${item.newName}\``
          })
 
          let groupByFields = ""

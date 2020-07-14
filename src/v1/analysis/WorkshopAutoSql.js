@@ -6,6 +6,15 @@ export const WorkshopAutoSql = (superclass) => class extends superclass {
       return this.sqls[this.sqls.length - 1]
    }
 
+   rollback = async (params)=>{
+      if(this.sqls.length<2){
+         this.toggleMessage("No apply to rollback.")
+         return
+      }
+      const removeTable = this.sqls.pop()
+      const currentTable = this.sqls.pop()
+      this.apply(currentTable)
+   }
 
    /**
    * generate sql
