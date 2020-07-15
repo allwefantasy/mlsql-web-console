@@ -1,22 +1,16 @@
 import * as React from "react";
-import { Divider, Form, Table, Button, Modal, Input, Select } from 'antd';
-import ApplyFuncToField from "../ApplyFuncToField";
+import { Form, Table, Button, Modal, Input, Select } from 'antd';
 export default class Compare extends React.Component {
     constructor(props) {
         super(props)
         this.fitlerStation = props.parent
         this.workshop = props.parent.workshop
-        this.state = this.wow(props)
+        this.state = this.wow(props.schemaFields)
         this.params = []
     }
 
-    componentDidUpdate(prevProps) {
-        // Typical usage (don't forget to compare props):
-        if (this.props.schemaFields !== prevProps.schemaFields) {
-            this.setState({ ...this.wow(this.props) }, () => {
-                this.reload()
-            })
-        }
+    reload = (data) => {
+        this.setState({ ...this.wow(data) })
     }
 
     compareInput = (value, record) => {
@@ -41,19 +35,25 @@ export default class Compare extends React.Component {
                 condition: value
             })
         }
-    }    
+    }
 
-    wow = (props) => {
-        const fields = props.schemaFields
-
+    wow = (schemaFields) => {
+        const fields = schemaFields
         const data = fields.map(item => {
-            return { key: item.name, field: item.name, compare: "=", condition: "", command: "" }
+            return { key: item.name, field: item.name, dataType:item.type,compare: "=", condition: "", command: "" }
         })
 
         const columns = [
             {
                 title: "field",
                 dataIndex: "field"
+            },
+            {
+                title: "dataType",
+                dataIndex: "dataType",
+                render: (value, record) => {
+                    return <span>{value}</span>
+                }
             },
             {
                 title: "compare",
@@ -77,14 +77,28 @@ export default class Compare extends React.Component {
                     return <Input onChange={(evt) => { this.conditionInput(evt.target.value, record) }} key={record.field} defaultValue={value} />
                 }
             }
+            
         ]
         return { funcPopUp: false, data, columns }
     }
 
-    addGroup=(values)=>{
-       const {groupName,groupType} = values    
-       const selectedRows = this.params.filter(item=>this.selectedRowKeys.includes(item.field))       
-       this.fitlerStation.conGroups[groupName] = {groupName,groupType,data:selectedRows}       
+    addGroup = (values) => {
+        const { groupName, groupType } = values
+        if (!groupName || !groupType) {
+            this.workshop.showInfo("Error: groupName and groupType is required.")
+            return
+        }
+        const selectedRows = this.params.filter(item => this.selectedRowKeys.includes(item.field))
+
+        this.fitlerStation.conGroups[groupName] = { groupName, groupType, tp: "basic", data: selectedRows }
+        if (this.fitlerStation.applyGroup) {
+            this.fitlerStation.applyGroup.reload({ data: this.fitlerStation.conGroups })
+        }
+        if (this.fitlerStation.groupGroup) {
+            this.fitlerStation.groupGroup.reload({ data: this.fitlerStation.conGroups })
+        }
+
+        this.workshop.showInfo("Add successfully")
     }
 
 
@@ -98,21 +112,6 @@ export default class Compare extends React.Component {
             })
         }
         return <div >
-            <Modal
-                title={`Apply function to [${this.operateField}]`}
-                visible={this.state.funcPopUp}
-                onCancel={() => {
-                    this.applyFuncToFieldRef.reload()
-                    this.setState({ funcPopUp: false })
-                }}
-                onOk={
-                    this.handleFunc
-                }
-                cancelText="Cancel"
-                width="50%"
-                OkText="Ok">
-                <ApplyFuncToField parent={this} ref={(et) => this.applyFuncToFieldRef = et} operateField={this.operateField}></ApplyFuncToField>
-            </Modal>
             <Form onFinish={this.addGroup}>
                 <Form.Item name={"groupName"} label="Group Name"><Input></Input></Form.Item>
                 <Form.Item name={"groupType"} label="Group Type" defaultValue={"and"}><Select >

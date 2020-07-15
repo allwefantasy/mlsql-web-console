@@ -1,55 +1,45 @@
 import * as React from "react";
-import { Divider, Form, Table, Button, Modal, Input, Select } from 'antd';
-import ApplyFuncToField from "../ApplyFuncToField";
+import {  Form,  Select } from 'antd';
+import Tools from "../../../common/Tools";
 export default class ApplyGroup extends React.Component {
     constructor(props) {
         super(props)
         this.fitlerStation = props.parent
-        this.workshop = props.parent.workshop
-        this.state = this.wow(props)
-        this.params = []
+        this.workshop = props.parent.workshop        
+        this.state = this.wow(props)        
     }
 
-    componentDidUpdate(prevProps) {
-        // Typical usage (don't forget to compare props):
-        if (this.props.data !== prevProps.data) {
-            this.setState({ ...this.wow(this.props) })
-        }
-    }      
-
-    wow = (props) => {
-        const fields = Object.keys(props.data).map(item=> {return {groupName:item}})
+    reload = (data)=>{
+       this.setState({...this.wow(data)}) 
+    }
+      
+    wow = (props) => {        
+        const fields = Object.keys(props.data).map(item => { return { groupName: item } })
 
         const data = fields.map(item => {
             return { key: item.groupName, groupName: item.groupName }
-        })
+        })              
+        return { data,refresh:Math.random()}
+    }
 
-        const columns = [
-            {
-                title: "groupName",
-                dataIndex: "groupName"
-            }            
-        ]
-        return { funcPopUp: false, data, columns }
-    }   
+    onChange = (value) => {
+        this.groupName = value
+    }
 
     render = () => {
-        const rowSelection = {
-            onChange: (selectedRowKeys, selectedRows) => {
-                this.selectedRowKeys = selectedRowKeys
-            },
-            getCheckboxProps: record => ({
-                name: record.field
-            })
-        }
-        return <div >                       
-            <Table rowSelection={{
-                type: "checkbox",
-                ...rowSelection,
-            }} columns={this.state.columns}
-                dataSource={this.state.data}>
 
-            </Table>
+        return <div >
+            <Form key={this.state.refresh}>                
+                <Form.Item label="Select group name to apply:">
+                    <Select onChange={this.onChange} >
+                        {this.state.data.map(item => {                            
+                            return <Select.Option key={item.key} value={item.groupName}>
+                                {item.groupName}
+                            </Select.Option>
+                        })}
+                    </Select>
+                </Form.Item>
+            </Form>
         </div>
     }
 }

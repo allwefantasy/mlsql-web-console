@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Spin, Modal, Result, Button } from "antd"
+import {Modal, Result, Button } from "antd"
 import './workshop.scss'
 import LeftView from "./leftview";
 import { MLSQLQueryDisplay } from "../../components/MLSQLQueryDisplay"
@@ -31,7 +31,7 @@ export default class AnalysisWorkshop extends mix(React.Component).
 
     componentDidMount() {
         // for testing should remove
-        this.newSession("file", "csv", "/tmp/upload/ConsumerComplaints.csv",{header:"true"})
+        this.newSession("file", "csv", "/tmp/upload/ConsumerComplaints.csv", { header: "true" })
     }
 
     operateStationView() {
@@ -48,7 +48,7 @@ export default class AnalysisWorkshop extends mix(React.Component).
     render() {
         return <div className="ws-app">
             <div className="ws-left-pane">
-                <Resizable  style={{ paddingRight: "30px", borderRight: "solid" }}>
+                <Resizable style={{ paddingRight: "30px", borderRight: "solid" }}>
                     <LeftView ref={(et) => this.leftTreePaneRef = et} parent={this}></LeftView>
                 </Resizable>
             </div>
@@ -60,18 +60,28 @@ export default class AnalysisWorkshop extends mix(React.Component).
                     onOk={this.toggleMessage}
                     cancelText="Cancel"
                     width="60%"
-                    OkText="Ok"                    
-                    
-                    >
-                    <AceEditor                         
+                    OkText="Ok"
+
+                >
+                    <AceEditor
                         height={"300px"}
                         width={"100%"}
                         mode="text"
                         theme="github"
                         name="detail_box"
-                        value={this.state.consoleMessage||""}
+                        value={this.state.consoleMessage || ""}
                     ></AceEditor>
-                </Modal>
+                </Modal>  
+                <Modal
+                    title={"Message"}
+                    visible={this.state.showInfoMessage || false}
+                    onCancel={()=>{this.setState({showInfoMessage:false})}}
+                    onOk={()=>{this.setState({showInfoMessage:false})}}
+                    cancelText="Cancel"                    
+                    OkText="Ok"
+                >
+                   {this.state.infoMessage}
+                </Modal>               
                 <div className="ws-operate-pane">
                     {this.operateStationView()}
                 </div>

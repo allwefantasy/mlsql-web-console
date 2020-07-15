@@ -9,4 +9,8 @@ export const WorkshopMessageOp = (superclass) => class extends superclass {
         }
         
     }
+
+    showInfo = (msg)=> {
+        this.setState({showInfoMessage:true,infoMessage:msg})
+    }
 }
