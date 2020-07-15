@@ -1,7 +1,9 @@
 export const NewSessionOp = superclass=> class extends(superclass){
-    toggleNewSession = ()=>{
+      
+      toggleNewSession = ()=>{
         this.setState({showNewSession:!this.state.showNewSession})
       }
+      
       showNewSession = (evt)=>{
         if(!evt.node.props['table']){
           return
@@ -17,9 +19,9 @@ export const NewSessionOp = superclass=> class extends(superclass){
         return this.state.currentTable.db + "." + this.state.currentTable.table
       }
     
-      showTable = async (prefix)=>{
-          this.setState({showNewSession:false})        
+      showTable = async (prefix)=>{      
+          this.setState({showNewSession:false})           
           const {db,table} = this.state.currentTable
-          this.workshop.newSession(prefix,db,table)        
+          this.workshop.newSession(prefix,db,table)                   
       }
 }

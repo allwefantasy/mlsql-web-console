@@ -21,7 +21,7 @@ export default class ProjectStation extends mix(React.Component).with(StationCom
     render() {
         return <div>
             <div className={"station-menu"}>                
-                <Tabs defaultActiveKey="3" className={"station-tabs"}>
+                <Tabs defaultActiveKey="1" className={"station-tabs"}>
                     <TabPane tab="Select Columns" key="1">
                     <ApplyOrSave onRollback={this.onRollback} handlePersit={this.handlePersit} handleTableInput={this.handleTableInput} ref={(et)=>this.ApplyOrSaveRef=et} onSave={this.onSave} onApply={this.onSelectApply} style={{marginBottom:"30px"}}></ApplyOrSave>                        
                         <SelectFields schemaFields={this.workshop.currentTable.schema.fields} ref={(et)=>this.selectFieldsRef=et} parent={this}></SelectFields>

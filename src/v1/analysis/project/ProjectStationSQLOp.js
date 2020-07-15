@@ -11,6 +11,7 @@ export const ProjectStationSQLOp = superclass => class extends(superclass) {
             return
         }
         const tableName = Tools.getTempTableName()
+        
         const sql = `select ${fields.join(",")} from ${this.workshop.getLastApplyTable().tableName} as ${tableName};`
         await this.workshop.apply({tableName,sql})
         this.ApplyOrSaveRef.exit()

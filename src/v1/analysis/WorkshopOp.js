@@ -5,12 +5,11 @@ const uuidv4 = require('uuid/v4');
 export const WorkshopOp = (superclass) => class extends superclass {
 
     newSession = async (prefix, db, table, options) => {
-        this.sessionId = Tools.getJobName()
         this.showTable(prefix, db, table, options)
         return this
     }
     showTable = async (prefix, db, table, options) => {
-        const tableName = Tools.getTempTableName()
+        let tableName = Tools.getTempTableName()
 
         let dbPrefix = `${db}.`
 
@@ -27,9 +26,11 @@ export const WorkshopOp = (superclass) => class extends superclass {
             const res = await EngineService.tableInfo(table)
             const tableInfo = res.content
             if (tableInfo.status === 2) {
-                sql = `load parquet.\`/__persisted__/${tableInfo.tableName}\`  as ${tableInfo.tableName};`
+                sql = `load parquet.\`/__persisted__/${tableInfo.tableName}\`  as ${tableInfo.tableName};
+                select * from ${tableInfo.tableName} as ${tableName};`
             } else {
-                sql = tableInfo.content
+                sql = `${tableInfo.content} 
+                select * from ${tableInfo.tableName} as ${tableName};`
             }
         }
 
@@ -42,7 +43,7 @@ export const WorkshopOp = (superclass) => class extends superclass {
                 }).join(" and ")
             } else whereBlock = ""
 
-            sql = `load ${db}.\`${table}\` ${whereBlock}  as ${tableName};`            
+            sql = `load ${db}.\`${table}\` ${whereBlock}  as ${tableName};`
         }
 
         this.sqls.push({ tableName, sql })
@@ -56,6 +57,8 @@ export const WorkshopOp = (superclass) => class extends superclass {
         }
         const { schema, data } = res.content
         this.setCurrentTable("", "", tableName, schema, data)
+        this.sessionId = Tools.getJobName()
+        this.setState({ sessionId:this.sessionId })
     }
 
     setCurrentTable = (prefix, db, table, schema, data) => {
