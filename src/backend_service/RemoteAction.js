@@ -11,4 +11,6 @@ export default class RemoteAction{
     static ANALYSIS_TABLE_INFO= "/api_v1/analysis/table/get"
     static ANALYSIS_SAVE = "/api_v1/analysis/tables/save"
 
+    static APP_INFO = "/api_v1/app"
+
 }
