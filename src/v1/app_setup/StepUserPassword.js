@@ -1,7 +1,7 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Steps, Divider, PageHeader, Input, Form, Card, Button } from 'antd';
 import { AppSetupContext } from './app_setup';
-import { AppSetupEventConst } from './AppSetupReducer';
+import { AppSetupEventConst } from './actions/app/AppSetupReducer';
 const formItemLayout = {
     labelCol: {
         xs: {
@@ -39,7 +39,7 @@ function StepUserPassword() {
     }}>
         <Form.Item
             label="Admin Name"
-            name="username"
+            name="userName"
             rules={[
                 {
                     required: true,

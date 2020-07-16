@@ -24,6 +24,7 @@
     "styled-components": "^5.1.1",
     "superagent": "^4.1.0",
     "universal-cookie": "^3.0.7",
+    "use-reducer-async": "^2.0.1",
     "uuid": "^3.3.2",
     "xlsx": "^0.14.1"
   },

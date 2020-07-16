@@ -13,4 +13,6 @@ export default class RemoteAction{
 
     static APP_INFO = "/api_v1/app"
 
+    static REGISTER = "/api_v1/user/register"
+
 }

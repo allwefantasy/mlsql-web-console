@@ -1,8 +1,9 @@
-import React, { useState, useReducer } from 'react';
-import AppSetupReducer from './AppSetupReducer';
+import React, { useState, useReducer, useEffect } from 'react';
+import {AppSetupReducer,AppSetupReducerHandlers} from './actions/app/AppSetupReducer';
 import { Steps, Divider, PageHeader, Alert, Form, Card, Button } from 'antd';
 import styled from "styled-components"
 import StepUserPassword from './StepUserPassword';
+import { useReducerAsync } from "use-reducer-async"
 const { Step } = Steps;
 
 const AppSetupContainer = styled.div`
@@ -25,14 +26,16 @@ const AppSetupBody = styled.div`
 `
 const initState = {
     error: undefined,
-    goNext: false,
     current: 0
 }
 const AppSetupContext = React.createContext()
 
 function AppSetup() {
-    const [state, dispacher] = useReducer(AppSetupReducer, initState)
-    const {error}= state
+
+    const [state, dispacher] = useReducerAsync(AppSetupReducer, initState, AppSetupReducerHandlers)
+
+    const { error, current } = state
+
     return (
         <AppSetupContext.Provider value={{ dispacher }}>
             <AppSetupContainer>
@@ -41,22 +44,33 @@ function AppSetup() {
                 </AppSetupHeader>
                 <Divider></Divider>
                 <AppSetupBody>
-                    <Steps current={0}>
-                        <Step title="User/Password" description="This is a description." />
-                        <Step title="Login/Register" description="This is a description." />
+                    <Steps current={current}>
+                        <Step title="User/Password" description="This is a description." />                        
                         <Step title="Engine/Configure" description="This is a description." />
                         <Step title="Done" description="This is a description." />
                     </Steps>
                     <Divider></Divider>
                     {error ? <Alert
-                        message="Error Text"
+                        message="Message"
                         description={error}
                         type="error"
-                        closable                        
+                        closable
                     /> : <div></div>}
-                    <Card>
-                        <StepUserPassword></StepUserPassword>
-                    </Card>
+                    {
+                        current === 0 ? <Card>
+                            <StepUserPassword></StepUserPassword>
+                        </Card> : <div></div>
+                    }
+                    {
+                        current === 1 ? <Card>
+                            wowow1
+                        </Card> : <div></div>
+                    }
+                    {
+                        current === 2 ? <Card>
+                            woww2
+                        </Card> : <div></div>
+                    }
                 </AppSetupBody>
 
             </AppSetupContainer>
