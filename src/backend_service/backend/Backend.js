@@ -2,9 +2,10 @@ import { BACKEND_URL, AccessToken } from './RestConst'
 import { GlobalParamNames } from '../Dicts'
 
 export class RestResponse {
-    constructor(status, content) {
+    constructor(status, content,response) {
         this.status = status
         this.content = content
+        this.resp = response
     }
 }
 
@@ -69,9 +70,9 @@ export class Backend {
                 return new RestResponse(response.status, error);
             }
             const json = await response.json();
-            return new RestResponse(200, json);
+            return new RestResponse(200, json,response);
         } catch (err) {
-            return new RestResponse(500, err);
+            return new RestResponse(500, err,undefined);
         }
     }
 }

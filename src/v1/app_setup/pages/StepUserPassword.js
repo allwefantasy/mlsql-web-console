@@ -1,35 +1,14 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Steps, Divider, PageHeader, Input, Form, Card, Button } from 'antd';
-import { AppSetupContext } from './app_setup';
-import { AppSetupEventConst } from './actions/app/AppSetupReducer';
-const formItemLayout = {
-    labelCol: {
-        xs: {
-            span: 24,
-        },
-        sm: {
-            span: 8,
-        },
-    },
-    wrapperCol: {
-        xs: {
-            span: 24,
-        },
-        sm: {
-            span: 16,
-        },
-    },
-};
-const tailLayout = {
-    wrapperCol: {
-        offset: 8,
-        span: 16,
-    },
-};
+import { AppSetupContext } from '../app_setup';
+import { AppSetupEventConst } from '../actions/app/AppSetupReducer';
+import UIMaker from '../../UIMaker';
+
 
 function StepUserPassword() {
 
     const { dispacher } = useContext(AppSetupContext)
+    const {formItemLayout,tailLayout} = UIMaker.formLayout1()
 
     return <Form {...formItemLayout} className="login-form" onFinish={(values) => {
         dispacher({
@@ -38,7 +17,7 @@ function StepUserPassword() {
         })
     }}>
         <Form.Item
-            label="Admin Name"
+            label="UserName"
             name="userName"
             rules={[
                 {
@@ -51,7 +30,7 @@ function StepUserPassword() {
         </Form.Item>
 
         <Form.Item
-            label="Admin Password"
+            label="Password"
             name="password"
             rules={[
                 {
@@ -63,7 +42,7 @@ function StepUserPassword() {
             <Input.Password />
         </Form.Item>
         <Form.Item
-            label="Repeated Admin Password"
+            label="Repeated Password"
             name="password2"
             rules={[
                 {

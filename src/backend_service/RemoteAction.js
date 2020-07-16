@@ -15,4 +15,6 @@ export default class RemoteAction{
 
     static REGISTER = "/api_v1/user/register"
 
+    static ENGINE_ADD = "/api_v1/engine/add"
+
 }

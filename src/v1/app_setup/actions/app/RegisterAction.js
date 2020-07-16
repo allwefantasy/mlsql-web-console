@@ -1,19 +1,18 @@
 import { ActionProxy } from "../../../../backend_service/ActionProxy"
 import RemoteAction from "../../../../backend_service/RemoteAction"
 import { AppSetupEventConst } from "./AppSetupReducer"
+import { AccessToken } from "../../../../backend_service/backend/RestConst"
+import UIMaker from "../../../UIMaker"
+import ActionMaker from "../../../ActionMaker"
 
-const RegisterActionHandler = ({dispatch,getState,signal}) => { 
-    const dispacher =  dispatch
-    return async (action) => {
-        const { userName, password, password2 } = action.data
-        if (password !== password2) {
-            dispacher({
-                type: AppSetupEventConst._REGISTER_ADMIN,
+const {handler:RegisterActionHandler} = ActionMaker.buildHandler(async(action)=>{
+    const { userName, password, password2 } = action.data
+        if (password !== password2) {            
+            return {
                 data: {
                     error: "Passwords are not matched"
                 }
-            })
-            return
+            }
         }
     
         const client = new ActionProxy()
@@ -26,15 +25,19 @@ const RegisterActionHandler = ({dispatch,getState,signal}) => {
             data = {
                 error: JSON.parse(res.content).msg
             }
-        } else {
+        } else { 
+            //login                
+            UIMaker.setupLogin(res)
             data = {
                 error: undefined,
                 _current: true
             }
         }
-        dispacher({ type: AppSetupEventConst._REGISTER_ADMIN, data })
-    }
-}
+        return {data}
+        
+})
+
+
 
 function RegisterAction(state, data) {
     if (data["_current"]) {

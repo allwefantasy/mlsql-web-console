@@ -4,27 +4,39 @@ import APPConsole from "./APPConsole"
 import { ActionProxy } from './backend_service/ActionProxy';
 import RemoteAction from './backend_service/RemoteAction';
 import AppSetup from './v1/app_setup/app_setup';
+import { useReducerAsync } from "use-reducer-async"
+import { AppReducer, AppReducerHandlers, AppEventConst } from './v1/app/actions/AppReducer';
 
-
+const initState = {
+    appConfigured: false
+}
+const AppContext = React.createContext()
 function App() {
-    const [appConfigured, setAppConfigured] = useState(false)
-    const client = new ActionProxy()
+    const [state, dispacher] = useReducerAsync(AppReducer, initState, AppReducerHandlers)
+    const {appConfigured} = state
 
     async function getAppInfo() {
+        const client = new ActionProxy()
         const appInfo = await client.get(RemoteAction.APP_INFO, {})
-        if (appInfo.status === 200) {
-            setAppConfigured(appInfo.content.configured)
+        if (appInfo.status === 200) {            
+            dispacher({
+                type: AppEventConst.appConfigured,
+                data: {appConfigured: appInfo.content.configured}
+            })
         }
-        
+
     }
 
     useEffect(() => {
         getAppInfo()
     }, [])
 
-    if (!appConfigured) return <AppSetup></AppSetup>
     return (
-        <APPConsole></APPConsole>
+        <AppContext.Provider value={{dispacher}}>
+            {appConfigured && <APPConsole></APPConsole>}
+            {!appConfigured && <AppSetup></AppSetup>}
+        </AppContext.Provider>
     )
 }
 export default App
+export {AppContext}

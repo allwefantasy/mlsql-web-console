@@ -1,9 +1,11 @@
 import React, { useState, useReducer, useEffect } from 'react';
-import {AppSetupReducer,AppSetupReducerHandlers} from './actions/app/AppSetupReducer';
+import { AppSetupReducer, AppSetupReducerHandlers } from './actions/app/AppSetupReducer';
 import { Steps, Divider, PageHeader, Alert, Form, Card, Button } from 'antd';
 import styled from "styled-components"
-import StepUserPassword from './StepUserPassword';
+import StepUserPassword from './pages/StepUserPassword';
+import AddEngines from './pages/AddEngines'
 import { useReducerAsync } from "use-reducer-async"
+import Done from './pages/Done';
 const { Step } = Steps;
 
 const AppSetupContainer = styled.div`
@@ -40,36 +42,36 @@ function AppSetup() {
         <AppSetupContext.Provider value={{ dispacher }}>
             <AppSetupContainer>
                 <AppSetupHeader>
-                    <PageHeader title="Setup MLSQL Console in 4 Steps"></PageHeader>
+                    <PageHeader title="Setup MLSQL Console in 2 Steps"></PageHeader>
                 </AppSetupHeader>
                 <Divider></Divider>
                 <AppSetupBody>
                     <Steps current={current}>
-                        <Step title="User/Password" description="This is a description." />                        
-                        <Step title="Engine/Configure" description="This is a description." />
-                        <Step title="Done" description="This is a description." />
+                        <Step title="Admin User/Password" description="Setup Admin accout" />
+                        <Step title="Add Engines" description="Add default MLSQL Engine" />
+                        <Step title="Done" description="Congratuation" />
                     </Steps>
                     <Divider></Divider>
-                    {error ? <Alert
+                    {error && <Alert
                         message="Message"
                         description={error}
                         type="error"
                         closable
-                    /> : <div></div>}
+                    />}
                     {
-                        current === 0 ? <Card>
+                        current === 0 && <Card>
                             <StepUserPassword></StepUserPassword>
-                        </Card> : <div></div>
+                        </Card>
                     }
                     {
-                        current === 1 ? <Card>
-                            wowow1
-                        </Card> : <div></div>
+                        current === 1 && <Card>
+                            <AddEngines></AddEngines>
+                        </Card>
                     }
                     {
-                        current === 2 ? <Card>
-                            woww2
-                        </Card> : <div></div>
+                        current === 2 && <Card>
+                            <Done></Done>
+                        </Card>
                     }
                 </AppSetupBody>
 
