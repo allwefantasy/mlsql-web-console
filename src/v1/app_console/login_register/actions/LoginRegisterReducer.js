@@ -6,7 +6,7 @@ class LoginRegisterActionNames {
     static LOGIN = "login"
 }
 const LoginRegisterHandlers = {
-    [LoginRegisterActionNames.REGISTER]: RegisterAction,
+    [LoginRegisterActionNames.REGISTER]: RegisterActionHandler,
     [LoginRegisterActionNames.LOGIN]: LoginActionHandler,
 }
 

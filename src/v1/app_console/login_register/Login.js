@@ -7,25 +7,27 @@ import './Register.scss'
 import { AppConsoleActionNames } from '../actions/AppConsoleReducer';
 import { LoginRegisterReducer, LoginRegisterHandlers, LoginRegisterActionNames } from './actions/LoginRegisterReducer';
 import ActionMaker from '../../ActionMaker';
+import AlertBox from '../../AlertBox';
 
 
 const initState = {
-    logined: false
+    logined: false,
+    error: undefined
 }
 
 const LoginContext = React.createContext()
 
 function Login() {
     const { formItemLayout, tailLayout } = UIMaker.formLayout1()
-    const { dispacher:appConsoleDispacher } = useContext(AppConsoleContext)    
-    
+    const { dispacher: appConsoleDispacher } = useContext(AppConsoleContext)
+
     const [state, dispacher] = useReducerAsync(LoginRegisterReducer, initState, LoginRegisterHandlers)
-    const {logined} = state
-    
-    useEffect(() => {        
+    const { logined ,error} = state
+
+    useEffect(() => {
         appConsoleDispacher({
             type: AppConsoleActionNames.CHECK_LOGINED,
-            data: { 
+            data: {
                 logined
             }
         })
@@ -35,6 +37,9 @@ function Login() {
         <LoginContext.Provider>
             <div className="app-console-main-register">
                 <Card title="Login">
+                    {
+                        error && <AlertBox type="error" message={error}></AlertBox>
+                    }
                     <Form {...formItemLayout} className="login-form" onFinish={(values) => {
                         dispacher(ActionMaker.buildEvent(LoginRegisterActionNames.LOGIN, values))
                     }}>

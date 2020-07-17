@@ -8,7 +8,8 @@ export const {handler:LoginActionHandler,action:LoginAction} = ActionMaker.build
     const res = await client.post(RemoteAction.LOGIN, action.data)
     if (res.status !== 200) {
         return {
-            data:{logined:false}
+            data:{logined:false,error: JSON.parse(res.content).msg}
+            
         }
     }
     UIMaker.setupLogin(res)

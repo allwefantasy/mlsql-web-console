@@ -29,8 +29,8 @@ export const {handler:RegisterActionHandler,action:RegisterAction} = ActionMaker
             //login                
             UIMaker.setupLogin(res)
             data = {
-                error: undefined,
-                _current: true
+                error: undefined, 
+                logined: true               
             }
         }
         return {data}
