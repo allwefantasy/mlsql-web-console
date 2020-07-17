@@ -8,7 +8,6 @@ import 'brace/ext/language_tools';
 import CodeIntellegence from '../v1/service/CodeIntellegence'
 
 import './MLSQLAceEditor.scss'
-import 'antd/dist/antd.css';
 import {Button, Tooltip, Progress} from 'antd';
 import {MLSQLAPI} from "../service/MLSQLAPI";
 import * as BackendConfig from "../service/BackendConfig";

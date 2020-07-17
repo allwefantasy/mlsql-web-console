@@ -1,0 +1,18 @@
+.app-console {
+    display: flex;
+    flex-direction: column;       
+}
+.app-console-header {
+    width: 100%;
+}
+.app-console-main {
+    display: flex;    
+    justify-content: center;
+    align-items: center;
+    width: 100%; 
+    margin-left: 30px;
+    margin-right: 30px;       
+}
+.app-console-footer {
+    width: 100%;
+}

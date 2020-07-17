@@ -9,6 +9,10 @@ class UIMaker {
         const cookies = new Cookies();
         cookies.set(AccessToken.name, token, { path: '/' })
     }
+
+    static logined(){
+        return sessionStorage.getItem(AccessToken.name)
+    }
     static formLayout1() {
         const formItemLayout = {
             labelCol: {

@@ -1,4 +1,4 @@
-import { GoConsoleAction, GoAdminActionHandler, GoConsoleActionHandler, GoAdminAction, AppConfiguredAction } from "./go"
+import { GoConsoleAction, GoAdminActionHandler, GoConsoleActionHandler, GoAdminAction, AppConfiguredAction,AppConfiguredActionHandler } from "./go"
 
 class AppActionNames {
     
@@ -10,6 +10,7 @@ class AppActionNames {
 const AppReducerHandlers = {
     [AppActionNames.goAdmin]: GoAdminActionHandler,
     [AppActionNames.goConsole]: GoConsoleActionHandler,
+    [AppActionNames.appConfigured]: AppConfiguredActionHandler,
 }
 
 function AppReducer(state, action) {

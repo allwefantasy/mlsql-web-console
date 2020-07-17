@@ -17,7 +17,7 @@ const openNotificationWithIcon = (type, message, description) => {
     });
 };
 
-class AppConsole extends Component {
+class AppConsoleOld extends Component {
     constructor(props) {
         super(props)
         this.menuRef = React.createRef()

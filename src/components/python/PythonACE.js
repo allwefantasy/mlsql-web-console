@@ -7,7 +7,6 @@ import 'brace/theme/github';
 import 'brace/ext/language_tools';
 
 import '../MLSQLAceEditor.scss'
-import 'antd/dist/antd.css';
 import { Button, Tooltip, Progress } from 'antd';
 import { MLSQLAPI } from "../../service/MLSQLAPI";
 import * as BackendConfig from "../../service/BackendConfig";

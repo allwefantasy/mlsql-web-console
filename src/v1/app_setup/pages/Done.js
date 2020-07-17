@@ -21,7 +21,7 @@ function Done() {
                 <Button type="primary" onClick={
                     ()=>{
                         dispacher({
-                            type: AppActionNames.goAdmin,
+                            type: AppActionNames.GO_ADMIN,
                             data: {}
                         })
                     }
@@ -30,7 +30,7 @@ function Done() {
                 <Button onClick={
                     ()=>{
                         dispacher({
-                            type: AppActionNames.goConsole,
+                            type: AppActionNames.GO_CONSOLE,
                             data: {}
                         })
                     }

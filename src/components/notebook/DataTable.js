@@ -1,5 +1,4 @@
 import * as React from "react";
-import 'antd/dist/antd.css';
 import {Table, Modal} from 'antd';
 
 const ReactMarkdown = require('react-markdown')
