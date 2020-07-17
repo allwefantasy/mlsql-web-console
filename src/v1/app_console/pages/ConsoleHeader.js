@@ -10,10 +10,18 @@ const { SubMenu } = Menu;
 
 const ConsoleHeaderContext = React.createContext()
 
-function ConsoleHeader(props) {
-    const { dispacher } = useContext(AppConsoleContext)    
-    const [current, setCurrent] = useState(props.currentPage)
-    const [logined, setLogined] = useState(UIMaker.logined())
+function ConsoleHeader(props) {  
+    const {currentPage,userLogined} = props  
+    const { dispacher } = useContext(AppConsoleContext) 
+    const [current,setCurrent] = useState(currentPage)       
+    const [logined,setLogined] = useState(userLogined) 
+
+    useEffect(() => {
+        const {currentPage,userLogined} = props 
+        setCurrent(currentPage)
+        setLogined(userLogined)
+      }, [props]);
+           
     return (
         <ConsoleHeaderContext.Provider>
             <Menu onClick={(e) => {
@@ -47,8 +55,8 @@ function ConsoleHeader(props) {
                 }
                 {
                     logined && <SubMenu icon={<MoreOutlined />} title="More...">
-                        <Menu.Item key="more:doc">中文文档</Menu.Item>
-                        <Menu.Item key="more:logout" icon={<LogoutOutlined />}>Logout</Menu.Item>
+                        <Menu.Item key="doc">中文文档</Menu.Item>
+                        <Menu.Item key="logout" icon={<LogoutOutlined />}>Logout</Menu.Item>
                     </SubMenu>
                 }
             </Menu>

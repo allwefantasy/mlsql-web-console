@@ -5,7 +5,8 @@ export const {handler:CheckLoginedActionHandler,action:CheckLoginedAction} = Act
     return {        
         data: {
             ...action.data,
-            logined: UIMaker.logined()
+            logined: UIMaker.logined(),
+            currentPage:"admin"
         }
     }
 })

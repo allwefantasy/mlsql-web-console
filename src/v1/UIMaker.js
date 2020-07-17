@@ -3,15 +3,28 @@ import Cookies from 'universal-cookie';
 import { AccessToken } from '../backend_service/backend/RestConst';
 class UIMaker {
 
-    static setupLogin(res) {        
+    static setupLogin(res) {  
+        const user = {userName:res.content.name, role:res.content.role}
         const token = res.resp.headers.get(AccessToken.name)
         sessionStorage.setItem(AccessToken.name, token)
+        sessionStorage.setItem("user",JSON.stringify(user))
         const cookies = new Cookies();
         cookies.set(AccessToken.name, token, { path: '/' })
     }
 
+    static isAdmin(){
+        const userStr = sessionStorage.getItem("user") 
+        if(!userStr) return false
+        const user = JSON.parse(userStr)
+        if(user.role==="admin") return true
+        return false
+    }
+
     static logined(){
-        return sessionStorage.getItem(AccessToken.name)
+        if(sessionStorage.getItem(AccessToken.name)) {
+            return true
+        }
+        return false
     }
     static formLayout1() {
         const formItemLayout = {

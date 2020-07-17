@@ -8,6 +8,8 @@ import { Login } from './login_register/Login';
 import ActionMaker from '../ActionMaker';
 import MLSQLQueryApp from '../../components/MLSQLQueryApp';
 import AnalysisWorkshop from '../analysis/workshop';
+import { AdminSetting } from './admin/AdminSetting';
+import UIMaker from '../UIMaker';
 
 const initState = {
     currentPage: "login",
@@ -26,17 +28,18 @@ function AppConsole() {
     
     return (
         <AppConsoleContext.Provider value={{ dispacher }}>
-            <div className=".app-console">
-                <div className=".app-console-header">
-                    <ConsoleHeader currentPage={currentPage}></ConsoleHeader>
+            <div className="app-console">
+                <div className="app-console-header">
+                    <ConsoleHeader userLogined={logined} currentPage={currentPage}></ConsoleHeader>
                 </div>
-                <div className=".app-console-main">
+                <div className="app-console-main">
                    {currentPage==="register" &&  <Register></Register>}
-                   {currentPage==="login" && !logined &&  <Login></Login>}
+                   {currentPage!=="register" && !logined &&  <Login></Login>}
                    {currentPage==="console" && logined &&  <MLSQLQueryApp></MLSQLQueryApp>}
                    {currentPage==="workshop" && logined &&  <AnalysisWorkshop></AnalysisWorkshop>}
+                   {currentPage==="admin" && logined && UIMaker.isAdmin() &&  <AdminSetting></AdminSetting>}
                 </div>
-                <div className=".app-console-footer">
+                <div className="app-console-footer">
                 <div style={{ bottom: "100px", textAlign: "center", width: "100%" }}>
                     MLSQL Licensed under the Apache License, Version 2.0. @<a className="copyright"
                         href="http://www.miitbeian.gov.cn/">浙ICP备18052520号</a>

@@ -14,10 +14,7 @@ function AppConsoleReducer(state, action) {
         case AppConsoleActionNames.SWITCH:
             return SwitchAction(state, action.data)        
         case AppConsoleActionNames.CHECK_LOGINED:
-            return CheckLoginedAction(state, {
-                currentPage:"workshop",
-                ...action.data
-            })
+            return CheckLoginedAction(state, action.data)
         default:
             return state;
     }

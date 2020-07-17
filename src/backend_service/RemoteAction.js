@@ -12,9 +12,11 @@ export default class RemoteAction{
     static ANALYSIS_SAVE = "/api_v1/analysis/tables/save"
 
     static APP_INFO = "/api_v1/app"
+    static APP_SAVE = "/api_v1/app/save"
 
     static REGISTER = "/api_v1/user/register"
     static LOGIN = "/api_v1/user/login"
+    static LOGOUT = "/api_v1/user/logout"
 
     static ENGINE_ADD = "/api_v1/engine/add"
 
