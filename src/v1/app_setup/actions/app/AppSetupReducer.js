@@ -2,31 +2,25 @@ import { RegisterAction, RegisterActionHandler } from "./RegisterAction"
 import { AddEngineActionHandler, AddEngineAction } from "./AddEngineAction"
 import { SkipAddEngineActionHandler, SkipAddEngineAction } from "./SkipAddEngineAction"
 
-class AppSetupEventConst {
-    static REGISTER_ADMIN = "registerAdmin"
+class AppSetupActionNames {
+    static registerAdmin="registerAdmin"
+    static addEngine = "addEngine"
+    static skipAddEngine = "skipAddEngine"
 
-    static ADD_ENGINE = "addEngine"
-
-    static SKIP_ADD_ENGINE = "skipAddEngine"
-
-    static GO_CONSOLE = "goConsole"
-
-    static GO_ADMIN = "goAdmin"
 }
-
 const AppSetupReducerHandlers = {
-    registerAdmin: RegisterActionHandler,
-    addEngine: AddEngineActionHandler,
-    skipAddEngine: SkipAddEngineActionHandler
+    [AppSetupActionNames.registerAdmin]: RegisterActionHandler,
+    [AppSetupActionNames.addEngine]: AddEngineActionHandler,
+    [AppSetupActionNames.skipAddEngine]: SkipAddEngineActionHandler
 }
 
 function AppSetupReducer(state, action) {
     switch (action.type) {
-        case AppSetupEventConst.REGISTER_ADMIN:
+        case AppSetupActionNames.registerAdmin:
             return RegisterAction(state, action.data)
-        case AppSetupEventConst.ADD_ENGINE:
+        case AppSetupActionNames.addEngine:
             return AddEngineAction(state, action.data)
-        case AppSetupEventConst.SKIP_ADD_ENGINE:
+        case AppSetupActionNames.skipAddEngine:
             return SkipAddEngineAction(state, action.data)
         default:
             return state;
@@ -34,5 +28,5 @@ function AppSetupReducer(state, action) {
 }
 
 export {
-    AppSetupEventConst, AppSetupReducerHandlers, AppSetupReducer
+    AppSetupActionNames,AppSetupReducerHandlers, AppSetupReducer
 }

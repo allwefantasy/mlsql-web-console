@@ -1,6 +1,6 @@
 import { GoConsoleAction, GoAdminActionHandler, GoConsoleActionHandler, GoAdminAction, AppConfiguredAction } from "./go"
 
-class AppEventConst {
+class AppActionNames {
     
     static GO_CONSOLE = "goConsole"
     static GO_ADMIN = "goAdmin"
@@ -8,21 +8,21 @@ class AppEventConst {
 }
 
 const AppReducerHandlers = {
-    goAdmin: GoAdminActionHandler,
-    goConsole: GoConsoleActionHandler,
+    [AppActionNames.goAdmin]: GoAdminActionHandler,
+    [AppActionNames.goConsole]: GoConsoleActionHandler,
 }
 
 function AppReducer(state, action) {
     switch (action.type) {
-        case AppEventConst.GO_ADMIN:
+        case AppActionNames.GO_ADMIN:
             return GoAdminAction(state, action.data)
-        case AppEventConst.GO_CONSOLE:
+        case AppActionNames.GO_CONSOLE:
             return GoConsoleAction(state, action.data)
-        case AppEventConst.appConfigured:
+        case AppActionNames.appConfigured:
             return AppConfiguredAction(state, action.data)
         default:
             return state;
     }
 }
 
-export { AppEventConst, AppReducer, AppReducerHandlers }
+export { AppActionNames, AppReducer, AppReducerHandlers }

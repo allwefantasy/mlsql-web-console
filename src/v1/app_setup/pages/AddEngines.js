@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Steps, Divider, PageHeader, Input, Form, Card, Button } from 'antd';
 import { AppSetupContext } from '../app_setup';
-import { AppSetupEventConst } from '../actions/app/AppSetupReducer';
+import { AppSetupActionNames } from '../actions/app/AppSetupReducer';
 import UIMaker from '../../UIMaker';
 
 
@@ -14,7 +14,7 @@ function AddEngines() {
 
     return <Form {...formItemLayout} className="login-form" onFinish={(values) => {
         dispacher({
-            type: AppSetupEventConst.ADD_ENGINE,
+            type: AppSetupActionNames.addEngine,
             data: values
         })
     }}>
@@ -43,7 +43,7 @@ function AddEngines() {
             (e)=>{
               e.preventDefault()              
               dispacher({
-                type: AppSetupEventConst.SKIP_ADD_ENGINE,
+                type: AppSetupActionNames.skipAddEngine,
                 data: {}
             })
             }

@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Steps, Divider, PageHeader, Input, Form, Card, Button } from 'antd';
 import { AppSetupContext } from '../app_setup';
-import { AppSetupEventConst } from '../actions/app/AppSetupReducer';
+import { AppSetupActionNames } from '../actions/app/AppSetupReducer';
 import UIMaker from '../../UIMaker';
 
 
@@ -12,7 +12,7 @@ function StepUserPassword() {
 
     return <Form {...formItemLayout} className="login-form" onFinish={(values) => {
         dispacher({
-            type: AppSetupEventConst.REGISTER_ADMIN,
+            type: AppSetupActionNames.registerAdmin,
             data: values
         })
     }}>

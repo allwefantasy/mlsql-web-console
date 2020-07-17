@@ -5,7 +5,7 @@ import { ActionProxy } from './backend_service/ActionProxy';
 import RemoteAction from './backend_service/RemoteAction';
 import AppSetup from './v1/app_setup/app_setup';
 import { useReducerAsync } from "use-reducer-async"
-import { AppReducer, AppReducerHandlers, AppEventConst } from './v1/app/actions/AppReducer';
+import { AppReducer, AppReducerHandlers, AppActionNames } from './v1/app/actions/AppReducer';
 
 const initState = {
     appConfigured: false
@@ -20,7 +20,7 @@ function App() {
         const appInfo = await client.get(RemoteAction.APP_INFO, {})
         if (appInfo.status === 200) {            
             dispacher({
-                type: AppEventConst.appConfigured,
+                type: AppActionNames.appConfigured,
                 data: {appConfigured: appInfo.content.configured}
             })
         }

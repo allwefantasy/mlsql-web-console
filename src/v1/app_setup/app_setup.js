@@ -28,7 +28,7 @@ const AppSetupBody = styled.div`
 `
 const initState = {
     error: undefined,
-    current: 0
+    current: 1
 }
 const AppSetupContext = React.createContext()
 

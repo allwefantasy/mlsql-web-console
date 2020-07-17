@@ -1,9 +1,8 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Alert, Button, Form, Divider } from 'antd';
-import { AppSetupContext } from '../app_setup';
-import { AppSetupEventConst } from '../actions/app/AppSetupReducer';
 import UIMaker from '../../UIMaker';
 import { AppContext } from '../../../App';
+import { AppActionNames } from '../../app/actions/AppReducer';
 
 
 function Done() {
@@ -22,7 +21,7 @@ function Done() {
                 <Button type="primary" onClick={
                     ()=>{
                         dispacher({
-                            type: AppSetupEventConst.GO_CONSOLE,
+                            type: AppActionNames.goAdmin,
                             data: {}
                         })
                     }
@@ -31,7 +30,7 @@ function Done() {
                 <Button onClick={
                     ()=>{
                         dispacher({
-                            type: AppSetupEventConst.GO_CONSOLE,
+                            type: AppActionNames.goConsole,
                             data: {}
                         })
                     }

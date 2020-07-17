@@ -5,7 +5,7 @@ import { AccessToken } from "../../../../backend_service/backend/RestConst"
 import UIMaker from "../../../UIMaker"
 import ActionMaker from "../../../ActionMaker"
 
-const {handler:RegisterActionHandler} = ActionMaker.buildHandler(async(action)=>{
+export const {handler:RegisterActionHandler,action:RegisterAction} = ActionMaker.buildHandler(async(action)=>{
     const { userName, password, password2 } = action.data
         if (password !== password2) {            
             return {
@@ -36,14 +36,3 @@ const {handler:RegisterActionHandler} = ActionMaker.buildHandler(async(action)=>
         return {data}
         
 })
-
-
-
-function RegisterAction(state, data) {
-    if (data["_current"]) {
-        return { ...state, ...data, current: state.current + 1 }
-    }
-    return { ...state, ...data }
-}
-
-export { RegisterAction, RegisterActionHandler }

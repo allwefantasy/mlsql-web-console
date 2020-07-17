@@ -4,9 +4,9 @@ class ActionMaker {
             handler: ({ dispatch, getState, signal }) => {
                 const dispacher = dispatch
                 return async (action) => {
-                    const data = await eventCallBack(action)
+                    const data = await eventCallBack({...action,__state: getState()})                    
                     dispacher({
-                        type: action.type,
+                        type: action.type,                        
                         ...data
                     })
                 }
