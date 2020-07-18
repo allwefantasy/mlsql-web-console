@@ -31,10 +31,11 @@ export default class ProjectStation extends mix(React.Component).with(StationCom
                         <RenameFields schemaFields={this.workshop.currentTable.schema.fields} ref={(et)=>this.renameFieldsRef=et} parent={this}></RenameFields>
                     </TabPane>
                     <TabPane tab="Transform Columns" key="3">
-                    <ApplyOrSave onRollback={this.onRollback}  handlePersit={this.handlePersit} handleTableInput={this.handleTableInput} ref={(et)=>this.ApplyOrSaveRef=et} onSave={this.onSave} onApply={this.onFuncApply} style={{marginBottom:"30px"}}></ApplyOrSave>                        
+                      <ApplyOrSave onRollback={this.onRollback}  handlePersit={this.handlePersit} handleTableInput={this.handleTableInput} ref={(et)=>this.ApplyOrSaveRef=et} onSave={this.onSave} onApply={this.onFuncApply} style={{marginBottom:"30px"}}></ApplyOrSave>                        
                        <FunctionField  schemaFields={this.workshop.currentTable.schema.fields} ref={(et)=>this.functionFieldRef=et} parent={this}></FunctionField>
                     </TabPane>
-                    <TabPane tab="Arange Columns" key="4">                    
+                    <TabPane tab="Cast Column Type" key="4"> 
+                                         
                     </TabPane>
                 </Tabs>
             </div>
