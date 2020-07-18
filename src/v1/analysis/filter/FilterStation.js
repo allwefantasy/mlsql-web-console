@@ -77,15 +77,15 @@ export default class FilterStation extends mix(React.Component).with(StationComm
             <div className={"station-menu"}>
                 <Tabs defaultActiveKey="1" className={"station-tabs"}>
                     <TabPane tab="Apply Group" key="1">
-                        <ApplyOrSave onRollback={this.onRollback} handlePersit={this.handlePersit} handleTableInput={this.handleTableInput} ref={(et) => this.ApplyOrSaveRef = et} onSave={this.onSave} onApply={this.onFilterApply} style={{ marginBottom: "30px" }}></ApplyOrSave>
+                        <ApplyOrSave parent={this} onRollback={this.onRollback} handlePersit={this.handlePersit} handleTableInput={this.handleTableInput} ref={(et) => this.ApplyOrSaveRef = et} onSave={this.onSave} onApply={this.onFilterApply} style={{ marginBottom: "30px" }}></ApplyOrSave>
                         <Divider />
-                        <ApplyGroup ref={(et) => this.applyGroup = et} parent={this} data={this.conGroups}></ApplyGroup>
+                        <ApplyGroup parent={this} ref={(et) => this.applyGroup = et} parent={this} data={this.conGroups}></ApplyGroup>
                     </TabPane>
                     <TabPane tab="Add Conditions to Group" key="2">
-                        <Compare ref={(et) => this.compare = et} parent={this} schemaFields={this.workshop.currentTable.schema.fields}></Compare>
+                        <Compare parent={this} ref={(et) => this.compare = et} parent={this} schemaFields={this.workshop.currentTable.schema.fields}></Compare>
                     </TabPane>
                     <TabPane tab="Add Groups to Group" key="3">
-                        <GroupGroup ref={(et) => this.groupGroup = et} parent={this} data={this.conGroups}></GroupGroup>
+                        <GroupGroup parent={this} ref={(et) => this.groupGroup = et} parent={this} data={this.conGroups}></GroupGroup>
                     </TabPane>
 
                 </Tabs>

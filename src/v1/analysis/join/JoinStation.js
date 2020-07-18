@@ -92,7 +92,7 @@ export default class JoinStation extends mix(React.Component).with(
     render() {
         return <div className="join-app">
             <div className={"station-menu"}>
-                <ApplyOrSave onRollback={this.onRollback}
+                <ApplyOrSave parent={this} onRollback={this.onRollback}
                     handleTableInput={this.handleTableInput} ref={(et) => this.ApplyOrSaveRef = et}
                     onSave={this.onSave}
                     onApply={this.onApply}

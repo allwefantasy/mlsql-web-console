@@ -8,12 +8,15 @@ export default class ApplyOrSave extends React.Component {
         super(props)
         this.props = props
         this.state = { applyLoading: false,saveDiagram:false }
+        this.workshop = props.parent.workshop
     }
-    enter = () => {
+    enter = () => {        
         this.setState({ applyLoading: true })
+        this.workshop.setState({tableLoading:true})
     }
     exit = () => {
         this.setState({ applyLoading: false })
+        this.workshop.setState({tableLoading:false})
     }
 
     showSaveDiagram = ()=>{

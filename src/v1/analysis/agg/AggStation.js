@@ -74,11 +74,11 @@ export default class AggStation extends mix(React.Component).with(StationCommonO
                 </Modal>
                 
                 <div className="station-menu">
-                   <ApplyOrSave onRollback={this.onRollback} handlePersit={this.handlePersit} handleTableInput={this.handleTableInput} ref={(et)=>this.ApplyOrSaveRef=et} onSave={this.onSave} onApply={this.onApply} style={{marginBottom:"30px"}}></ApplyOrSave>
+                   <ApplyOrSave parent={this} onRollback={this.onRollback} handlePersit={this.handlePersit} handleTableInput={this.handleTableInput} ref={(et)=>this.ApplyOrSaveRef=et} onSave={this.onSave} onApply={this.onApply} style={{marginBottom:"30px"}}></ApplyOrSave>
                 </div>
             </div>
             <div>
-                <ColumnOperate ref={et => this.columnsRef = et}></ColumnOperate>
+                <ColumnOperate parent={this} ref={et => this.columnsRef = et}></ColumnOperate>
             </div>
         </div>
     }
