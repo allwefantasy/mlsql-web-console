@@ -40,7 +40,7 @@ export default class Compare extends React.Component {
     wow = (schemaFields) => {
         const fields = schemaFields
         const data = fields.map(item => {
-            return { key: item.name, field: item.name, dataType:item.type,compare: "=", condition: "", command: "" }
+            return { key: item.name, field: item.name, dataType: item.type, compare: "=", condition: "", command: "" }
         })
 
         const columns = [
@@ -52,7 +52,13 @@ export default class Compare extends React.Component {
                 title: "dataType",
                 dataIndex: "dataType",
                 render: (value, record) => {
-                    return <span>{value}</span>
+
+                    switch ((typeof value)) {
+                        case 'object':
+                            return <span>{value.type}</span>
+                        default:
+                            return <span>{value}</span>
+                    }
                 }
             },
             {
@@ -77,7 +83,7 @@ export default class Compare extends React.Component {
                     return <Input onChange={(evt) => { this.conditionInput(evt.target.value, record) }} key={record.field} defaultValue={value} />
                 }
             }
-            
+
         ]
         return { funcPopUp: false, data, columns }
     }

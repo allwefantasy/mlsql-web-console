@@ -7,12 +7,13 @@ import mix from "../../common/mixin"
 import { TableOutlined } from '@ant-design/icons'
 const { TreeNode, DirectoryTree } = Tree;
 
-export default class WorkshopTableTree extends mix(React.Component).with(NewSessionOp) {
+export default class WorkshopTableTree extends mix(React.Component).with(NewSessionOp) {  
+
   constructor(props) {
     super(props)
     this.state = { dbs: {}, loading: false }
+    console.log(props)
     this.workshop = props.parent.workshop
-
   }
 
   async reload() {
@@ -33,12 +34,10 @@ export default class WorkshopTableTree extends mix(React.Component).with(NewSess
   }
 
   show() {
-    return Object.entries(this.state.dbs).map(([key, value]) => {
-      return <TreeNode title={key} key={key}>
-        {value.map(item => {
+    return Object.entries(this.state.dbs).flatMap(([key, value]) => {
+      return value.map(item => {
           return <TreeNode icon={<TableOutlined />} table={item} db={key} title={item} key={item} isLeaf />
-        })}
-      </TreeNode>
+        })
     })
   }
 

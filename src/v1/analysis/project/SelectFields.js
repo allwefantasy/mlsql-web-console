@@ -43,13 +43,13 @@ export default class SelectFields extends React.Component {
  
   render() {
     return <Transfer
-      dataSource={this.state.data}
-      showSearch
-      filterOption={this.filterOption}
-      targetKeys={this.state.targetKeys}
-      onChange={this.handleChange}
-      // onSearch={this.handleSearch}    
-      render={item => item.title}
-    />
+    dataSource={this.state.data}
+    showSearch
+    filterOption={this.filterOption}
+    targetKeys={this.state.targetKeys}
+    onChange={this.handleChange}
+    // onSearch={this.handleSearch}    
+    render={item => item.title}
+  />
   }
 }

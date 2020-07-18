@@ -1,0 +1,108 @@
+import * as React from "react";
+import { Table, Modal } from 'antd';
+import mix from "../../common/mixin";
+import { SearchOp } from "./real_time_view_table/SearchOp";
+import { DropdownMenuUI } from "./real_time_view_table/DropdownMenuUI";
+
+
+const ReactMarkdown = require('react-markdown')
+
+export default class RealTimeViewTable extends mix(React.Component).with(
+    SearchOp,
+    DropdownMenuUI
+) {
+    constructor(props) {
+        super(props)
+        this.tableStyle = props.style || {}
+        this.state = { 
+            columns: [], 
+            rows: [], 
+            view: { enabled: false },
+            searchText: '',
+            searchedColumn: '',
+            loading: false
+        }
+        this.config = {}
+        this.workshop = props.parent
+    }
+
+    getDefaultRender = item => {
+        const { name, type } = item
+        switch (type) {
+            case "string": return (value, record) => {
+               return value
+            }
+            case "array": return (value, record) => {
+               return JSON.stringify(value)
+            }
+            case "map": return (value, record) => {
+                return JSON.stringify(value)
+            }             
+            default:
+                return (value, record) => { return value }
+
+        }
+    }
+
+    getDefaultSearch = item =>{
+        const { name, type } = item
+        switch (type) {
+            case "string": return this.getColumnSearchProps(name)
+            case "array": return {}
+            case "map": return {}            
+            default:
+                return {}
+        }
+    }    
+
+    getDefaultTitleRender = item=>{
+       return this.dropdown(item)
+    }
+
+    update = (rows, columns) => {        
+        const newColumns = columns.map(item => {
+            return {
+                ...item,
+                dataIndex: item.name,
+                title: this.getDefaultTitleRender(item),
+                render: this.getDefaultRender(item),
+                ...this.getDefaultSearch(item)                
+            }
+        })
+
+        this.setState({ columns: newColumns, data: rows })
+    }    
+
+    disablePreview = () => {
+        this.setState({
+            view: {
+                enabled: false
+            }
+        })
+    }
+
+    render() {
+        const self = this
+        return (<div style={this.tableStyle}>
+            <Table
+                loading={this.state.loading}
+                size='default'
+                columns={this.state.columns}
+                dataSource={this.state.data}
+                scroll={{ x: true }}
+            />
+            <Modal
+                title={"View"}
+                visible={this.state.view.enabled}
+                onCancel={this.disablePreview}
+                onOk={this.disablePreview}
+                cancelText="Cancel"
+                OkText="Ok"
+            >
+                <ReactMarkdown source={this.state.view.content || ""} />
+            </Modal>
+        </div>
+        )
+    }
+
+}

@@ -47,10 +47,12 @@ export const WorkshopOp = (superclass) => class extends superclass {
         }
 
         this.sqls.push({ tableName, sql })
+        this.setState({loadingTable:true})
         const res = await this.client.runScript(
             sql,
             Tools.getJobName(),
             Tools.robotFetchParam())
+        this.setState({loadingTable:false})
         if (res.status !== 200) {
             this.toggleMessage(`Fail to load ${tableName}: ${res.content}`)
             return
@@ -63,7 +65,7 @@ export const WorkshopOp = (superclass) => class extends superclass {
 
     setCurrentTable = (prefix, db, table, schema, data) => {
         this.currentTable = { prefix, db, table, schema, data }
-        this.updateDisplay(data)
+        this.updateDisplay(data,schema)
     }
 
 }

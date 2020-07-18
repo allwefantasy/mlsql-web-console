@@ -4,13 +4,14 @@ import AFileSystemTree from "./AFileSystemTree";
 import ADeltaLakeTree from "./ADeltaLakeTree";
 import WorkshopTableTree from "./WorkshopTableTree";
 import "./leftview.scss"
+
 const { TabPane } = Tabs;
-export default class LeftView extends React.Component {
-    constructor(props){
-        super(props)
-        this.workshop = props.parent        
+export default class LeftView extends React.Component {    
+    constructor(props){   
+        super(props)            
+        this.workshop = props.parent
     }
-    render(){
+    render(){              
        return <Tabs defaultActiveKey="1"  onTabClick={(key)=>{
         if(key==="2"){                            
             if(this.deltaLakeTreeRef){

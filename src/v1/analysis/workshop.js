@@ -1,8 +1,8 @@
 import * as React from "react";
-import {Modal, Result, Button } from "antd"
+import { Modal, Result, Button, Divider } from "antd"
 import './workshop.scss'
 import LeftView from "./leftview";
-import { MLSQLQueryDisplay } from "../../components/MLSQLQueryDisplay"
+import SpinBox from "../SpinBox"
 import { WorkshopOp } from "./WorkshopOp";
 import { WorkshopAutoSql } from "./WorkshopAutoSql";
 import mix from "../../common/mixin"
@@ -14,34 +14,42 @@ import { WorkshopUIOp } from "./WorkshopUIOp";
 import Tools from "../../common/Tools";
 import { Resizable } from "re-resizable";
 import ColumnOperate from "./ColumnOperate";
+import RealTimeViewTable from "./RealTimeViewTable";
 
-export default class AnalysisWorkshop extends mix(React.Component).
+
+class AnalysisWorkshop extends mix(React.Component).
     with(WorkshopOp,
         WorkshopAutoSql,
         WorkshopMessageOp,
         WorkshopUIOp) {
-
+    static workshop = undefined
     constructor(props) {
         super(props)
         this.client = new ActionProxy()
         this.state = { tableLoading: false }
         // {tableName:...  sql:...}
         this.sqls = []
+        AnalysisWorkshop.workshop = this
     }
 
     componentDidMount() {
         // for testing should remove
-        //this.newSession("file", "csv", "/tmp/upload/ConsumerComplaints.csv", { header: "true" })
+        this.newSession("file", "csv", "/tmp/upload/ConsumerComplaints.csv", { header: "true" })
     }
 
     operateStationView() {
+        if (this.state.loadingTable) {
+            return <SpinBox></SpinBox>
+        }
         if (this.sessionId) {
             return <OperateStation ref={(et) => this.stationRef = et} parent={this}></OperateStation>
         } else {
-            return <Result style={{ width: "100%" }}
-                title="No Aanalysis Session Is Opened"
-                subTitle="Right click the table in the left panel(DeltaLake/FileSystem) to begin your analysis"
-            />
+            return <div>
+                <Result style={{ width: "100%" }}
+                    title="No Aanalysis Session Is Opened"
+                    subTitle="Right click the table in the left panel(DeltaLake/FileSystem) to begin your analysis"
+                />
+            </div>
         }
     }
 
@@ -71,27 +79,26 @@ export default class AnalysisWorkshop extends mix(React.Component).
                         name="detail_box"
                         value={this.state.consoleMessage || ""}
                     ></AceEditor>
-                </Modal>  
+                </Modal>
                 <Modal
                     title={"Message"}
                     visible={this.state.showInfoMessage || false}
-                    onCancel={()=>{this.setState({showInfoMessage:false})}}
-                    onOk={()=>{this.setState({showInfoMessage:false})}}
-                    cancelText="Cancel"                    
+                    onCancel={() => { this.setState({ showInfoMessage: false }) }}
+                    onOk={() => { this.setState({ showInfoMessage: false }) }}
+                    cancelText="Cancel"
                     OkText="Ok"
                 >
-                   {this.state.infoMessage}
-                </Modal>               
+                    {this.state.infoMessage}
+                </Modal>
                 <div className="ws-operate-pane">
                     {this.operateStationView()}
                 </div>
+                <Divider></Divider>
                 <div className="ws-table-pane">
-                    {/* <Spin tip="Loading..." spinning={this.state.tableLoading} style={{ width: "100%" }}>                        
-                <div style={{ height: "300px" }}></div></Spin> */}
-                    <ColumnOperate style={{ width: "100%" }} ref={(et) => this.displayRef = et} parent={this} />
-
+                    <RealTimeViewTable style={{ width: "100%" }} ref={(et) => this.displayRef = et} parent={this} />
                 </div>
             </div>
         </div>
     }
-} 
+}
+export default AnalysisWorkshop

@@ -1,8 +1,8 @@
 import Tools from "../../common/Tools"
 export const WorkshopUIOp = (superclass) => class extends superclass {
-    updateDisplay = async (data) =>{
+    updateDisplay = async (data,schema) =>{
         this.setState({tableLoading:true})
-        this.displayRef.update(data)
+        this.displayRef.update(data,schema.fields)
         this.setState({tableLoading:false}) 
     }    
 

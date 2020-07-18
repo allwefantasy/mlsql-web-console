@@ -6,7 +6,7 @@ export const ProjectStationSQLOp = superclass => class extends(superclass) {
             return `\`${item}\``
         })
         if(fields.length === 0){
-            this.workshop.toggleMessage("No fields are selected.")
+            this.workshop.showInfo("No fields are selected.")
             this.ApplyOrSaveRef.exit()
             return
         }

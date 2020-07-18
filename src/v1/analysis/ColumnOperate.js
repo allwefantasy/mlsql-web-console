@@ -10,6 +10,7 @@ export default class ColumnOperate extends React.Component {
         this.tableStyle = props.style || {}
         this.state = {columns: [], rows: [], view: {enabled: false}}
         this.config = {}
+        this.workshop = props.parent
     }
 
     setRender = (keyColumn, data) => {
@@ -122,7 +123,7 @@ export default class ColumnOperate extends React.Component {
                     size ='default'
                     columns={this.state.columns}
                     dataSource={this.state.data}
-                    scroll = {{x:'70vw',y:600}}                                      
+                    scroll = {{x:true}}                                      
                     />
                 <Modal
                     title={"View"}

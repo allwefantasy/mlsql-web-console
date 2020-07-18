@@ -22,8 +22,7 @@ function Register() {
 
     const { logined, error } = state
 
-    useEffect(() => {
-        console.log(logined)
+    useEffect(() => {        
         appConsoleDispacher({
             type: AppConsoleActionNames.CHECK_LOGINED,
             data: {}
