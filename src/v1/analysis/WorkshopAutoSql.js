@@ -23,14 +23,19 @@ export const WorkshopAutoSql = (superclass) => class extends superclass {
       const { tableName, sql } = params
       this.sqls.push(params)
       const view = this.sqls.map(item => item.sql).join("")
-      const res = await this.client.runScript(view, Tools.getJobName(), Tools.robotFetchParam())
-      if (res.status !== 200) {
-         this.toggleMessage(res.content)
+      try{
+         const res = await this.client.runScript(view, Tools.getJobName(), Tools.robotFetchParam())
+         if (res.status !== 200) {
+            this.toggleMessage(res.content)
+            return 500
+         }
+         const { data, schema } = res.content
+         this.setCurrentTable("", "", tableName, schema, data)
+         return 200
+      }catch(e) {
+         this.toggleMessage("Execute job fail;(Job is killed)")
          return 500
-      }
-      const { data, schema } = res.content
-      this.setCurrentTable("", "", tableName, schema, data)
-      return 200
+      }      
    }
 
    save = async (tableName, persist) => {

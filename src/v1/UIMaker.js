@@ -26,6 +26,33 @@ class UIMaker {
         }
         return false
     }
+    static formLayout2() {
+        const formItemLayout = {
+            labelCol: {
+                xs: {
+                    span: 4,
+                },
+                sm: {
+                    span: 8,
+                },
+            },
+            wrapperCol: {
+                xs: {
+                    span: 4,
+                },
+                sm: {
+                    span: 8,
+                },
+            },
+        };
+        const tailLayout = {
+            wrapperCol: {
+                offset: 8,
+                span: 16,
+            },
+        };
+        return { formItemLayout, tailLayout } 
+    }
     static formLayout1() {
         const formItemLayout = {
             labelCol: {

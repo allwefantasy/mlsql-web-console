@@ -3,10 +3,10 @@ import mix from "../../common/mixin"
 import "./OperateStation.scss"
 import { Tabs, Radio } from 'antd';
 import JoinStation from "./join/JoinStation";
-import MainStation from "./MainStation";
 import AggStation from "./agg/AggStation";
 import ProjectStation from "./project/ProjectStation";
 import FilterStation from "./filter/FilterStation";
+import { OrderStation } from "./order/OrderStation";
 const { TabPane } = Tabs;
 
 export default class OperateStation extends React.Component {
@@ -23,7 +23,7 @@ export default class OperateStation extends React.Component {
     render() {
         return <div className="os-pane">
             <div className="os-tabs">
-                <Tabs defaultActiveKey="1" tabPosition="left" key={this.state.key}>                
+                <Tabs defaultActiveKey="5" tabPosition="left" key={this.state.key}>                
                 <TabPane tab="Project"  key={1} >
                     <ProjectStation parent={this}></ProjectStation>
                 </TabPane>
@@ -35,6 +35,9 @@ export default class OperateStation extends React.Component {
                 </TabPane>
                 <TabPane tab="Agg" key={4} >
                     <AggStation parent={this}></AggStation>
+                </TabPane>
+                <TabPane tab="Order" key={5} >
+                    <OrderStation parent={this}></OrderStation>
                 </TabPane>
                 </Tabs>
                 </div>

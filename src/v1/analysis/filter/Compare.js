@@ -1,5 +1,6 @@
 import * as React from "react";
-import { Form, Table, Button, Modal, Input, Select } from 'antd';
+import { Form, Table, Button, Modal, Input, Select, Divider } from 'antd';
+import ApplyOrSave from "../ApplyOrSave";
 export default class Compare extends React.Component {
     constructor(props) {
         super(props)
@@ -125,9 +126,14 @@ export default class Compare extends React.Component {
                     <Select.Option value="or">or</Select.Option>
                 </Select></Form.Item>
                 <Form.Item >
-                    <Button type="primary" htmlType="submit">Add selected</Button>
+                    <Button type="primary" htmlType="submit">Add selected conditions to group</Button>                    
                 </Form.Item>
             </Form>
+            <Divider/>  
+            <ApplyOrSave parent={this} onRollback={this.fitlerStation.onRollback} handlePersit={this.fitlerStation.handlePersit} handleTableInput={this.fitlerStation.handleTableInput} ref={(et) => this.fitlerStation.ApplyOrSaveRef = et} onSave={this.fitlerStation.onSave} onApply={()=>{
+                const selectedRows = this.params.filter(item => this.selectedRowKeys.includes(item.field))
+                this.fitlerStation.onNonGroupFilterApply(selectedRows)
+            }} style={{ marginBottom: "30px" }}></ApplyOrSave>                                  
             <Table rowSelection={{
                 type: "checkbox",
                 ...rowSelection,
