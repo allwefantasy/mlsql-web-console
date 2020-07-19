@@ -3,17 +3,15 @@ import { Form, Tag, Divider, Select, Button,Modal,Input,Switch } from 'antd'
 import { useReducerAsync } from 'use-reducer-async'
 import { OrderStationReducer, OrderStationHandlers, OrderStationActionNames } from './actions/OrderStationReducer';
 import AlertBox from '../../AlertBox';
-import { checkout } from 'superagent';
+import { ApplySaveRollback } from '../../apply_save_rollback/ApplySaveRollback';
 
 
 
 const initState = {
     orderFileds: [],
-    error: undefined,
-    loading: false,
-    saveDiagram: false,
-    saveTableName: undefined,
-    saveTablePersisted: false
+    error: undefined,  
+    //为了回调applySaveRollback组件  
+    applySaveRollbackDispacher:undefined
 }
 
 const OrderStationContext = React.createContext()
@@ -22,12 +20,18 @@ function OrderStation(props) {
     const workshop = props.parent.workshop
     const fields = workshop.currentTable.schema.fields
     const [state, dispacher] = useReducerAsync(OrderStationReducer, initState, OrderStationHandlers)
-    const { orderFileds, error, loading, saveDiagram, saveTableName, saveTablePersisted } = state
+    const { orderFileds, error,applySaveRollbackDispacher} = state
+    const [form] = Form.useForm()
 
     const children = fields.map(item => {
         return <Option key={item.name}>{item.name}</Option>
     })
-
+    
+    useEffect(()=>{
+        if(applySaveRollbackDispacher){
+            form.submit()
+        }       
+    },[applySaveRollbackDispacher])
 
     return (
         <OrderStationContext.Provider value={{ dispacher }}>
@@ -35,82 +39,17 @@ function OrderStation(props) {
                 {
                     error && <AlertBox message={error}></AlertBox>
                 }
-                <Form onFinish={(values) => {
-                    dispacher({
-                        type: "setState",
-                        data: {
-                            loading: true
-                        }
-                    })
+                <Form form={form} onFinish={(values) => {                    
                     dispacher({
                         type: "apply",
                         data: {
                             workshop,
-                            values,
-                            loading:false
+                            values                                                    
                         }
                     })
                 }} className="login-form" >
                     <Form.Item>
-                        <Modal title={"View"}
-                            visible={saveDiagram}
-                            onCancel={
-                                () => {
-                                    dispacher({
-                                        type: "setState",
-                                        data: { saveDiagram: false }
-                                    })
-                                }
-                            }
-                            onOk={() => {
-                                dispacher({
-                                    type: "save",
-                                    data: {
-                                        saveDiagram: false
-                                    }
-                                })
-                            }}
-                            cancelText="Cancel"
-                            width="50%"
-                            OkText="Ok">
-                            <Form className="login-form">
-                                <Form.Item><Input addonBefore="tableName" onChange={(value) => {
-                                    dispacher({
-                                        type: "setState",
-                                        data: { saveTableName: value }
-                                    })
-                                }} placeholder="" /></Form.Item>
-                                <Form.Item label="Persist table(take more space):"><Switch onChange={
-                                    (checked) => {
-                                        dispacher({
-                                            type: "setState",
-                                            data: { saveTablePersisted: checked }
-                                        })
-                                    }
-                                }></Switch></Form.Item>
-                            </Form>
-                        </Modal>
-                        <Button loading={loading} type="primary" htmlType="submit" >Apply</Button>
-                        <Divider type="vertical" />
-                        <Button disabled={loading} onClick={() => {
-                            dispacher({
-                                type: "setState",
-                                data: {
-                                    saveDiagram: true
-                                }
-                            })
-                        }}>Save As</Button>
-                        <Divider type="vertical" />
-                        <Button disabled={loading} onClick={() => {
-                            dispacher({
-                                type: "setState",
-                                data: { loading: true }
-                            })
-                            dispacher({
-                                type: "rollback",
-                                data: { workshop,loading: false }
-                            })
-                        }} >Rollback</Button>
+                        <ApplySaveRollback context={OrderStationContext} workshop={workshop}/>
                     </Form.Item>
                     <Form.Item label="Choose fields" >
                         <Select

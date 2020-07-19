@@ -31,10 +31,10 @@ export default class FunctionField extends React.Component {
                     return <Button dataref={record} onClick={() => { this.showAggFuncsAndApply(record) }}>Choose function</Button>
                 },
                 transformCode: (value, record) => {                
-                    return <Input key={value} defaultValue={value} />
+                    return value
                 },
                 columnName: (value, record) => {                
-                    return <Input key={value} defaultValue={value} />
+                    return value
                 }
             }
         }

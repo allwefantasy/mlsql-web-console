@@ -44,6 +44,10 @@ export default class ApplyFuncToField extends React.Component {
         this.funcDescRef.show(currentFunc)
     }
 
+    handleOperateInput = evt => {
+        this.manuallyTransform = evt.target.value
+    }
+
     handleNewName = evt => {
         this.newFuncName = evt.target.value
     }
@@ -61,6 +65,14 @@ export default class ApplyFuncToField extends React.Component {
     }
 
     getTransform = () => {
+        if(this.manuallyTransform){
+            return {
+                field:this.operateField,
+                isAgg:false, 
+                transformCode: this.manuallyTransform, 
+                columnName: this.newFuncName 
+            }
+        }
         const params = []        
         this.state.currentFunc.params.forEach(item => {
             const v = this.funcParams[item.name]
@@ -117,7 +129,7 @@ export default class ApplyFuncToField extends React.Component {
                     </Form.Item>
                 }) : <div></div>
             }
-            {/* <Form.Item><Input addonBefore="Operate" onChange={this.handleOperateInput} placeholder="" /></Form.Item> */}
+            <Form.Item><Input addonBefore="Mannual Transform" onChange={this.handleOperateInput} placeholder="" /></Form.Item>
             <Form.Item><Input addonBefore="New fieldName" onChange={this.handleNewName} placeholder="" /></Form.Item>
         </Form>
     }

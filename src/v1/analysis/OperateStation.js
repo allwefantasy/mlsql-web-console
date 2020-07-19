@@ -7,6 +7,7 @@ import AggStation from "./agg/AggStation";
 import ProjectStation from "./project/ProjectStation";
 import FilterStation from "./filter/FilterStation";
 import { OrderStation } from "./order/OrderStation";
+import {LimitStation} from "./limit/LimitStation"
 const { TabPane } = Tabs;
 
 export default class OperateStation extends React.Component {
@@ -23,7 +24,7 @@ export default class OperateStation extends React.Component {
     render() {
         return <div className="os-pane">
             <div className="os-tabs">
-                <Tabs defaultActiveKey="5" tabPosition="left" key={this.state.key}>                
+                <Tabs defaultActiveKey="1" tabPosition="left" key={this.state.key}>                
                 <TabPane tab="Project"  key={1} >
                     <ProjectStation parent={this}></ProjectStation>
                 </TabPane>
@@ -38,6 +39,9 @@ export default class OperateStation extends React.Component {
                 </TabPane>
                 <TabPane tab="Order" key={5} >
                     <OrderStation parent={this}></OrderStation>
+                </TabPane>
+                <TabPane tab="Limit" key={6} >
+                    <LimitStation parent={this}></LimitStation>
                 </TabPane>
                 </Tabs>
                 </div>

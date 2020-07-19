@@ -1,25 +1,31 @@
 import React, { useState, useCallback, useEffect, useContext } from 'react';
-import { Form, Tag, Divider, Select, Button,Modal,Input,Switch } from 'antd'
+import { Form, Tag, Divider, Select, Button, Modal, Input, Switch } from 'antd'
 import { useReducerAsync } from 'use-reducer-async'
 import { ApplySaveRollbackReducer, ApplySaveRollbackHandlers } from './actions/ApplySaveRollbackReducer.js';
+import AlertBox from '../AlertBox.js';
 
 
 const initState = {
     saveDiagram: false,
     saveTablePersisted: false,
-    loading: false
+    loading: false,
+    saveTableName: undefined,
+    error: undefined
 }
 
 const ApplySaveRollbackContext = React.createContext()
 
 function ApplySaveRollback(props) {
     //dispacher parent 
-    const workshop = props.parent.workshop
-    const { dispacher: parentDispacher } = useContext(props.dispacher)
+    const workshop = props.workshop
+    const { dispacher: parentDispacher } = useContext(props.context)
     const [state, dispacher] = useReducerAsync(ApplySaveRollbackReducer, initState, ApplySaveRollbackHandlers)
-    const [saveDiagram, saveTablePersisted, loading] = state
+    const { saveDiagram, saveTablePersisted, loading,error } = state
     return (
         <ApplySaveRollbackContext.Provider value={{ dispacher }}>
+            {
+                error && <AlertBox message={error}></AlertBox>
+            }
             <Modal title={"View"}
                 visible={saveDiagram}
                 onCancel={
@@ -34,7 +40,8 @@ function ApplySaveRollback(props) {
                     dispacher({
                         type: "save",
                         data: {
-                            saveDiagram: false
+                            saveDiagram: false,
+                            workshop
                         }
                     })
                 }}
@@ -45,7 +52,7 @@ function ApplySaveRollback(props) {
                     <Form.Item><Input addonBefore="tableName" onChange={(value) => {
                         dispacher({
                             type: "setState",
-                            data: { saveTableName: value }
+                            data: { saveTableName: value.target.value }
                         })
                     }} placeholder="" /></Form.Item>
                     <Form.Item label="Persist table(take more space):"><Switch onChange={
@@ -67,8 +74,8 @@ function ApplySaveRollback(props) {
                         }
                     })
                     parentDispacher({
-                        type:"apply",
-                        data:{dispacher}
+                        type: "setState",
+                        data: { applySaveRollbackDispacher: dispacher }
                     })
                 }
             } >Apply</Button>
