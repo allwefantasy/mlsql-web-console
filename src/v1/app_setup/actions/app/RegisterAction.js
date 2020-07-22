@@ -1,12 +1,10 @@
 import { ActionProxy } from "../../../../backend_service/ActionProxy"
 import RemoteAction from "../../../../backend_service/RemoteAction"
-import { AppSetupEventConst } from "./AppSetupReducer"
-import { AccessToken } from "../../../../backend_service/backend/RestConst"
 import UIMaker from "../../../UIMaker"
 import ActionMaker from "../../../ActionMaker"
 
 export const {handler:RegisterActionHandler,action:RegisterAction} = ActionMaker.buildHandler(async(action)=>{
-    const { userName, password, password2 } = action.data
+        const { userName, password, password2 } = action.data        
         if (password !== password2) {            
             return {
                 data: {
@@ -30,7 +28,8 @@ export const {handler:RegisterActionHandler,action:RegisterAction} = ActionMaker
             UIMaker.setupLogin(res)
             data = {
                 error: undefined, 
-                logined: true               
+                logined: true,
+                current: action.__state.current + 1               
             }
         }
         return {data}

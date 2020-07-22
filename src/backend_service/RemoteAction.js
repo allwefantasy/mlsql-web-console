@@ -20,4 +20,10 @@ export default class RemoteAction{
 
     static ENGINE_ADD = "/api_v1/engine/add"
 
+    static SCRIPT_FILE_LIST = "/api_v1/script_file"
+
+    static SCRIPT_FILE_GET = "/api_v1/script_file/get"
+
+    static SCRIPT_FILE_REMOVE = "/api_v1/script_file/remove"
+
 }

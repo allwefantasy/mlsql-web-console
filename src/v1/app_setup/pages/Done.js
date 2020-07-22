@@ -7,7 +7,7 @@ import { AppActionNames } from '../../app/actions/AppReducer';
 
 function Done() {
 
-   const { dispacher } = useContext(AppContext)
+    const { dispacher } = useContext(AppContext)    
     const {formItemLayout,tailLayout} = UIMaker.formLayout1()
     return <>
         <Alert
@@ -19,7 +19,7 @@ function Done() {
         <Form {...formItemLayout}>
             <Form.Item {...tailLayout}>
                 <Button type="primary" onClick={
-                    ()=>{
+                    ()=>{                        
                         dispacher({
                             type: AppActionNames.GO_ADMIN,
                             data: {}

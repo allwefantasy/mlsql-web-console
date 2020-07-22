@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Select, Form, Input } from 'antd';
+import { Select, Form, Input, Switch } from 'antd';
 import mix from "../../common/mixin"
 import EngineService from "../service/EngineService";
 import FuncDesc from "./FuncDesc";
@@ -48,6 +48,10 @@ export default class ApplyFuncToField extends React.Component {
         this.manuallyTransform = evt.target.value
     }
 
+    isAggChecked = checked =>{
+        this.manuallyIsAgg = checked
+    }
+
     handleNewName = evt => {
         this.newFuncName = evt.target.value
     }
@@ -68,7 +72,7 @@ export default class ApplyFuncToField extends React.Component {
         if(this.manuallyTransform){
             return {
                 field:this.operateField,
-                isAgg:false, 
+                isAgg:this.manuallyIsAgg, 
                 transformCode: this.manuallyTransform, 
                 columnName: this.newFuncName 
             }
@@ -130,6 +134,7 @@ export default class ApplyFuncToField extends React.Component {
                 }) : <div></div>
             }
             <Form.Item><Input addonBefore="Mannual Transform" onChange={this.handleOperateInput} placeholder="" /></Form.Item>
+            <Form.Item label="Is Agg Function"><Switch  onChange={this.isAggChecked}></Switch></Form.Item>
             <Form.Item><Input addonBefore="New fieldName" onChange={this.handleNewName} placeholder="" /></Form.Item>
         </Form>
     }

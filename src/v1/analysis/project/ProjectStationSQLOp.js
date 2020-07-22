@@ -27,7 +27,7 @@ export const ProjectStationSQLOp = superclass => class extends(superclass) {
              return
          }
 
-         const isAggExists = fields.filter(item=>item.isAgg).length > 0
+         let isAggExists = fields.filter(item=>item.isAgg).length > 0         
          let newFields = []
          
          if(!isAggExists){

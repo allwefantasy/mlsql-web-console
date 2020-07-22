@@ -1,3 +1,7 @@
+import React, { useState, useCallback, useEffect } from 'react';
+import { Tree, Spin,Menu,Dropdown } from 'antd';
+import { DownOutlined, FileOutlined, FolderOutlined } from '@ant-design/icons';
+import { ContextMenu, MenuItem, ContextMenuTrigger } from "react-contextmenu";
 class MLSQLTreeNodeBuilder {
 
     /**
@@ -17,6 +21,7 @@ class MLSQLTreeNodeBuilder {
      * @param {[{id:number,icon:string,label:string,parentId:number,childNodes:[]}]} list
      */
     build = (list) => {
+
         let tempMap = {}, node, roots = [], i;
         for (i = 0; i < list.length; i += 1) {
             tempMap[list[i].id] = i;
@@ -38,6 +43,26 @@ class MLSQLTreeNodeBuilder {
             }
         }
         return roots;
+    }
+    convert = (item) => {                
+        if (item["childNodes"] && item["childNodes"].length > 0) {
+            item["children"] = item["childNodes"]
+            item["children"].map((cn) => {
+                return this.convert(cn)
+            })
+        }
+        item["id"] = String(item["id"])
+        item["key"] = item["id"]
+        // item["title"] = <span className="react-contextmenu-trigger"><ContextMenuTrigger  id="scriptTreeContextMenu">{item.label}</ContextMenuTrigger></span>
+        item["title"] = <span>{item.label}</span>
+        item["isLeaf"] = !item["isDir"]
+        if (item["isDir"]) {
+            item["icon"] = <FolderOutlined />
+        } else {
+            item["icon"] = <FileOutlined />
+        }
+
+        return item
     }
 
 

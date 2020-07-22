@@ -7,6 +7,24 @@ export default class Tools {
         return uuidv4() + ""
     }
 
+    static visitDown = (tree,visit)=>{
+        visit(tree)
+        if(tree.children){
+            tree.children.map(item=>{
+               Tools.visitDown(item,visit)
+            })
+        }
+        
+    }
+    static visitUp = (tree,visit)=>{        
+        if(tree.children){
+            tree.children.map(item=>{
+                Tools.visitUp(item,visit)
+            })
+        }
+        visit(tree)
+    }
+
     static robotFetchParam = () => {
         return {
             queryType: "robot",

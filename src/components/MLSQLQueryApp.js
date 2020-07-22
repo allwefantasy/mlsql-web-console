@@ -109,7 +109,7 @@ class MLSQLQueryApp extends Component {
 
                <div className="ws-left-pane">
                <Resizable  style={{ paddingRight: "30px", borderRight: "solid" }}>
-               <LeftTreePane  ref={(et)=>this.leftTreePaneRef = et} parent={this}></LeftTreePane>
+                <LeftTreePane  ref={(et)=>this.leftTreePaneRef = et} parent={this}></LeftTreePane>
                </Resizable>
                    
                </div>

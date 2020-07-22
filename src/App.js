@@ -7,6 +7,7 @@ import AppSetup from './v1/app_setup/app_setup';
 import { useReducerAsync } from 'use-reducer-async'
 import { AppReducer, AppReducerHandlers, AppActionNames } from './v1/app/actions/AppReducer';
 import SpinBox from './v1/SpinBox';
+import { ScriptTree } from './v1/script_console/ScriptTree';
 
 const initState = {
     appConfigured: false,
@@ -34,7 +35,7 @@ function App() {
     }, [])
 
     return (
-        <AppContext.Provider value={{dispacher}}>
+        <AppContext.Provider value={{dispacher}}>            
             {loading && <SpinBox></SpinBox>}
             {!loading && appConfigured && <AppConsole/>}
             {!loading && !appConfigured && <AppSetup></AppSetup>}

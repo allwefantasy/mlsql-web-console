@@ -4,6 +4,7 @@ import { Method, Status } from './backend/RestConst'
 
 
 export class ActionProxy {
+  static client = new ActionProxy()
   constructor() {
     this.backend = new Backend()
   }

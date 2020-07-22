@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Tabs } from 'antd';
-import { ScriptNodeTree } from "../../components/MLSQLTreeNode";
 import DeltaLakeTree from "../detla_lake/DeltaLakeTree";
 import FileSystemTree from "../file_system/FileSystemTree";
 import "../../v1/analysis/leftview.scss"
+import { ScriptTree } from "../script_console/ScriptTree";
 const { TabPane } = Tabs;
 export default class LeftTreePane extends React.Component {
     constructor(props){
@@ -17,12 +17,12 @@ export default class LeftTreePane extends React.Component {
                 this.deltaLakeTreeRef.reload()
             }
         }                        
-    }}>
-       <TabPane tab="Script" key="1">
+        }}>
+        <TabPane tab="Script" key="1">
        <div className="leftview-box">
-           <ScriptNodeTree ref={(et)=> this.scriptTreeRef = et} parent={this.queryApp}/>
+           <ScriptTree consoleApp = {this.queryApp}></ScriptTree> 
        </div>
-       </TabPane>
+       </TabPane>       
        <TabPane tab="DeltaLake" key="2">
        <div className="leftview-box">
            <DeltaLakeTree ref={(et)=> this.deltaLakeTreeRef = et} ></DeltaLakeTree>

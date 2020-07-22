@@ -8,12 +8,12 @@ class AppActionNames {
 }
 
 const AppReducerHandlers = {
-    [AppActionNames.goAdmin]: GoAdminActionHandler,
-    [AppActionNames.goConsole]: GoConsoleActionHandler,
+    [AppActionNames.GO_ADMIN]: GoAdminActionHandler,
+    [AppActionNames.GO_CONSOLE]: GoConsoleActionHandler,
     [AppActionNames.appConfigured]: AppConfiguredActionHandler,
 }
 
-function AppReducer(state, action) {
+function AppReducer(state, action) {    
     switch (action.type) {
         case AppActionNames.GO_ADMIN:
             return GoAdminAction(state, action.data)
