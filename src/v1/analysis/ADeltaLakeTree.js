@@ -35,13 +35,13 @@ export default class ADeltaLakeTree extends mix(DeltaLakeTree).with(NewSessionOp
         return (
             <div>
                  <Modal  
-                    title={`Open new session with [${this.currentTableName()}]?`}
+                    title={`Open Table`}
                     visible={this.state.showNewSession}
                     onCancel={this.toggleNewSession}
                     onOk={()=>{this.showTable("delta")}}
                     cancelText="Cancel"                     
                     OkText="Ok">                    
-                   wowowowowow
+                   {`Open  ${this.currentTableName()}]?`}
                  </Modal>                
                 <Spin tip="Loading..." spinning={this.state.loading}>
                     <DirectoryTree onRightClick={this.showNewSession}>

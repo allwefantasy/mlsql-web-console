@@ -49,13 +49,13 @@ export default class WorkshopTableTree extends mix(React.Component).with(NewSess
     return (
       <div>
         <Modal
-          title={`Open new session with [${this.currentTableName()}]?`}
+          title={`Open Table`}
           visible={this.state.showNewSession}
           onCancel={this.toggleNewSession}
           onOk={() => { this.showTable("temp") }}
           cancelText="Cancel"
           OkText="Ok">
-
+            {`Open  ${this.currentTableName()}]?`}
         </Modal>
         <Spin tip="Loading..." spinning={this.state.loading}>
           <DirectoryTree onRightClick={this.showNewSession}>

@@ -8,6 +8,7 @@ import { StationCommonOp } from "../commonops/StationCommonOp";
 import RenameFields from "./RenameFields";
 import FunctionField from "./FunctionField";
 import { ProjectStationSQLOp } from "./ProjectStationSQLOp";
+import { CastFields } from "./CastFields";
 
 const { TabPane } = Tabs;
 
@@ -35,7 +36,7 @@ export default class ProjectStation extends mix(React.Component).with(StationCom
                        <FunctionField  schemaFields={this.workshop.currentTable.schema.fields} ref={(et)=>this.functionFieldRef=et} parent={this}></FunctionField>
                     </TabPane>
                     <TabPane tab="Cast Column Type" key="4"> 
-                                         
+                       <CastFields workshop={this.workshop}></CastFields>                                         
                     </TabPane>
                 </Tabs>
             </div>

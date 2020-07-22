@@ -1,40 +1,40 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Form, Tag, Divider, Select, Button,Modal,Input,Switch } from 'antd'
 import { useReducerAsync } from 'use-reducer-async'
-import { OrderStationReducer, OrderStationHandlers, OrderStationActionNames } from './actions/OrderStationReducer';
-import AlertBox from '../../AlertBox';
+import { Form, Tag, Divider, Select, Button,Modal,Input,Switch } from 'antd'
+import { CastFieldsReducer, CastFieldsHandlers, CastFieldsActionNames } from './actions/CastFieldsReducer';
 import { ApplySaveRollback } from '../../apply_save_rollback/ApplySaveRollback';
-
+import { OrderStationActionNames } from '../order/actions/OrderStationReducer';
+import AlertBox from '../../AlertBox';
+const { Option } = Select;
 
 
 const initState = {
-    operateFileds: [],
-    error: undefined,  
+    error: undefined,
     //为了回调applySaveRollback组件  
-    applySaveRollbackDispacher:undefined
+    applySaveRollbackDispacher: undefined,
+    operateFileds:[]
 }
 
-const OrderStationContext = React.createContext()
-const { Option } = Select;
-function OrderStation(props) {
-    const workshop = props.parent.workshop
-    const fields = workshop.currentTable.schema.fields
-    const [state, dispacher] = useReducerAsync(OrderStationReducer, initState, OrderStationHandlers)
-    const { operateFileds, error,applySaveRollbackDispacher} = state
-    const [form] = Form.useForm()
+const CastFieldsContext = React.createContext()
 
+function CastFields(props) {
+    const {workshop} = props
+    const [form] = Form.useForm()
+    const fields = workshop.currentTable.schema.fields
+    const [state, dispacher] = useReducerAsync(CastFieldsReducer, initState, CastFieldsHandlers)
+    const { operateFileds, error,applySaveRollbackDispacher} = state
     const children = fields.map(item => {
         return <Option key={item.name}>{item.name}</Option>
     })
-    
+
     useEffect(()=>{
         if(applySaveRollbackDispacher){
             form.submit()
         }       
     },[applySaveRollbackDispacher])
-
+    
     return (
-        <OrderStationContext.Provider value={{ dispacher }}>
+        <CastFieldsContext.Provider value={{ dispacher }}>
             <div style={{ marginTop: "10px", "width": "400px" }}>
                 {
                     error && <AlertBox message={error}></AlertBox>
@@ -49,20 +49,20 @@ function OrderStation(props) {
                     })
                 }} className="login-form" >
                     <Form.Item>
-                        <ApplySaveRollback context={OrderStationContext} workshop={workshop}/>
+                        <ApplySaveRollback context={CastFieldsContext} workshop={workshop}/>
                     </Form.Item>
                     <Form.Item label="Choose fields" >
                         <Select
                             mode="multiple"
                             onDeselect={value => {
                                 dispacher({
-                                    type: OrderStationActionNames.REMOVE_FIELD,
+                                    type: CastFieldsActionNames.REMOVE_FIELD,
                                     data: { fields: value }
                                 })
                             }}
                             onChange={(value) => {
                                 dispacher({
-                                    type: OrderStationActionNames.ADD_FIELD,
+                                    type: CastFieldsActionNames.ADD_FIELD,
                                     data: { fields: value }
                                 })
                             }}
@@ -72,16 +72,18 @@ function OrderStation(props) {
                     </Form.Item>
 
                     {operateFileds.map(item => {
-                        return <Form.Item initialValue={"desc"} key={item.field} label={item.field} name={item.field}>
+                        return <Form.Item key={item.field} label={`Cast ${item.field} to`} name={item.field}>
                             <Select>
-                                <Select.Option value="desc">desc</Select.Option>
-                                <Select.Option value="asc">asc</Select.Option>
+                                <Select.Option value="int">int</Select.Option>
+                                <Select.Option value="long">long</Select.Option>
+                                <Select.Option value="double">double</Select.Option>
+                                <Select.Option value="string">string</Select.Option>
                             </Select>
                         </Form.Item>
                     })}
                 </Form>
             </div>
-        </OrderStationContext.Provider>
+        </CastFieldsContext.Provider>
     )
 }
-export { OrderStation, OrderStationContext }
+export { CastFields, CastFieldsContext }

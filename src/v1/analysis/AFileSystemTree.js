@@ -26,7 +26,7 @@ export default class AFileSystemTree extends mix(FileSystemTree).with(NewSession
     render = () => {
         return <div>
             <Modal
-                title={`Open new session with [${this.currentTableName()}]?`}
+                title={`Open Table: [${this.currentTableName()}]?`}
                 visible={this.state.showNewSession}
                 onCancel={this.toggleNewSession}
                 onOk={() => { this.showTable("file",this.loadPopRef.data.sourceTypeV,this.loadPopRef.data.params) }}
