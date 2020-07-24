@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect, useContext } from 'react';
 import useSelectFields from '../../common/pages/SelectFieldsToOperate';
-import {Form,Button} from 'antd';
+import {Form,Button, Divider} from 'antd';
 import { WindowStationContext } from '../WindowStation';
 import { WindowStationActionNames } from '../actions/WindowStationReducer';
 

@@ -1,7 +1,7 @@
 import React, { useContext} from 'react';
 import { WindowStationContext } from '../WindowStation';
 import useSelectFields from '../../common/pages/SelectFieldsToOperate';
-import {Form,Button,Select} from 'antd';
+import {Form,Button,Select,Divider} from 'antd';
 import { WindowStationActionNames } from '../actions/WindowStationReducer';
 
 function SetupGroupRowOrder(props) {
@@ -30,6 +30,18 @@ function SetupGroupRowOrder(props) {
                 }
             }>
                 Next
+            </Button>
+            <Divider type="vertical"/>
+            <Button  onClick={
+                ()=>{   
+                                                         
+                    dispacher({
+                        type: "setState",
+                        data: {current:0}
+                    })                    
+                }
+            }>
+                Previous
             </Button>
         </Form.Item>])
     )

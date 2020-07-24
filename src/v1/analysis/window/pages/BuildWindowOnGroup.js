@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect, useContext } from 'react';
 import useSelectFields from '../../common/pages/SelectFieldsToOperate';
-import { Form, Button, Select, Input } from 'antd';
+import { Form, Button, Divider, Input } from 'antd';
 import { WindowStationContext } from '../WindowStation';
 import { WindowStationActionNames } from '../actions/WindowStationReducer';
 
@@ -47,6 +47,17 @@ function BuildWindowOnGroup(props) {
                 }
             }>
                 Next
+            </Button><Divider type="vertical"/>
+            <Button  onClick={
+                ()=>{   
+                                                         
+                    dispacher({
+                        type: "setState",
+                        data: {current:1}
+                    })                    
+                }
+            }>
+                Previous
             </Button>
         </Form.Item>])
     )

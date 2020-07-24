@@ -1,9 +1,11 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Select, Form, Input, Switch, Divider } from 'antd';
+import { Select, Form, Input, Switch, Divider,Collapse } from 'antd';
 import EngineService from '../../../service/EngineService';
 import FuncDesc from '../../FuncDesc';
 import Tools from '../../../../common/Tools';
 import AlertBox from '../../../AlertBox';
+
+const { Panel } = Collapse;
 
 function useFieldTransform(props) {
     const { operateField } = props
@@ -77,7 +79,7 @@ function useFieldTransform(props) {
     }
 
 
-    const ui = (commands) => {
+    const ui = (commands,extra) => {
         return <Form form={form} className="login-form">
             {
                 error && <AlertBox onClose={() => { setError(undefined) }} message={error}></AlertBox>
@@ -104,12 +106,20 @@ function useFieldTransform(props) {
                     return <Form.Item initialValue={showColumn(item)} key={item.name} name={item.name} label={item.name}><Input  />
                     </Form.Item>
                 })
-            }
+            }            
+            <Form.Item>
+                <Collapse>
+                    <Panel header="Mannually Apply Function">
+                    <Divider type="horizontal" />
+                    <Form.Item name="mannualTransform" label="Mannual Transform"><Input /></Form.Item>
+                    <Form.Item name="isMannualAgg" label="Is Agg Function"><Switch></Switch></Form.Item>
+                    </Panel>
+                </Collapse>
+            </Form.Item>
+            {extra}
             <Form.Item name="newFieldName" label="New Field Name" required><Input /></Form.Item>
-            <Divider type="horizontal" />
-            <Form.Item name="mannualTransform" label="Mannual Transform"><Input /></Form.Item>
-            <Form.Item name="isMannualAgg" label="Is Agg Function"><Switch></Switch></Form.Item>
             {commands}
+            
         </Form>
     }
     return {

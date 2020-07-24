@@ -6,7 +6,7 @@ export const { handler: WindowApplyActionHandler, action: WindowApplyAction } = 
         orderFields,
         rowWindows
          } = action.__state.result
-    const {workshop,functions,setLoading} = action.data
+    const {workshop,functions} = action.data
 
     const partitionByStr = groupFields.map(item => {
         return Tools.getField(item.field)
