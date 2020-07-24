@@ -60,10 +60,10 @@ function OrderStation(props) {
                                     data: { fields: value }
                                 })
                             }}
-                            onChange={(value) => {
+                            onChange={(values) => {
                                 dispacher({
                                     type: OrderStationActionNames.ADD_FIELD,
-                                    data: { fields: value }
+                                    data: { fields: values }
                                 })
                             }}
                         >

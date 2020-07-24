@@ -73,11 +73,13 @@ export class ETPopLoad extends React.Component {
         let paramsArray = []
         for (let k in this.data.params) {
             let v = this.data.params[k]
-            let rv = "\"" + v + "\""
-            if (k === "code" || k === "fitParam.[group].code") {
-                rv = "'''" + v + "'''"
-            }
-            paramsArray.push(k.replace(/\[group\]/g, '0') + "=" + rv)
+            if(v){
+                let rv = "\"" + v + "\""
+                if (k === "code" || k === "fitParam.[group].code") {
+                    rv = "'''" + v + "'''"
+                }
+                paramsArray.push(k.replace(/\[group\]/g, '0') + "=" + rv)
+            }            
         }
 
         let whereStr = ""

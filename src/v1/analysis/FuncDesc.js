@@ -5,7 +5,7 @@ const { Option } = Select;
 export default class FuncDesc extends React.Component {
     constructor(props) {
         super(props)
-        this.state = {}
+        this.state = {...props}
     }
     show = (func) => {
         this.setState({ func })

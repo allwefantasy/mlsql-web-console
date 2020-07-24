@@ -8,6 +8,7 @@ import ProjectStation from "./project/ProjectStation";
 import FilterStation from "./filter/FilterStation";
 import { OrderStation } from "./order/OrderStation";
 import {LimitStation} from "./limit/LimitStation"
+import { WindowStation } from "./window/WindowStation";
 const { TabPane } = Tabs;
 
 export default class OperateStation extends React.Component {
@@ -42,6 +43,9 @@ export default class OperateStation extends React.Component {
                 </TabPane>
                 <TabPane tab="Limit" key={6} >
                     <LimitStation parent={this}></LimitStation>
+                </TabPane>
+                <TabPane tab="Window" key={7} >
+                    <WindowStation parent={this}></WindowStation>
                 </TabPane>
                 </Tabs>
                 </div>

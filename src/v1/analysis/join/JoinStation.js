@@ -23,7 +23,7 @@ padding-top: 80px;
 width: 100%;
 `
 
-export default class JoinStation extends mix(React.Component).with(
+class JoinStation extends mix(React.Component).with(
     StationCommonOp
 ) {
     constructor(props) {
@@ -111,3 +111,6 @@ export default class JoinStation extends mix(React.Component).with(
         </div>
     }
 }
+
+export default  JoinStation
+export {StepContent}

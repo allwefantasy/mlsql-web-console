@@ -34,7 +34,7 @@ class AnalysisWorkshop extends mix(React.Component).
 
     componentDidMount() {
         // for testing should remove
-        //  this.newSession("file", "csv", "/tmp/upload/ConsumerComplaints.csv", { header: "true" })
+        this.newSession("delta", "public", "simpleData", { header: "true" })
     }
 
     operateStationView() {

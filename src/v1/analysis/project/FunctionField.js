@@ -2,6 +2,7 @@ import * as React from "react";
 import { Tabs, Switch, Menu, Button, Modal, Input } from 'antd';
 import ApplyFuncToField from "../ApplyFuncToField";
 import ColumnOperate from "../ColumnOperate";
+import AlertBox from "../../AlertBox";
 export default class FunctionField extends React.Component {
     constructor(props) {
         super(props)
@@ -56,13 +57,17 @@ export default class FunctionField extends React.Component {
 
     handleFunc = () => {
         const { field, transformCode, columnName,isAgg } = this.applyFuncToFieldRef.getTransform()
+        if(!columnName){
+           this.setState({"error":"New fieldName is required."}) 
+           return 
+        }
         const data = this.state.data.map(item => {
             if (item.field === field) {
                 return { field, func: "", transformCode, columnName,isAgg}
             }
             return item
         })        
-        this.setState({ funcPopUp: false, data }, () => { this.reload() })
+        this.setState({ funcPopUp: false, data,error:undefined }, () => { this.reload() })
         this.applyFuncToFieldRef.reload()
     }
 
@@ -72,12 +77,13 @@ export default class FunctionField extends React.Component {
 
     render = () => {
         return <div >
+            
             <Modal
                 title={`Apply function to [${this.operateField}]`}
                 visible={this.state.funcPopUp}
                 onCancel={() => {
                     this.applyFuncToFieldRef.reload()
-                    this.setState({ funcPopUp: false })
+                    this.setState({ funcPopUp: false,error:undefined })
                 }}
                 onOk={
                     this.handleFunc
@@ -85,6 +91,7 @@ export default class FunctionField extends React.Component {
                 cancelText="Cancel"
                 width="50%"
                 OkText="Ok">
+                {this.state.error && <AlertBox message={this.state.error}></AlertBox>}
                 <ApplyFuncToField parent={this} ref={(et) => this.applyFuncToFieldRef = et} operateField={this.operateField}></ApplyFuncToField>
             </Modal>
             <ColumnOperate ref={et => this.columnsRef = et}></ColumnOperate>

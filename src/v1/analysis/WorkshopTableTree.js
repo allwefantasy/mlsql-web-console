@@ -11,8 +11,7 @@ export default class WorkshopTableTree extends mix(React.Component).with(NewSess
 
   constructor(props) {
     super(props)
-    this.state = { dbs: {}, loading: false }
-    console.log(props)
+    this.state = { dbs: {}, loading: false }    
     this.workshop = props.parent.workshop
   }
 
