@@ -68,8 +68,7 @@ function ScriptTree(props) {
                 if (item.isExpanded) {
                    expandedKeys.push(item.id)
                 }
-            })
-            console.log(expandedKeys)
+            })            
 
             dispacher({
                 type: "setState",
@@ -219,7 +218,8 @@ function ScriptTree(props) {
             {loading && <SpinBox></SpinBox>}
             {!loading &&
                 <DirectoryTree
-                    onExpand={(expandedKeys)=>{                        
+                    onExpand={(expandedKeys)=>{  
+                        console.log(expandedKeys)                      
                         dispacher({
                             type: ScriptTreeActionNames.expand,
                             data: { expandedKeys }
@@ -229,13 +229,13 @@ function ScriptTree(props) {
                     expandedKeys={                        
                         expandedKeys
                     }
-                    onDoubleClick={(evt, node) => {
+                    onDoubleClick={(evt, node) => {                        
                         dispacher({
                             type: ScriptTreeActionNames.openScriptFile,
                             data: { consoleApp, node }
                         })
                     }}
-                    expandAction="doubleClick"
+                    expandAction="click"
                     onRightClick={popContextMenu}
                     switcherIcon={<DownOutlined />}
                     treeData={nodes}></DirectoryTree>}

@@ -136,7 +136,9 @@ export default class AsyncExecuter {
             this.cancelMonitor()
             this.exitLoading() 
             this.jobProgressRef.exit()
-            this.displayRef.update(JSON.parse(jobInfo.response)) 
+            const data = JSON.parse(jobInfo.response)
+            this.displayRef.update(data) 
+            this.queryPanel.queryApp.setData(data)
         }
     }
 

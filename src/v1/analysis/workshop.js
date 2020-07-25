@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Modal, Result, Button, Divider } from "antd"
+import { Modal, Result, Tabs, Divider } from "antd"
 import './workshop.scss'
 import LeftView from "./leftview";
 import SpinBox from "../SpinBox"
@@ -11,10 +11,9 @@ import OperateStation from "./OperateStation";
 import AceEditor from 'react-ace';
 import { WorkshopMessageOp } from "./WorkshopMessageOp";
 import { WorkshopUIOp } from "./WorkshopUIOp";
-import Tools from "../../common/Tools";
 import { Resizable } from "re-resizable";
-import ColumnOperate from "./ColumnOperate";
 import RealTimeViewTable from "./RealTimeViewTable";
+import { RealTimeDash } from "./dash/pages/RealTimeDash";
 
 
 class AnalysisWorkshop extends mix(React.Component).
@@ -29,12 +28,12 @@ class AnalysisWorkshop extends mix(React.Component).
         this.state = { tableLoading: false }
         // {tableName:...  sql:...}
         this.sqls = []
-        AnalysisWorkshop.workshop = this
+        AnalysisWorkshop.workshop = this        
     }
 
     componentDidMount() {
         // for testing should remove
-        // this.newSession("delta", "public", "simpleData", { header: "true" })
+         this.newSession("delta", "public", "simpleData", { header: "true" })
     }
 
     operateStationView() {
@@ -95,7 +94,7 @@ class AnalysisWorkshop extends mix(React.Component).
                 </div>
                 <Divider></Divider>
                 <div className="ws-table-pane">
-                    <RealTimeViewTable style={{ width: "100%" }} ref={(et) => this.displayRef = et} parent={this} />
+                    <RealTimeViewTable style={{ width: "90%" }} ref={(et) => this.displayRef = et} parent={this} />
                 </div>
             </div>
         </div>

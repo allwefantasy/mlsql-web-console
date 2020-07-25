@@ -27,7 +27,12 @@
     "universal-cookie": "^3.0.7",
     "use-reducer-async": "^2.0.1",
     "uuid": "^3.3.2",
-    "xlsx": "^0.14.1"
+    "xlsx": "^0.14.1",
+    "axios": "^0.18.0",
+    "classnames": "^2.2.6",
+    "react-ace": "^6.2.0",
+    "react-router-dom": "^4.3.1",
+    "node-sass": "^4.9.4"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -47,16 +52,10 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "@blueprintjs/core": "^3.7.0",
     "@storybook/addon-actions": "^5.1.11",
     "@storybook/addon-links": "^5.1.11",
     "@storybook/addons": "^5.1.11",
-    "@storybook/react": "^5.1.11",
-    "axios": "^0.18.0",
-    "classnames": "^2.2.6",
-    "node-sass": "^4.9.4",
-    "react-ace": "^6.2.0",
-    "react-router-dom": "^4.3.1"
+    "@storybook/react": "^5.1.11"
   },
   "proxy": "http://127.0.0.1:9002"
 }

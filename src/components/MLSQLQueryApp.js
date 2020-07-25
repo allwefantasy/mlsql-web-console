@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import MLSQLAceEditor from './MLSQLAceEditor'
-import {ScriptNodeTree} from './MLSQLTreeNode'
 import './MLSQLQueryApp.scss'
 import AceEditor from "react-ace";
 import {MLSQLQueryDisplay} from "./MLSQLQueryDisplay";
