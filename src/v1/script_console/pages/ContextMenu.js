@@ -1,69 +1,55 @@
-import React, { useRef, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 
-const useContextMenuCallback = (contextMenuRef,dispacher,marker)=>{    
-    return useCallback((params) => {
-        const { event, node } = params
-        let clickX =  event.clientX
-        let clickY = event.clientY - 60
-        if(marker){
-            function iter(tree,visit){
-                visit(tree)
-                const children = [].slice.call(tree.children)
-                children.map(item=>{
-                    iter(item,visit)
-                 })
-                
-            }
-            let target = undefined
-            iter(event.target,(item)=>{
-                if(item.className===marker && !target){                
-                   target = item
-                }
-            })
-            if(!target){
-                target = event.target
-            }
-            const clientRec = target.getBoundingClientRect()
-            clickX = clientRec.left + clientRec.width - 20 //event.target.offsetLeft + event.target.style.width // event.clientX  // + document.documentElement.scrollLeft + document.body.scrollLeft
-            clickY = clientRec.top - clientRec.height 
-        }                       
+const useContextMenu = ({contextMenuRef,dispacher,onRender})=>{ 
     
+    const [rightClickNodeTreeItem, setRightClickNodeTreeItem] = useState(undefined)    
+    
+    const onRightClick = useCallback((params) => {        
+        const { event, node } = params
+        
+        let clickX =  event.clientX
+        let clickY = event.clientY                                      
         const click = (evt) => {  
             if(!contextMenuRef.current) return
             const wasOutside =  !contextMenuRef.current.contains(evt.target)            
             if (wasOutside) {
-                dispacher({
-                    type: "setState",
-                    data: { rightClickNodeTreeItem: undefined }
-                })
+                setRightClickNodeTreeItem(undefined)                
             }
         }
         document.addEventListener('click', click);
     
         const scroll = () => {
-            dispacher({
-                type: "setState",
-                data: { rightClickNodeTreeItem: undefined }
-            })
+            setRightClickNodeTreeItem(undefined) 
         }
         document.addEventListener('scroll', scroll);
     
-        const data = {
-            rightClickNodeTreeItem: {
-                pageX: clickX,
-                pageY: clickY,
-                id: node.id
-            }
-        }
-        dispacher({
-            type: "setState",
-            data
+        setRightClickNodeTreeItem({
+            pageX: clickX,
+            pageY: clickY,
+            id: node.id
         })
         return () => {
             document.removeEventListener('click',click);
             document.removeEventListener('scroll',scroll);
         }
-    }, [])
+    },[setRightClickNodeTreeItem])
+
+    const ui = useCallback(()=>{
+        if (!rightClickNodeTreeItem) {
+            return 
+        }
+        const { pageX, pageY, id } = { ...rightClickNodeTreeItem };    
+        const tmpStyle = {
+            zIndex: 10000,
+            position: "fixed",
+            left: `${pageX}px`,
+            top: `${pageY}px`,
+            borderRadius: "3px",
+            boxShadow: "0 0 0 1px rgba(16, 22, 26, 0.1), 0 2px 4px rgba(16, 22, 26, 0.2), 0 8px 24px rgba(16, 22, 26, 0.2)"
+        };               
+        return <div ref={contextMenuRef} style={tmpStyle}>{onRender({rightClickNodeTreeItem,setRightClickNodeTreeItem,dispacher})}</div>
+    },[rightClickNodeTreeItem])
+    return {onRightClick,ui}
 }
 
-export {useContextMenuCallback}
+export {useContextMenu}
