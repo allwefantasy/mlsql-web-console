@@ -26,4 +26,7 @@ export default class RemoteAction{
 
     static SCRIPT_FILE_REMOVE = "/api_v1/script_file/remove"
 
+    static PLUGIN_LIST = "/api_v1/plugin/list"
+    static PLUGIN_GET = "/api_v1/plugin/get"
+
 }

@@ -7,19 +7,32 @@ export default class Tools {
         return uuidv4() + ""
     }
 
-    static visitDown = (tree,visit)=>{
+    static unQuote = (str) => {
+        if (str.startsWith("\"") && str.endsWith("\"")) {
+            return str.slice(1, str.length - 1)
+        }
+        if (str.startsWith("'") && str.endsWith("'")) {
+            return str.slice(1, str.length - 1)
+        }
+        if (str.startsWith("'''") && str.endsWith("'''")) {
+            return str.slice(3, str.length - 3)
+        }
+        return str
+    }
+
+    static visitDown = (tree, visit) => {
         visit(tree)
-        if(tree.children){
-            tree.children.map(item=>{
-               Tools.visitDown(item,visit)
+        if (tree.children) {
+            tree.children.map(item => {
+                Tools.visitDown(item, visit)
             })
         }
-        
+
     }
-    static visitUp = (tree,visit)=>{        
-        if(tree.children){
-            tree.children.map(item=>{
-                Tools.visitUp(item,visit)
+    static visitUp = (tree, visit) => {
+        if (tree.children) {
+            tree.children.map(item => {
+                Tools.visitUp(item, visit)
             })
         }
         visit(tree)

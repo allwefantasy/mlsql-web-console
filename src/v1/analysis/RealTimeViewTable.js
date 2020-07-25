@@ -3,6 +3,7 @@ import { Table, Modal } from 'antd';
 import mix from "../../common/mixin";
 import { SearchOp } from "./real_time_view_table/SearchOp";
 import { DropdownMenuUI } from "./real_time_view_table/DropdownMenuUI";
+import MLSQLHTML from "../../components/dash/MLSQLHTML";
 
 
 const ReactMarkdown = require('react-markdown')
@@ -14,13 +15,14 @@ export default class RealTimeViewTable extends mix(React.Component).with(
     constructor(props) {
         super(props)
         this.tableStyle = props.style || {}
-        this.state = { 
-            columns: [], 
-            rows: [], 
+        this.state = {
+            columns: [],
+            rows: [],
             view: { enabled: false },
             searchText: '',
             searchedColumn: '',
-            loading: false
+            loading: false,
+            isDash: false
         }
         this.config = {}
         this.workshop = props.parent
@@ -30,48 +32,52 @@ export default class RealTimeViewTable extends mix(React.Component).with(
         const { name, type } = item
         switch (type) {
             case "string": return (value, record) => {
-               return value
+                return value
             }
             case "array": return (value, record) => {
-               return JSON.stringify(value)
+                return JSON.stringify(value)
             }
             case "map": return (value, record) => {
                 return JSON.stringify(value)
-            }             
+            }
             default:
                 return (value, record) => { return value }
 
         }
     }
 
-    getDefaultSearch = item =>{
+    getDefaultSearch = item => {
         const { name, type } = item
         switch (type) {
             case "string": return this.getColumnSearchProps(name)
             case "array": return {}
-            case "map": return {}            
+            case "map": return {}
             default:
                 return {}
         }
-    }    
-
-    getDefaultTitleRender = item=>{
-       return this.dropdown(item)
     }
 
-    update = (rows, columns) => {        
+    getDefaultTitleRender = item => {
+        return this.dropdown(item)
+    }
+
+    update = (rows, columns) => {
+        let isDash = false
+        if (columns[0] && columns[0].name === "html" && columns[1] && columns[1].name === "dash") {
+            isDash = true
+        } 
         const newColumns = columns.map(item => {
             return {
                 ...item,
                 dataIndex: item.name,
                 title: this.getDefaultTitleRender(item),
                 render: this.getDefaultRender(item),
-                ...this.getDefaultSearch(item)                
+                ...this.getDefaultSearch(item)
             }
         })
 
-        this.setState({ columns: newColumns, data: rows })
-    }    
+        this.setState({ columns: newColumns, data: rows ,isDash})
+    }
 
     disablePreview = () => {
         this.setState({
@@ -83,6 +89,9 @@ export default class RealTimeViewTable extends mix(React.Component).with(
 
     render() {
         const self = this
+        if (this.state.isDash) {
+            return MLSQLHTML.render(this.state.data)
+        }
         return (<div style={this.tableStyle}>
             <Table
                 loading={this.state.loading}
