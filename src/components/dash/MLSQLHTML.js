@@ -44,8 +44,7 @@ export class MLSQLHTMLPanel extends React.Component {
         this.setState({data: data})
     }
 
-    render() {
-        console.log(this.state.data)
+    render() {        
         return (
             <div style={{width:"100%"}}>
                 <Resizable defaultSize={{height: "500px"}}>

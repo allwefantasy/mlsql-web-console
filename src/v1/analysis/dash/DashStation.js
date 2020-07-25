@@ -13,7 +13,8 @@ import { ApplySaveRollback } from '../../apply_save_rollback/ApplySaveRollback';
 
 const initState = {
     applySaveRollbackDispacher: undefined,
-    scriptContent:undefined
+    scriptContent:undefined,
+    applyToken: Tools.getJobName()
 }
 
 const DashStationContext = React.createContext()
@@ -22,9 +23,9 @@ function DashStation(props) {
     const workshop = props.parent.workshop
     const [state, dispacher] = useReducerAsync(DashStationReducer, initState, DashStationHandlers)
     const { ui: dataUi, form: dataForm, vType, setPlugins } = useDataConfig(props)
-    const { ui: dashUi, form: dashForm, setPluginConfigs } = useDashConfig(props)
+    const { ui: dashUi, form: dashForm, setPluginConfigs,setImagePreview } = useDashConfig(props)
     const proxy = new ActionProxy()
-    const { applySaveRollbackDispacher,scriptContent } = state
+    const { applySaveRollbackDispacher,scriptContent ,applyToken} = state
 
 
     const fetchDashPlugins = async () => {
@@ -41,6 +42,7 @@ function DashStation(props) {
         if (vType) {
             const res = await proxy.get(RemoteAction.PLUGIN_GET, { pluginName: vType })
             const scriptContent = res.content.content
+            
             const analyzedScriptContent = await proxy.runScript(scriptContent, Tools.getJobName(), { executeMode: "analyze" })
             if (analyzedScriptContent.status !== 200) {
                 return
@@ -52,6 +54,8 @@ function DashStation(props) {
                 type:"setState",
                 data:{scriptContent}
             })
+            
+            setImagePreview(res.content.image)
             setPluginConfigs(pluginConfigs)
         }
     }
@@ -74,7 +78,7 @@ function DashStation(props) {
              from ${workshop.getLastApplyTable().tableName} as ${tableName};
              ${scriptContent}
             `
-            await workshop.apply({tableName,sql})
+            await workshop.apply({tableName,sql})            
             
             applySaveRollbackDispacher({
                 type: "setState",
@@ -84,7 +88,7 @@ function DashStation(props) {
     }
     useEffect(()=>{
         apply()
-    }, [applySaveRollbackDispacher])
+    }, [applyToken])
 
     return (
         <DashStationContext.Provider value={{ dispacher }}>

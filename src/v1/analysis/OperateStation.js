@@ -26,7 +26,7 @@ export default class OperateStation extends React.Component {
     render() {
         return <div className="os-pane">
             <div className="os-tabs">
-                <Tabs defaultActiveKey="8" tabPosition="left" key={this.state.key}>                
+                <Tabs defaultActiveKey="1" tabPosition="left" key={this.state.key}>                
                 <TabPane tab="Project"  key={1} >
                     <ProjectStation parent={this}></ProjectStation>
                 </TabPane>

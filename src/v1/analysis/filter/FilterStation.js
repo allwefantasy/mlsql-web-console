@@ -52,7 +52,9 @@ export default class FilterStation extends mix(React.Component).with(StationComm
             return items.map(item => {
                 let con = ""
                 switch (item.dataType) {
-                    case "string": con = `"${item.condition}"`; break;
+                    case "string": 
+                     con = `"${Tools.escapeQuote(item.condition)}"`                     
+                     break
                     default: con = item.condition;
                 }
                 return `${Tools.getField(item.field)} ${item.compare} ${con}`

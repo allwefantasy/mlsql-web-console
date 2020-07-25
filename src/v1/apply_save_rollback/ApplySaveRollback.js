@@ -3,6 +3,7 @@ import { Form, Tag, Divider, Select, Button, Modal, Input, Switch } from 'antd'
 import { useReducerAsync } from 'use-reducer-async'
 import { ApplySaveRollbackReducer, ApplySaveRollbackHandlers } from './actions/ApplySaveRollbackReducer.js';
 import AlertBox from '../AlertBox.js';
+import Tools from '../../common/Tools.js';
 
 
 const initState = {
@@ -75,7 +76,7 @@ function ApplySaveRollback(props) {
                     })
                     parentDispacher({
                         type: "setState",
-                        data: { applySaveRollbackDispacher: dispacher }
+                        data: { applySaveRollbackDispacher: dispacher,applyToken:Tools.getJobName() }
                     })
                 }
             } >Apply</Button>

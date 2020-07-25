@@ -25,16 +25,20 @@ export const { handler: WindowApplyActionHandler, action: WindowApplyAction } = 
     let windowStr = ""
     
     //UNBOUNDED /CURRENT ROW
-    let precedingStr = preceding || "UNBOUNDED"
-    let followingStr = following || "UNBOUNDED"
+    let precedingStr = (preceding  && `${preceding} PRECEDING`) || "UNBOUNDED PRECEDING"
+    let followingStr = (following && `${following} FOLLOWING`) || "UNBOUNDED FOLLOWING"
+
+    if(precedingStr === "UNBOUNDED PRECEDING" && followingStr==="UNBOUNDED FOLLOWING"){
+        followingStr = "CURRENT ROW"
+    }
    
     if (windowType) {
         switch (windowType) {
             case "row window":
-                windowStr = `ROWS BETWEEN ${precedingStr} PRECEDING and ${followingStr} FOLLOWING`
+                windowStr = `ROWS BETWEEN ${precedingStr}  and ${followingStr} `
                 break;
             case "range window":
-                windowStr = `RANGE BETWEEN ${precedingStr} PRECEDING and ${followingStr} FOLLOWING`
+                windowStr = `RANGE BETWEEN ${precedingStr}  and ${followingStr} `
                 break;
         }
     }

@@ -72,6 +72,7 @@ export default class Compare extends React.Component {
                         <Select.Option value=">">{'>'}</Select.Option>
                         <Select.Option value=">=">{'>='}</Select.Option>
                         <Select.Option value="<=">{'<='}</Select.Option>
+                        <Select.Option value="!=">{'!='}</Select.Option>
                         <Select.Option value="like">{'like'}</Select.Option>
                         <Select.Option value="in">{'in'}</Select.Option>
                     </Select>

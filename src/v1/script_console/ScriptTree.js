@@ -82,19 +82,19 @@ function ScriptTree(props) {
         getList()
     }, [reloading])
 
-    //const popContextMenu = useContextMenuCallback(contextMenuRef, dispacher,"ant-tree-title")
+    // const popContextMenu = useContextMenuCallback(contextMenuRef, dispacher,"ant-tree-title")
     const popContextMenu = useContextMenuCallback(contextMenuRef, dispacher)
 
     const contextMenu = useCallback(() => {
         if (!rightClickNodeTreeItem) {
             return
         }
-        const { pageX, pageY, id } = { ...rightClickNodeTreeItem };
+        const { pageX, pageY, id } = { ...rightClickNodeTreeItem };    
         const tmpStyle = {
             zIndex: 10000,
-            position: "absolute",
+            position: "fixed",
             left: `${pageX}px`,
-            top: `${pageY}px`,
+            top: `${pageY+60}px`,
             borderRadius: "3px",
             boxShadow: "0 0 0 1px rgba(16, 22, 26, 0.1), 0 2px 4px rgba(16, 22, 26, 0.2), 0 8px 24px rgba(16, 22, 26, 0.2)"
         };

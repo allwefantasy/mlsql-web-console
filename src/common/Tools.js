@@ -7,6 +7,11 @@ export default class Tools {
         return uuidv4() + ""
     }
 
+    static escapeQuote = (str)=>{
+        if(!str) return str
+        return str.replace(/[\""]/g, '\\"')
+    }
+
     static unQuote = (str) => {
         if (str.startsWith("\"") && str.endsWith("\"")) {
             return str.slice(1, str.length - 1)

@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { Form, Input, Select, Divider, Button } from 'antd';
+import { Form, Card, Select, Divider, Button } from 'antd';
 
 function useDataConfig(props) {
     const workshop = props.parent.workshop
@@ -22,29 +22,31 @@ function useDataConfig(props) {
     }, [])
 
     const ui = () => {
-        return <Form form={form} onFieldsChange={onFieldsChange}>
-            <Form.Item label="Visulizaiton Plugin" name="vType">
-                <Select >
-                    {
-                        plugins.map(item => {
-                            return <Select.Option value={item}>{item}</Select.Option>
-                        })
-                    }
-                </Select>
-            </Form.Item>
+        return <Card title="Generic">
+            <Form form={form} onFieldsChange={onFieldsChange}>
+                <Form.Item label="Visulizaiton Plugin" name="vType">
+                    <Select >
+                        {
+                            plugins.map(item => {
+                                return <Select.Option value={item}>{item}</Select.Option>
+                            })
+                        }
+                    </Select>
+                </Form.Item>
 
-            <Form.Item label="X Column" name="xColumn">
-                <Select >
-                    {columns}
-                </Select>
-            </Form.Item>
+                <Form.Item label="X Column" name="xColumn">
+                    <Select >
+                        {columns}
+                    </Select>
+                </Form.Item>
 
-            <Form.Item label="Y Column" name="yColumn">
-                <Select >
-                    {columns}
-                </Select>
-            </Form.Item>            
-        </Form>
+                <Form.Item label="Y Column" name="yColumn">
+                    <Select >
+                        {columns}
+                    </Select>
+                </Form.Item>
+            </Form>
+        </Card>
     }
     return { ui, form, vType, setPlugins }
 }
