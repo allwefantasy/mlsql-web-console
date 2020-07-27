@@ -12,6 +12,7 @@ import AnalysisWorkshop from '../analysis/workshop';
 import { AdminSetting } from './admin/AdminSetting';
 import UIMaker from '../UIMaker';
 import Modal from 'antd/lib/modal/Modal';
+import { Settings } from './admin/pages/Settings';
 
 const initState = {
     currentPage: "login",
@@ -40,6 +41,7 @@ function AppConsole() {
                     {currentPage === "console" && logined && <MLSQLQueryApp></MLSQLQueryApp>}
                     {currentPage === "workshop" && logined && <AnalysisWorkshop></AnalysisWorkshop>}
                     {currentPage === "admin" && logined && UIMaker.isAdmin() && <AdminSetting></AdminSetting>}
+                    {currentPage === "settings" && logined && <Settings></Settings>}
                 </div>
                 <div className="app-console-footer">
                     <div style={{ bottom: "100px", textAlign: "center", width: "100%" }}>

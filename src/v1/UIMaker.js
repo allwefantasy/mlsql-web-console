@@ -4,12 +4,28 @@ import { AccessToken } from '../backend_service/backend/RestConst';
 class UIMaker {
 
     static setupLogin(res) {  
-        const user = {userName:res.content.name, role:res.content.role}
+        const user = {userName:res.content.name, role:res.content.role,extraOption:res.content.backendTags}
         const token = res.resp.headers.get(AccessToken.name)
         sessionStorage.setItem(AccessToken.name, token)
         sessionStorage.setItem("user",JSON.stringify(user))
         const cookies = new Cookies();
         cookies.set(AccessToken.name, token, { path: '/' })
+    }
+    
+    static updateUser(res){
+        const user = {userName:res.content.name, role:res.content.role,extraOption:res.content.backendTags}
+        sessionStorage.setItem("user",JSON.stringify(user)) 
+    }
+
+    static extraOption(){
+        const userStr = sessionStorage.getItem("user") 
+        if(!userStr) return {}
+        try{
+            return JSON.parse(JSON.parse(userStr).extraOption)
+        }catch(e){
+            return {}
+        }
+        
     }
 
     static isAdmin(){

@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect, useReducer } from 'react';
 import { ActionProxy } from '../../../backend_service/ActionProxy';
 import RemoteAction from '../../../backend_service/RemoteAction';
 import { Select } from 'antd';
+import UIMaker from '../../UIMaker';
 
 
 
@@ -14,9 +15,10 @@ function EngineSelectComp(props) {
         const fetch = async () => {
             setLoading(true)
             const proxy = new ActionProxy()
-            const res = await proxy.get(RemoteAction.ENGINE_LIST, {})
+            const res = await proxy.get(RemoteAction.ENGINE_LIST, {})            
             setData(res.content.data)
-            if(res.content.data.length >0){
+            const backend = UIMaker.extraOption()["backend"]
+            if(res.content.data.length >0 && !backend){
                 setEngine(res.content.data[0].name)
             }            
             setLoading(false)
@@ -24,7 +26,12 @@ function EngineSelectComp(props) {
         fetch()
     }, [])
 
-    useEffect(()=>{
+    useEffect(()=>{      
+    //   const save = async()=>{
+    //     const proxy = new ActionProxy()
+    //     await proxy.post(RemoteAction.USER_EXTRA,{backend:engine})
+    //   }
+    //   save()
       props.useEngine(engine)
     },[engine])
 
