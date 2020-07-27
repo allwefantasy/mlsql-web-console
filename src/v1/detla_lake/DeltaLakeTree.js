@@ -32,7 +32,7 @@ export default class DeltaLakeTree extends React.Component{
         return Object.entries(this.state.dbs).map(([key,value])=>{                   
             return <TreeNode title={key} key={key}>
                {value.map(item=>{                   
-                   return <TreeNode icon={<TableOutlined />} title={item} key={item} isLeaf />
+                   return <TreeNode icon={<TableOutlined />} title={item} key={`${key}.${item}`} isLeaf />
                })} 
             </TreeNode>
         })

@@ -96,7 +96,7 @@ export class UploadDropzone extends React.Component {
                     </Dropzone>
                 </div>
                 <aside>
-                    <h4>{files.length == 0 ? "" : "Files"}</h4>
+                    <h4>{files.length === 0 ? "" : "Files"}</h4>
                     <ul>{files}</ul>
                 </aside>
                 <div>{this.state.msg ? this.state.msg : ""}</div>

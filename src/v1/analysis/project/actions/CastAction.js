@@ -5,7 +5,7 @@ import ApplyActionUtils from "../../common/ApplyActionUtils"
 export const {handler:CastActionHandler,action:CastAction} = ActionMaker.buildHandler(async (action)=>{
     return ApplyActionUtils.apply(action,
         (values) => {
-            if (Object.keys(values).length == 0) {
+            if (Object.keys(values).length === 0) {
                 return "Please configure cast fields then click apply"
             }
             return undefined

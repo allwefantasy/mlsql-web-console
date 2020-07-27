@@ -19,6 +19,7 @@ export default class RemoteAction{
     static LOGOUT = "/api_v1/user/logout"
 
     static ENGINE_ADD = "/api_v1/engine/add"
+    static ENGINE_LIST = "/api_v1/engine/list"
 
     static SCRIPT_FILE_LIST = "/api_v1/script_file"
 
@@ -28,5 +29,6 @@ export default class RemoteAction{
 
     static PLUGIN_LIST = "/api_v1/plugin/list"
     static PLUGIN_GET = "/api_v1/plugin/get"
+
 
 }

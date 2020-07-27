@@ -218,6 +218,7 @@ function ScriptTree(props) {
                     onRightClick={popContextMenu}
                     switcherIcon={<DownOutlined />}
                     treeData={nodes}></DirectoryTree>}
+                    
         </ScriptTreeContext.Provider>
     )
 }

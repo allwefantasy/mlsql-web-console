@@ -5,6 +5,7 @@ import { Menu } from 'antd';
 import './AdminSetting.scss'
 import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
 import { LRSettings } from './pages/LRSettings';
+import {Engines} from './pages/Engines'
 
 const { SubMenu } = Menu;
 
@@ -33,16 +34,38 @@ function AdminSetting() {
                             title={
                                 <span>
                                     <MailOutlined />
-                                    <span>Console settings</span>
+                                    <span>Console Settings</span>
                                 </span>
                             }
                         >
-                            <Menu.Item key="lr-settings">Login/Register Control</Menu.Item>                            
+                            <Menu.Item key="lr-settings" onClick={()=>{
+                                dispacher({
+                                    type:"setState",
+                                    data:{currentPage:"lr-settings"}
+                                })
+                            }}>Login/Register Control</Menu.Item>                            
+                        </SubMenu> 
+                        <SubMenu
+                            key="engine-settings"
+                            title={
+                                <span>
+                                    <MailOutlined />
+                                    <span>Engine Settings</span>
+                                </span>
+                            }
+                        >
+                            <Menu.Item onClick={()=>{
+                                dispacher({
+                                    type:"setState",
+                                    data:{currentPage:"engines"}
+                                })
+                            }} key="engines">Engines</Menu.Item>                            
                         </SubMenu>                        
                     </Menu>
                 </div>
                 <div className="app-admin-main">
                      {currentPage==="lr-settings" && <LRSettings></LRSettings>}
+                     {currentPage==="engines" && <Engines></Engines>}
                 </div>
             </div>
         </AdminSettingContext.Provider>

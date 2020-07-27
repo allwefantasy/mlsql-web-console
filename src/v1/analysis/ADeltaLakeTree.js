@@ -24,7 +24,7 @@ export default class ADeltaLakeTree extends mix(DeltaLakeTree).with(NewSessionOp
         return Object.entries(this.state.dbs).map(([key, value]) => {
             return <TreeNode title={key} key={key}>
                 {value.map(item => {
-                    return <TreeNode icon={<TableOutlined />} title={item} table={item} db={key} key={item} isLeaf />
+                    return <TreeNode icon={<TableOutlined />} title={item} table={item} db={key} key={`${key}.${item}`} isLeaf />
                 })}
             </TreeNode>
         })
