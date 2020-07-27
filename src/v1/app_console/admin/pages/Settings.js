@@ -33,7 +33,7 @@ function Settings() {
                     </Menu>
                 </div>
                 <div className="app-admin-main">
-                     {currentPage==="default-backend" && <DefaultBackend useEngine={(engine)=>{}}/>}                     
+                     {currentPage==="default-backend" && <DefaultBackend/>}                     
                 </div>
             </div>
     )

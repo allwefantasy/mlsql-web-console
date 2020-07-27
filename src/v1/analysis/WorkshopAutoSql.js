@@ -13,7 +13,7 @@ export const WorkshopAutoSql = (superclass) => class extends superclass {
       }
       const removeTable = this.sqls.pop()
       const currentTable = this.sqls.pop()
-      this.apply(currentTable)
+      await this.apply(currentTable)
    }
 
    /**
