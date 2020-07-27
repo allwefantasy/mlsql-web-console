@@ -8,7 +8,7 @@ import 'brace/ext/language_tools';
 import CodeIntellegence from '../v1/service/CodeIntellegence'
 
 import './MLSQLAceEditor.scss'
-import {Button, Tooltip, Progress} from 'antd';
+import {Button, Tooltip, Progress, Divider} from 'antd';
 import {MLSQLAPI} from "../service/MLSQLAPI";
 import * as BackendConfig from "../service/BackendConfig";
 import {assert} from "../common/tool"
@@ -19,6 +19,7 @@ import EditorOp from "../v1/comp_op/EditorOp";
 import AsyncExecuter from "../v1/async_execute/AsyncExecuter";
 import JobProgress from "../v1/async_execute/JobProgress";
 import ResourceProgress from "../v1/async_execute/ResourceProgress";
+import { EngineSelectComp } from "../v1/app_console/pages/EngineSelectComp";
 
 const {Option} = Select;
 
@@ -259,6 +260,10 @@ class CommandGroup extends React.Component {
                 <Option value="28800000">8h</Option>
                 <Option value="-1">unlimited</Option>
             </Select>
+            <Divider type="vertical"/>
+            Engine:<EngineSelectComp useEngine={(engine)=>{
+                this.engineName = engine
+            }}/>
             </div>
         )
     }

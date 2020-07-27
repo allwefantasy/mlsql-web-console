@@ -10,11 +10,17 @@ function Engines(props) {
 
     const [reload, setReload] = useState(undefined)
     const proxy = new ActionProxy()
-    const { ui, setData, setSchema, setEditorMode } = useCrudTable({
+    const { ui, setData, setSchema, setEditorMode ,setError} = useCrudTable({
         submit: async ({ params, setLoading }) => {
             setLoading(true)
+            setError(undefined)
             for (let i = 0; i < params.length; i++) {
-                await proxy.post(RemoteAction.ENGINE_ADD, params[i])
+                const res = await proxy.post(RemoteAction.ENGINE_ADD, params[i])
+                if(res.status !== 200){
+                    setLoading(false)
+                    setError(res.content)
+                    return
+                }
             }
             setReload(Tools.getJobName())
             setLoading(false)

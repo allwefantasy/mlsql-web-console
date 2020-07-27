@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import {Alert} from 'antd'
+import { Alert } from 'antd'
 import { useReducerAsync } from 'use-reducer-async'
 import { AppConsoleReducer, AppConsoleHandlers, AppConsoleActionNames } from './actions/AppConsoleReducer';
 import './AppConsole.scss'
@@ -11,10 +11,11 @@ import MLSQLQueryApp from '../../components/MLSQLQueryApp';
 import AnalysisWorkshop from '../analysis/workshop';
 import { AdminSetting } from './admin/AdminSetting';
 import UIMaker from '../UIMaker';
+import Modal from 'antd/lib/modal/Modal';
 
 const initState = {
     currentPage: "login",
-    logined: false    
+    logined: false
 }
 
 const AppConsoleContext = React.createContext()
@@ -31,9 +32,9 @@ function AppConsole() {
         <AppConsoleContext.Provider value={{ dispacher }}>
             <div className="app-console">
                 <div className="app-console-header">
-                    <ConsoleHeader userLogined={logined} currentPage={currentPage}></ConsoleHeader>
+                    <ConsoleHeader userLogined={logined} isUserAdmin={UIMaker.isAdmin()} currentPage={currentPage}></ConsoleHeader>
                 </div>
-                <div className="app-console-main">                    
+                <div className="app-console-main">
                     {currentPage === "register" && <Register></Register>}
                     {currentPage !== "register" && !logined && <Login></Login>}
                     {currentPage === "console" && logined && <MLSQLQueryApp></MLSQLQueryApp>}

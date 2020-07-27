@@ -59,13 +59,14 @@ function AdminSetting() {
                                     type:"setState",
                                     data:{currentPage:"engines"}
                                 })
-                            }} key="engines">Engines</Menu.Item>                            
-                        </SubMenu>                        
+                            }} key="engines">Engines</Menu.Item>                                                         
+                        </SubMenu>                                               
                     </Menu>
                 </div>
                 <div className="app-admin-main">
                      {currentPage==="lr-settings" && <LRSettings></LRSettings>}
-                     {currentPage==="engines" && <Engines></Engines>}
+                     {currentPage==="engines" && <Engines></Engines>}                     
+
                 </div>
             </div>
         </AdminSettingContext.Provider>

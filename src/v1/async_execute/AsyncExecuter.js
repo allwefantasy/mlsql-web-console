@@ -88,7 +88,8 @@ export default class AsyncExecuter {
         const res = await this.client.runScript(this.sql, this.jobName, Object.assign(params,{
             jobName: this.jobName,
             async: true,
-            timeout: this.timeout
+            timeout: this.timeout,
+            engineName:this.queryPanel.engineName
         }))    
         
         if(res.status !== 200){                                    

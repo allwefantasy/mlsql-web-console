@@ -28,7 +28,7 @@ class AnalysisWorkshop extends mix(React.Component).
         this.state = { tableLoading: false }
         // {tableName:...  sql:...}
         this.sqls = []
-        AnalysisWorkshop.workshop = this        
+        AnalysisWorkshop.workshop = this
     }
 
     componentDidMount() {
@@ -43,12 +43,10 @@ class AnalysisWorkshop extends mix(React.Component).
         if (this.sessionId) {
             return <OperateStation ref={(et) => this.stationRef = et} parent={this}></OperateStation>
         } else {
-            return <div>
-                <Result style={{ width: "100%" }}
-                    title="No Aanalysis Session Is Opened"
-                    subTitle="Right click the table in the left panel(DeltaLake/FileSystem) to begin your analysis"
-                />
-            </div>
+            return <Result style={{ width: "100%" }}
+                title="No Aanalysis Session Is Opened"
+                subTitle="Right click the table in the left panel(DeltaLake/FileSystem) to begin your analysis"
+            />
         }
     }
 

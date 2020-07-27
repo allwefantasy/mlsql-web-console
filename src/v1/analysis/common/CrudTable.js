@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { useDynamicList } from 'ahooks'
 import { Form, Button, Input, Table } from 'antd';
 import ReactDragListView from 'react-drag-listview';
+import AlertBox from '../../AlertBox';
 
 function useCrudTable(props) {
     const { renderConfig, createInitRow, submit: externalSubmit } = props
@@ -11,6 +12,7 @@ function useCrudTable(props) {
     const [result, setResult] = useState({})
     const [loading, setLoading] = useState(false)
     const [editorMode, setEditorMode] = useState(false)
+    const [error,setError] = useState(undefined)
 
     const { list, remove, getKey, move, push, sortForm, resetList } = useDynamicList(data);
     const { getFieldsValue } = form;
@@ -112,6 +114,7 @@ function useCrudTable(props) {
                     onDragEnd={(oldIndex, newIndex) => move(oldIndex, newIndex)}
                     handleSelector={'i[aria-label="icon: drag"]'}
                 >
+                    {error && <AlertBox message={error}/>}
                     <Table
                         columns={columns}
                         dataSource={list}
@@ -153,7 +156,7 @@ function useCrudTable(props) {
             </Form>
         </>
     }
-    return { ui, data, schema, setData, setSchema, setLoading,setEditorMode }
+    return { ui, data, schema, setData, setSchema, setLoading,setEditorMode ,setError}
 }
 
 export { useCrudTable }
