@@ -9,7 +9,7 @@ const AlertBoxW = styled.div`
 `
 function AlertBox(props){
     return <AlertBoxW>
-        <Alert {...props} closable type={props.type||"error"} message="Message" description={props.message}></Alert>
+        <Alert {...props} closable type={props.type||"error"} message={props.title || "Message"} description={props.message}></Alert>
     </AlertBoxW>
 }
 

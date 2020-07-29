@@ -7,19 +7,22 @@ import UIMaker from '../../../UIMaker';
 import { useUserConfig } from '../../../analysis/common/pages/useUserConfig';
 import { FormattedMessage  } from 'react-intl'; 
 import Tools from '../../../../common/Tools';
+import { useIntegerStep } from '../../../analysis/common/pages/useIntegerStep';
 
 
-function DefaultBackend(props) {
+function ApplyTimeout(props) {
 
     const { ui, setError,setSuccess } = useUserConfig()
-    const [engine,setEngine] = useState(undefined)
+    const {ui:timeoutUi,value:timoutValue} = useIntegerStep({
+        initialValue:UIMaker.extraOption()["apply_timeout"] || 10
+    })    
     const submit = async () => {
-        if(!engine){
+        if(!timoutValue){
           setError("set_default_backend_error")
           return
         }
         const proxy = new ActionProxy()
-        const res = await proxy.post(RemoteAction.USER_EXTRA, { backend: engine })
+        const res = await proxy.post(RemoteAction.USER_EXTRA, { apply_timeout: timoutValue })
         if (res.status === 200) {
             UIMaker.updateUser(res) 
             setSuccess("done")           
@@ -29,15 +32,15 @@ function DefaultBackend(props) {
     }
 
     return ui({
-        title: <FormattedMessage id="set_default_backend"/>,
+        title: <FormattedMessage id="set_apply_timeout"/>,
         submit,
         formItems: <>
             <Form.Item label={<FormattedMessage id="curent_value"/>}>
-                {UIMaker.extraOption()["backend"] || "Not Set Yet"}
+                {timoutValue}
             </Form.Item>
             <Form.Item label={<FormattedMessage id="choose"/>}>
-                <EngineSelectComp useEngine={(engine) => { setEngine(engine) }} />
+                {timeoutUi()}
             </Form.Item></>
     })
 }
-export { DefaultBackend }
+export { ApplyTimeout }

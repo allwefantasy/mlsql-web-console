@@ -32,7 +32,6 @@ export default class Tools {
                 Tools.visitDown(item, visit)
             })
         }
-
     }
     static visitUp = (tree, visit) => {
         if (tree.children) {

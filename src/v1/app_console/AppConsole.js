@@ -11,7 +11,6 @@ import MLSQLQueryApp from '../../components/MLSQLQueryApp';
 import AnalysisWorkshop from '../analysis/workshop';
 import { AdminSetting } from './admin/AdminSetting';
 import UIMaker from '../UIMaker';
-import Modal from 'antd/lib/modal/Modal';
 import { Settings } from './admin/pages/Settings';
 
 const initState = {
@@ -30,7 +29,7 @@ function AppConsole() {
     }, [])
 
     return (
-        <AppConsoleContext.Provider value={{ dispacher }}>
+        <AppConsoleContext.Provider value={{ dispacher }}>            
             <div className="app-console">
                 <div className="app-console-header">
                     <ConsoleHeader userLogined={logined} isUserAdmin={UIMaker.isAdmin()} currentPage={currentPage}></ConsoleHeader>

@@ -39,7 +39,9 @@ export class MLSQLQueryDisplay extends React.Component {
         }
 
         if ((typeof value) === 'object') {
-            keyColumn["render"] = value => <span>{JSON.stringify(value).substring(0, 300)}</span>
+            keyColumn["render"] = value => <span>{                
+                    JSON.stringify(value).substring(0, 300) 
+                }</span>
             return
         }
         if ((typeof value) === 'array') {

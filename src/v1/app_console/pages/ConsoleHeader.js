@@ -6,7 +6,8 @@ import { HomeOutlined, AppstoreOutlined, SettingOutlined, MoreOutlined, LogoutOu
 import ActionMaker from '../../ActionMaker';
 import { AppConsoleActionNames } from '../actions/AppConsoleReducer';
 import UIMaker from '../../UIMaker';
-import Modal from 'antd/lib/modal/Modal';
+import Modal from 'antd/lib/modal/Modal'
+import { FormattedMessage  } from 'react-intl'; 
 const { SubMenu } = Menu;
 
 const ConsoleHeaderContext = React.createContext()
@@ -49,7 +50,7 @@ function ConsoleHeader(props) {
                 />
             </Modal>
             <Menu onClick={(e) => {
-                if (current === "workshop" && e.key !== "workshop") {
+                if (logined && current === "workshop" && e.key !== "workshop") {
                     tempCurrent.current = e.key
                     setLeave("Do you wanna leave workshop? Please make sure you have saved your work before you leave.")
                 } else {
@@ -66,30 +67,30 @@ function ConsoleHeader(props) {
                 <Divider type="vertical"></Divider>
 
                 {!logined && <Menu.Item key="login" icon={<LoginOutlined />}>
-                    Login
+                    <FormattedMessage id="login"/>
                 </Menu.Item>}
                 {!logined && <Menu.Item key="register" icon={<SelectOutlined />}>
-                    Register
+                     <FormattedMessage id="register"/>                    
                 </Menu.Item>}
 
                 {logined && <Menu.Item key="console" icon={<HomeOutlined />}>
-                    Console
+                    <FormattedMessage id="console"/>
                 </Menu.Item>}
                 {logined && <Menu.Item key="workshop" icon={<AppstoreOutlined />}>
-                    Analysis Workshop
+                   <FormattedMessage id="analysis_workshop"/>                    
                 </Menu.Item>}
                 {
                     logined && <Menu.Item key="settings" icon={<SettingOutlined />}>
-                        Settings
+                        <FormattedMessage id="settings"/>                    
                 </Menu.Item>
                 }
                 {
                     logined && isAdmin && <Menu.Item key="admin" icon={<SettingOutlined />}>
-                        Admin
+                        <FormattedMessage id="admin"/>
                     </Menu.Item>
                 }
                 {
-                    logined && <SubMenu icon={<MoreOutlined />} title="More...">
+                    logined && <SubMenu icon={<MoreOutlined />} title={<FormattedMessage id="more"/>}>
                         <Menu.Item key="doc">中文文档</Menu.Item>
                         <Menu.Item key="logout" icon={<LogoutOutlined />}>Logout</Menu.Item>
                     </SubMenu>

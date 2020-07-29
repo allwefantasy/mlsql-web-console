@@ -7,16 +7,21 @@ import AppSetup from './v1/app_setup/app_setup';
 import { useReducerAsync } from 'use-reducer-async'
 import { AppReducer, AppReducerHandlers, AppActionNames } from './v1/app/actions/AppReducer';
 import SpinBox from './v1/SpinBox';
-import { ScriptTree } from './v1/script_console/ScriptTree';
+import { ConfigProvider } from 'antd';
+import {IntlProvider} from "react-intl"
+import zh_CN from './locale/zh_CN';
+import en_US from './locale/en_US';
+import AntZhCN from 'antd/lib/locale-provider/zh_CN';
 
 const initState = {
     appConfigured: false,
-    loading: true
+    loading: true,
+    lang: zh_CN
 }
 const AppContext = React.createContext()
 function App() {
     const [state, dispacher] = useReducerAsync(AppReducer, initState, AppReducerHandlers)
-    const { appConfigured, loading } = state
+    const { appConfigured, loading,lang } = state
 
     async function getAppInfo() {
         const client = new ActionProxy()
@@ -35,11 +40,16 @@ function App() {
     }, [])
 
     return (
-        <AppContext.Provider value={{ dispacher }}>
-            {loading && <SpinBox />}
-            {!loading && !appConfigured && <AppSetup />}
-            {!loading && appConfigured && <AppConsole />}
-        </AppContext.Provider>
+        <IntlProvider locale={lang} messages={lang}>
+        <ConfigProvider locale={AntZhCN}>
+            <AppContext.Provider value={{ dispacher }}>                
+                {loading && <SpinBox />}
+                {!loading && !appConfigured && <AppSetup />}
+                {!loading && appConfigured && <AppConsole />}
+            </AppContext.Provider>
+        </ConfigProvider>
+        </IntlProvider>
+
     )
 }
 export default App
