@@ -15,7 +15,22 @@ const zh_CN = {
     done: "完成",
     congratulation: "恭喜",
     set_timeout: "超时设置",
-    set_apply_timeout: "设置【应用】超时（单位秒）"
+    set_apply_timeout: "设置【应用】超时（单位秒）",
+    table_workshop: "暂存区",
+    delta_lake: "数据湖",
+    file_system: "文件系统",
+    project: "字段",
+    filter: "过滤",
+    join: "关联",
+    window: "窗口",
+    dash: "可视化",
+    limit: "条数",
+    agg: "聚合",
+    order: "排序",
+    select_columns: "筛选字段",
+    rename_columns: "重命名字段",
+    transform_columns: "转换字段",
+    cast_columns_type: "修改字段类型",
     
 }
 export default zh_CN;
