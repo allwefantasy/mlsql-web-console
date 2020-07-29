@@ -32,5 +32,7 @@ export default class RemoteAction {
 
     static USER_EXTRA = "/api_v1/user/extra/update"
 
+    static APPLY_GET = "/api_v1/analysis/apply"
+
 
 }

@@ -13,7 +13,6 @@ import { WorkshopMessageOp } from "./WorkshopMessageOp";
 import { WorkshopUIOp } from "./WorkshopUIOp";
 import { Resizable } from "re-resizable";
 import RealTimeViewTable from "./RealTimeViewTable";
-import { RealTimeDash } from "./dash/pages/RealTimeDash";
 
 
 class AnalysisWorkshop extends mix(React.Component).
@@ -33,7 +32,7 @@ class AnalysisWorkshop extends mix(React.Component).
 
     componentDidMount() {
         // for testing should remove
-         this.newSession("delta", "public", "simpleData", { header: "true" })
+        // this.newSession("delta", "public", "simpleData", { header: "true" })
     }
 
     operateStationView() {

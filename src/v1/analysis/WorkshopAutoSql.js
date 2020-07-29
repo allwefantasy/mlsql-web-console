@@ -13,19 +13,35 @@ export const WorkshopAutoSql = (superclass) => class extends superclass {
       }
       const removeTable = this.sqls.pop()
       const currentTable = this.sqls.pop()
-      await this.apply(currentTable)
+      const res = await this.client.get(RemoteAction.APPLY_GET,{name:currentTable.tableName})      
+      if(res.status === 200){
+         const {data,schema} = JSON.parse(res.content.response)
+         await this.apply({...currentTable,_data:data,_schema:schema})
+      }
+      else {
+         await this.apply(currentTable)
+      }
+      
    }
 
    /**
    * generate sql
    */
    apply = async (params) => {
-      const { tableName, sql } = params
+      const { tableName, sql,_data,_schema} = params
       this.sqls.push(params)
+
+      if(_data && _schema){
+         console.log("From Cache")
+         this.setCurrentTable("", "", tableName, _schema, _data)
+         return 200
+      }
+
       const view = this.sqls.map(item => item.sql).join("")
       try{
          const res = await this.client.runScript(view, Tools.getJobName(), {...Tools.robotFetchParam(),
-            queryType: "analysis_workshop_apply_action"
+            queryType: "analysis_workshop_apply_action",
+            analysis_workshop_table_name: tableName
          })
          if (res.status !== 200) {
             this.sqls.pop()
