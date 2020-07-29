@@ -41,7 +41,8 @@ export const WorkshopAutoSql = (superclass) => class extends superclass {
       try{
          const res = await this.client.runScript(view, Tools.getJobName(), {...Tools.robotFetchParam(),
             queryType: "analysis_workshop_apply_action",
-            analysis_workshop_table_name: tableName
+            analysis_workshop_table_name: tableName,
+            analysis_workshop_sql: sql
          })
          if (res.status !== 200) {
             this.sqls.pop()
