@@ -31,5 +31,6 @@ const en_US = {
     rename_columns: "Rename Columns",
     transform_columns: "Transform Columns",
     cast_columns_type: "Cast Column Type",
+    hive: "Hive"
 }
 export default en_US

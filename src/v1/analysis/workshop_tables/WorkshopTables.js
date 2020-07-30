@@ -17,7 +17,7 @@ const initState = {
 const WorkshopTablesContext = React.createContext()
 
 function WorkshopTables(props) {
-    const {workshop} = props
+    const {workshop,reload:externalReload} = props
     const [state, dispacher] = useReducerAsync(WorkshopTablesReducer, initState, WorkshopTablesHandlers)
     const { dbs, loading ,openTable,confirm,reloading} = state
     const contextMenuRef = useRef()
@@ -66,7 +66,7 @@ function WorkshopTables(props) {
                 loading: false
             }
         })
-    }, [reloading])
+    }, [reloading,externalReload])
     return (
         <WorkshopTablesContext.Provider value={{ dispacher }}>
             <Modal

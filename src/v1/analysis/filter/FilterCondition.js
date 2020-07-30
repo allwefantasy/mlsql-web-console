@@ -84,13 +84,11 @@ function FilterCondition(props) {
     const fetch = async () => {
         if (inCandidate.length === 0 && compare === "in") {
             setInCandidateLoading(true)
-            const proxy = new ActionProxy()
-            const res = await proxy.runScript(
-                `select distinct(${Tools.getField(field)}) as name 
-                from ${workshop.getLastApplyTable().tableName} 
-                as output;`,
-                Tools.getJobName(),
-                { ...Tools.robotFetchParam(), outputSize: 1000, timeout: 10000 })
+            
+            const res =  await workshop.runSQLAtCurrentTable(`select distinct(${Tools.getField(field)}) as name 
+            from ${workshop.getLastApplyTable().tableName} 
+            as ${Tools.getTempTableName()};`,{outputSize: 5000, timeout: 10000 })
+            
             if (res.status === 200) {
                 setInCandidate(res.content.data)
             }

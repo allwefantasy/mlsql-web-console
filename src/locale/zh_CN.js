@@ -31,6 +31,7 @@ const zh_CN = {
     rename_columns: "重命名字段",
     transform_columns: "转换字段",
     cast_columns_type: "修改字段类型",
+    hive: "数仓",
     
 }
 export default zh_CN;

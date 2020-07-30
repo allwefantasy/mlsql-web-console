@@ -11,7 +11,7 @@ export const WorkshopUIOp = (superclass) => class extends superclass {
     }
 
     refreshTableWorkshop = ()=>{
-        this.leftTreePaneRef.workshopTableTreeRef.reload()
+        this.leftTreePaneRef.setState({reloaWorkshop:Tools.getJobName()})
     }
     
 }

@@ -6,39 +6,50 @@ export const WorkshopAutoSql = (superclass) => class extends superclass {
       return this.sqls[this.sqls.length - 1]
    }
 
-   rollback = async (params)=>{
-      if(this.sqls.length<2){
+   rollback = async (params) => {
+      if (this.sqls.length < 2) {
          this.toggleMessage("No apply to rollback.")
          return
       }
       const removeTable = this.sqls.pop()
       const currentTable = this.sqls.pop()
-      const res = await this.client.get(RemoteAction.APPLY_GET,{name:currentTable.tableName})      
-      if(res.status === 200){
-         const {data,schema} = JSON.parse(res.content.response)
-         await this.apply({...currentTable,_data:data,_schema:schema})
+      const res = await this.client.get(RemoteAction.APPLY_GET, { name: currentTable.tableName })
+      if (res.status === 200) {
+         const { data, schema } = JSON.parse(res.content.response)
+         await this.apply({ ...currentTable, _data: data, _schema: schema })
       }
       else {
          await this.apply(currentTable)
       }
-      
+
+   }
+
+   runSQLAtCurrentTable = async (sql,params) => {      
+      const view = this.sqls.map(item => item.sql).join("")
+      const res = await this.client.runScript(
+         `${view}
+          ${sql}`,
+         Tools.getJobName(),
+         { ...Tools.robotFetchParam(), ...params })
+      return res
    }
 
    /**
    * generate sql
    */
    apply = async (params) => {
-      const { tableName, sql,_data,_schema} = params
+      const { tableName, sql, _data, _schema } = params
       this.sqls.push(params)
 
-      if(_data && _schema){         
+      if (_data && _schema) {
          this.setCurrentTable("", "", tableName, _schema, _data)
          return 200
       }
 
       const view = this.sqls.map(item => item.sql).join("")
-      try{
-         const res = await this.client.runScript(view, Tools.getJobName(), {...Tools.robotFetchParam(),
+      try {
+         const res = await this.client.runScript(view, Tools.getJobName(), {
+            ...Tools.robotFetchParam(),
             queryType: "analysis_workshop_apply_action",
             analysis_workshop_table_name: tableName,
             analysis_workshop_sql: JSON.stringify(this.sqls)
@@ -51,10 +62,10 @@ export const WorkshopAutoSql = (superclass) => class extends superclass {
          const { data, schema } = res.content
          this.setCurrentTable("", "", tableName, schema, data)
          return 200
-      }catch(e) {
+      } catch (e) {
          this.toggleMessage("Execute job fail;(Job is killed)")
          return 500
-      }      
+      }
    }
 
    save = async (tableName, persist) => {
@@ -71,7 +82,7 @@ export const WorkshopAutoSql = (superclass) => class extends superclass {
       if (persist) {
          const persistSQL = `${finalSql}
          save overwrite ${tableName} as parquet.\`/__persisted__/${tableName}\`;`
-         
+
          await this.client.runScript(persistSQL, persistJobName, {
             persistJobName,
             async: true
