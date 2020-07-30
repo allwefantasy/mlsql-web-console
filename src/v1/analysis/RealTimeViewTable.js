@@ -30,15 +30,17 @@ export default class RealTimeViewTable extends mix(React.Component).with(
 
     getDefaultRender = item => {
         const { name, type } = item
+
+        if ((typeof type) === "object") {
+            return (value, record) => {
+                console.log(item, value)
+                return JSON.stringify(value)
+            }
+        }
+
         switch (type) {
             case "string": return (value, record) => {
                 return value
-            }
-            case "array": return (value, record) => {
-                return JSON.stringify(value)
-            }
-            case "map": return (value, record) => {
-                return JSON.stringify(value)
             }
             default:
                 return (value, record) => { return value }
@@ -65,7 +67,7 @@ export default class RealTimeViewTable extends mix(React.Component).with(
         let isDash = false
         if (columns[0] && columns[0].name === "html" && columns[1] && columns[1].name === "dash") {
             isDash = true
-        } 
+        }
         const newColumns = columns.map(item => {
             return {
                 ...item,
@@ -76,7 +78,7 @@ export default class RealTimeViewTable extends mix(React.Component).with(
             }
         })
 
-        this.setState({ columns: newColumns, data: rows ,isDash})
+        this.setState({ columns: newColumns, data: rows, isDash })
     }
 
     disablePreview = () => {

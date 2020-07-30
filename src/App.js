@@ -16,7 +16,7 @@ import AntZhCN from 'antd/lib/locale-provider/zh_CN';
 const initState = {
     appConfigured: false,
     loading: true,
-    lang: zh_CN
+    lang: "zh"
 }
 const AppContext = React.createContext()
 function App() {
@@ -40,7 +40,7 @@ function App() {
     }, [])
 
     return (
-        <IntlProvider locale={lang} messages={lang}>
+        <IntlProvider locale={lang} messages={zh_CN}>
         <ConfigProvider locale={AntZhCN}>
             <AppContext.Provider value={{ dispacher }}>                
                 {loading && <SpinBox />}
