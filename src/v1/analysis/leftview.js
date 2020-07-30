@@ -5,6 +5,7 @@ import ADeltaLakeTree from "./ADeltaLakeTree";
 import WorkshopTableTree from "./WorkshopTableTree";
 import "./leftview.scss"
 import {FormattedMessage} from 'react-intl'
+import { WorkshopTables } from "./workshop_tables/WorkshopTables";
 
 const { TabPane } = Tabs;
 export default class LeftView extends React.Component {    
@@ -22,7 +23,7 @@ export default class LeftView extends React.Component {
     }}>
        <TabPane tab={<FormattedMessage id="table_workshop" />} key="1">
        <div className="leftview-box" >           
-           <WorkshopTableTree ref={(et)=> this.workshopTableTreeRef = et} parent={this}></WorkshopTableTree>
+           <WorkshopTables workshop={this.workshop}></WorkshopTables>
        </div>
        </TabPane>
 

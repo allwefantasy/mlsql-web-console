@@ -32,8 +32,7 @@ export default class RealTimeViewTable extends mix(React.Component).with(
         const { name, type } = item
 
         if ((typeof type) === "object") {
-            return (value, record) => {
-                console.log(item, value)
+            return (value, record) => {                
                 return JSON.stringify(value)
             }
         }
