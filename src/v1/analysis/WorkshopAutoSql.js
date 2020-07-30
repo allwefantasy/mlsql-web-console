@@ -31,8 +31,7 @@ export const WorkshopAutoSql = (superclass) => class extends superclass {
       const { tableName, sql,_data,_schema} = params
       this.sqls.push(params)
 
-      if(_data && _schema){
-         console.log("From Cache")
+      if(_data && _schema){         
          this.setCurrentTable("", "", tableName, _schema, _data)
          return 200
       }
@@ -42,7 +41,7 @@ export const WorkshopAutoSql = (superclass) => class extends superclass {
          const res = await this.client.runScript(view, Tools.getJobName(), {...Tools.robotFetchParam(),
             queryType: "analysis_workshop_apply_action",
             analysis_workshop_table_name: tableName,
-            analysis_workshop_sql: sql
+            analysis_workshop_sql: JSON.stringify(this.sqls)
          })
          if (res.status !== 200) {
             this.sqls.pop()
