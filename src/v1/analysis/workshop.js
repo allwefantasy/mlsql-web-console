@@ -88,8 +88,7 @@ class AnalysisWorkshop extends mix(React.Component).
                 </Modal>
                 <div className="ws-operate-pane">
                     {this.operateStationView()}
-                </div>
-                <Divider></Divider>
+                </div>               
                 <div className="ws-table-pane">
                     <RealTimeViewTable style={{ width: "90%" }} ref={(et) => this.displayRef = et} parent={this} />
                 </div>

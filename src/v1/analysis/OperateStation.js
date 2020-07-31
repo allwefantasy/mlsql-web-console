@@ -11,6 +11,7 @@ import {LimitStation} from "./limit/LimitStation"
 import { WindowStation } from "./window/WindowStation";
 import { DashStation } from "./dash/DashStation";
 import {FormattedMessage} from 'react-intl'
+import { Resizable } from "re-resizable";
 const { TabPane } = Tabs;
 
 export default class OperateStation extends React.Component {
@@ -25,8 +26,9 @@ export default class OperateStation extends React.Component {
     }
        
     render() {
-        return <div className="os-pane">
+        return <div className="os-pane">            
             <div className="os-tabs">
+            <Resizable style={{width:"100%",overflow:"scroll",borderBottom: "solid"}}>
                 <Tabs defaultActiveKey="1" tabPosition="left" key={this.state.key}>                
                 <TabPane tab={<FormattedMessage id="project"/>}  key={1} >
                     <ProjectStation parent={this}></ProjectStation>
@@ -53,8 +55,8 @@ export default class OperateStation extends React.Component {
                     <DashStation parent={this}></DashStation>
                 </TabPane>
                 </Tabs>
-                </div>
-            
+                </Resizable>
+                </div>                        
         </div>
     }
 }

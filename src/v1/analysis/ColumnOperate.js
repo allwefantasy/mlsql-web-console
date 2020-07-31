@@ -119,7 +119,8 @@ export default class ColumnOperate extends React.Component {
     render() {
         const self = this
         return (<div style={this.tableStyle}>
-                <Table    
+                <Table 
+                    pagination={{pageSize:3}}   
                     size ='default'
                     columns={this.state.columns}
                     dataSource={this.state.data}

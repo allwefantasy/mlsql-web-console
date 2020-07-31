@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Form, Table, Button, Modal, Input, Select, Divider } from 'antd';
+import { Form, Table, Button, Modal, Input, Select, Divider, Collapse } from 'antd';
 import ApplyOrSave from "../ApplyOrSave";
 import { FilterCondition } from "./FilterCondition";
 export default class Compare extends React.Component {
@@ -104,6 +104,8 @@ export default class Compare extends React.Component {
             })
         }
         return <div >
+            <Collapse style={{marginBottom:"30px"}}>
+            <Collapse.Panel header="Group" key="1">
             <Form onFinish={this.addGroup}>
                 <Form.Item name={"groupName"} label="Group Name"><Input></Input></Form.Item>
                 <Form.Item name={"groupType"} label="Group Type" defaultValue={"and"}><Select >
@@ -113,13 +115,15 @@ export default class Compare extends React.Component {
                 <Form.Item >
                     <Button type="primary" htmlType="submit">Add selected conditions to group</Button>                    
                 </Form.Item>
-            </Form>
-            <Divider/>  
+            </Form>  
+            </Collapse.Panel>          
+            </Collapse>
+             
             <ApplyOrSave parent={this} onRollback={this.fitlerStation.onRollback} handlePersit={this.fitlerStation.handlePersit} handleTableInput={this.fitlerStation.handleTableInput} ref={(et) => this.fitlerStation.ApplyOrSaveRef = et} onSave={this.fitlerStation.onSave} onApply={()=>{
                 const selectedRows = this.buildSelectedRows()
                 this.fitlerStation.onNonGroupFilterApply(selectedRows)
             }} style={{ marginBottom: "30px" }}></ApplyOrSave>                                  
-            <Table rowSelection={{
+            <Table pagination={{pageSize:3}}  rowSelection={{
                 type: "checkbox",
                 ...rowSelection,
             }} columns={this.state.columns}
