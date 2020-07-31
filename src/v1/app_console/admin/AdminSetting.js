@@ -6,6 +6,7 @@ import './AdminSetting.scss'
 import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
 import { LRSettings } from './pages/LRSettings';
 import {Engines} from './pages/Engines'
+import ChangePassword from './pages/ChangePassword';
 
 const { SubMenu } = Menu;
 
@@ -43,7 +44,13 @@ function AdminSetting() {
                                     type:"setState",
                                     data:{currentPage:"website-settings"}
                                 })
-                            }}>Website Settings</Menu.Item>                            
+                            }}>Website Settings</Menu.Item> 
+                            <Menu.Item key="change-admin-password" onClick={()=>{
+                                dispacher({
+                                    type:"setState",
+                                    data:{currentPage:"change-admin-password"}
+                                })
+                            }}>Change Password</Menu.Item>                             
                         </SubMenu> 
                         <SubMenu
                             key="engine-settings"
@@ -65,8 +72,8 @@ function AdminSetting() {
                 </div>
                 <div className="app-admin-main">
                      {currentPage==="website-settings" && <LRSettings></LRSettings>}
-                     {currentPage==="engines" && <Engines></Engines>}                     
-
+                     {currentPage==="engines" && <Engines></Engines>} 
+                     {currentPage === "change-admin-password" && <ChangePassword></ChangePassword>}                    
                 </div>
             </div>
         </AdminSettingContext.Provider>

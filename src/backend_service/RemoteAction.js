@@ -32,8 +32,10 @@ export default class RemoteAction {
     static PLUGIN_GET = "/api_v1/plugin/get"
 
     static USER_EXTRA = "/api_v1/user/extra/update"
+    static USER_CHANGE_PASSWORD = "/api_v1/changepassword"
 
     static APPLY_GET = "/api_v1/analysis/apply"
+    
 
 
 }

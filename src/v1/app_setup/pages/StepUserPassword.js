@@ -8,46 +8,46 @@ import UIMaker from '../../UIMaker';
 function StepUserPassword() {
 
     const { dispacher } = useContext(AppSetupContext)
-    const {formItemLayout,tailLayout} = UIMaker.formLayout1()
+    const { formItemLayout, tailLayout } = UIMaker.formLayout1()
 
     return <Form {...formItemLayout} className="login-form" onFinish={(values) => {
         dispacher({
             type: AppSetupActionNames.registerAdmin,
             data: values
         })
-    }}>
-        <Form.Item
-            label="UserName"
-            name="userName"
-            rules={[
-                {
-                    required: true,
-                    message: 'Please input your username!',
-                },
-            ]}
-        >
-            <Input />
-        </Form.Item>
+    }}>        
 
         <Form.Item
-            label="Password"
+            label="Oringinal Password"
             name="password"
             rules={[
                 {
                     required: true,
-                    message: 'Please input your password!',
+                    message: 'Please input your oringinal password!',
                 },
             ]}
         >
             <Input.Password />
         </Form.Item>
         <Form.Item
-            label="Repeated Password"
-            name="password2"
+            label="New Password"
+            name="oldPassword"
             rules={[
                 {
                     required: true,
-                    message: 'Please input your password!',
+                    message: 'Please input your new password!',
+                },
+            ]}
+        >
+            <Input.Password />
+        </Form.Item>
+        <Form.Item
+            label="New Password"
+            name="password"
+            rules={[
+                {
+                    required: true,
+                    message: 'Please input your new password again!',
                 },
             ]}
         >
