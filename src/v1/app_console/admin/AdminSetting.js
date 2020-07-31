@@ -11,7 +11,7 @@ const { SubMenu } = Menu;
 
 
 const initState = {
-    currentPage: "lr-settings"
+    currentPage: "website-settings"
 }
 
 const AdminSettingContext = React.createContext()
@@ -25,7 +25,7 @@ function AdminSetting() {
                 <div className="app-admin-side">
                     <Menu
                         style={{ width: 256 }}
-                        defaultSelectedKeys={['lr-settings']}
+                        defaultSelectedKeys={['website-settings']}
                         defaultOpenKeys={['console-settings']}
                         mode="inline"
                     >
@@ -38,12 +38,12 @@ function AdminSetting() {
                                 </span>
                             }
                         >
-                            <Menu.Item key="lr-settings" onClick={()=>{
+                            <Menu.Item key="website-settings" onClick={()=>{
                                 dispacher({
                                     type:"setState",
-                                    data:{currentPage:"lr-settings"}
+                                    data:{currentPage:"website-settings"}
                                 })
-                            }}>Login/Register Control</Menu.Item>                            
+                            }}>Website Settings</Menu.Item>                            
                         </SubMenu> 
                         <SubMenu
                             key="engine-settings"
@@ -64,7 +64,7 @@ function AdminSetting() {
                     </Menu>
                 </div>
                 <div className="app-admin-main">
-                     {currentPage==="lr-settings" && <LRSettings></LRSettings>}
+                     {currentPage==="website-settings" && <LRSettings></LRSettings>}
                      {currentPage==="engines" && <Engines></Engines>}                     
 
                 </div>

@@ -20,7 +20,8 @@ const initState = {
 
 const AppConsoleContext = React.createContext()
 
-function AppConsole() {
+function AppConsole(props) {
+    const {appInfo} = props
     const [state, dispacher] = useReducerAsync(AppConsoleReducer, initState, AppConsoleHandlers)
     const { currentPage, logined } = state
 
@@ -32,7 +33,7 @@ function AppConsole() {
         <AppConsoleContext.Provider value={{ dispacher }}>            
             <div className="app-console">
                 <div className="app-console-header">
-                    <ConsoleHeader userLogined={logined} isUserAdmin={UIMaker.isAdmin()} currentPage={currentPage}></ConsoleHeader>
+                    <ConsoleHeader appInfo={appInfo} userLogined={logined} isUserAdmin={UIMaker.isAdmin()} currentPage={currentPage}></ConsoleHeader>
                 </div>
                 <div className="app-console-main">
                     {currentPage === "register" && <Register></Register>}

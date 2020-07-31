@@ -11,6 +11,7 @@ import SpinBox from '../../../SpinBox';
 const initState = {
     enableLogin: false,
     enableRegister: false,
+    enableConsole: false,
     applySuccess: false,
     error: undefined,
     loading: true
@@ -22,7 +23,9 @@ function LRSettings() {
     const [state, dispacher] = useReducerAsync(AdminSettingReducer, initState, AdminSettingHandlers)
     const { formItemLayout, tailLayout } = UIMaker.formLayout1()
 
-    const { enableLogin, enableRegister,applySuccess,error,loading} = state
+    const { enableLogin, enableRegister,
+        enableConsole,
+        applySuccess,error,loading} = state
 
     async function getAppInfo() {        
         const client = new ActionProxy()
@@ -32,7 +35,8 @@ function LRSettings() {
                 type: AdminSettingActionNames.SET_STATE,
                 data: {
                     enableLogin: Boolean(appInfo.content.login),
-                    enableLogin: Boolean(appInfo.content.register),
+                    enableRegister: Boolean(appInfo.content.register),
+                    enableConsole: Boolean(appInfo.content.console),
                     loading: false
                 }
             })
@@ -79,6 +83,13 @@ function LRSettings() {
                         name="enableLogin"
                     >
                         <Switch defaultChecked={enableLogin} checkedChildren="enable" unCheckedChildren="shutdown" />
+                    </Form.Item>
+
+                    <Form.Item
+                        label="Enable Console(SQL)"
+                        name="enableConsole"
+                    >
+                        <Switch defaultChecked={enableConsole} checkedChildren="enable" unCheckedChildren="shutdown" />
                     </Form.Item>
 
                     <Form.Item {...tailLayout}>

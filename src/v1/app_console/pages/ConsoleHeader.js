@@ -13,12 +13,14 @@ const { SubMenu } = Menu;
 const ConsoleHeaderContext = React.createContext()
 
 function ConsoleHeader(props) {
-    const { currentPage, userLogined, isUserAdmin } = props
+    const { currentPage, userLogined, isUserAdmin,appInfo } = props
     const { dispacher } = useContext(AppConsoleContext)
     const [current, setCurrent] = useState(currentPage)
     const [logined, setLogined] = useState(userLogined)
     const [isAdmin, setIsAdmin] = useState(isUserAdmin)
     const [leave, setLeave] = useState(undefined)
+
+    const [enableConsole,setEnableConsole] = useState(false)
     const tempCurrent = useRef()
 
     useEffect(() => {
@@ -26,7 +28,7 @@ function ConsoleHeader(props) {
         setCurrent(currentPage)
         setLogined(userLogined)
         setIsAdmin(isUserAdmin)
-    }, [props]);
+    }, [props]);    
 
     return (
         <ConsoleHeaderContext.Provider>
@@ -73,7 +75,7 @@ function ConsoleHeader(props) {
                      <FormattedMessage id="register"/>                    
                 </Menu.Item>}
 
-                {logined && <Menu.Item key="console" icon={<HomeOutlined />}>
+                {logined && appInfo.enableConsole && <Menu.Item key="console" icon={<HomeOutlined />}>
                     <FormattedMessage id="console"/>
                 </Menu.Item>}
                 {logined && <Menu.Item key="workshop" icon={<AppstoreOutlined />}>

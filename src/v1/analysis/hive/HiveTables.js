@@ -1,19 +1,20 @@
-import React, { useState, useRef, useEffect } from 'react';
-import { Tree, Spin, Menu, Icon, Modal } from 'antd';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { Tree, Spin, Menu, Input, Modal } from 'antd';
 import { useReducerAsync } from 'use-reducer-async'
 import { HiveTablesReducer, HiveTablesHandlers, HiveTablesActionNames } from './actions/HiveTablesReducer';
 import { TableOutlined, DeleteOutlined, FolderOpenOutlined } from '@ant-design/icons'
 import { useContextMenu } from '../../script_console/pages/ContextMenu';
 import AnalysisWorkshop from '../workshop';
+import Tools from '../../../common/Tools';
 const { TreeNode, DirectoryTree } = Tree;
 
 const initState = {
     dbs: [],
-    tables: [],
     loading: false,
     openTable: undefined,
     confirm: false,
-    reloading: undefined,    
+    reloading: undefined,
+    expandedKeys:[]
 }
 
 const HiveTablesContext = React.createContext()
@@ -22,7 +23,9 @@ function HiveTables(props) {
     const workshop = AnalysisWorkshop.workshop
     const { reload: externalReload } = props
     const [state, dispacher] = useReducerAsync(HiveTablesReducer, initState, HiveTablesHandlers)
-    const { dbs, tables, loading, openTable, confirm, reloading } = state
+    const { dbs, loading, openTable, confirm, reloading ,
+        search_dbs,expandedKeys
+    } = state
     const contextMenuRef = useRef()
 
     const onRender = ({ rightClickNodeTreeItem, setRightClickNodeTreeItem, dispacher }) => {
@@ -49,17 +52,6 @@ function HiveTables(props) {
     }
     const { onRightClick: popContextMenu, ui: contextMenu } = useContextMenu({ contextMenuRef, dispacher, onRender })
 
-    const renderTreeNodes = data =>{
-        return data.map(item=>{
-          if(item.children){
-            return <TreeNode title={item.title} id={item.key} key={item.key} isLeaf={item.isLeaf}  dataRef={item}>
-              {renderTreeNodes(item.children)}
-            </TreeNode>
-          }
-          return <TreeNode title={item.title} id={item.key} key={item.key} isLeaf={item.isLeaf} dataRef={item} />;
-        })
-      }
-
     useEffect(() => {
         dispacher({
             type: "setState",
@@ -72,6 +64,7 @@ function HiveTables(props) {
             }
         })
     }, [reloading, externalReload])
+
     return (
         <HiveTablesContext.Provider value={{ dispacher }}>
             <Modal
@@ -81,16 +74,16 @@ function HiveTables(props) {
                     dispacher({
                         type: "setState",
                         data: {
-                          confirm: false
+                            confirm: false
                         }
                     })
                 }}
                 onOk={() => {
                     dispacher({
                         type: "dispatch",
-                        data: { 
+                        data: {
                             openTable: openTable,
-                            workshop 
+                            workshop
                         }
                     })
                 }}
@@ -100,15 +93,37 @@ function HiveTables(props) {
             </Modal>
             <Spin tip="Loading..." spinning={loading}>
                 {contextMenu()}
-                <DirectoryTree loadData={
-                    async (node) => {
-                        console.log(node)
+                <Input style={{ marginBottom: 8 }} placeholder="Search" onChange={
+                    (e) => {
                         dispacher({
-                            type: HiveTablesActionNames.LOAD,
-                            data: { dbName: node.key, node }
+                            type: HiveTablesActionNames.SEARCH,
+                            data: { searchValue: e.target.value }
                         })
                     }
-                } expandAction="click" onDoubleClick={(evt, node) => {
+                } />
+                <DirectoryTree                 
+                expandedKeys = {expandedKeys}                
+                treeData={search_dbs || dbs} 
+                loadData={
+                    async (node) => {
+                        dispacher({
+                            type: "setState",
+                            data: { loading: true }
+                        })
+                        dispacher({
+                            type: HiveTablesActionNames.LOAD,
+                            data: { dbName: node.key, node, loading: false }
+                        })
+                    }
+                } expandAction="click" onExpand={(expandedKeys)=>{
+                    dispacher({                        
+                        type:"setState",
+                        data: {expandedKeys}
+                    })
+                }} onDoubleClick={(evt, node) => {
+                    if (!node.isLeaf) {
+                        return
+                    }
                     dispacher({
                         type: HiveTablesActionNames.OPEN,
                         data: {
@@ -122,10 +137,11 @@ function HiveTables(props) {
                             confirm: false
                         }
                     })
-                }} onRightClick={popContextMenu}>
-                    {
-                        renderTreeNodes(dbs)
+                }} onRightClick={({event,node}) => {                    
+                    if (node.isLeaf) {
+                        popContextMenu({event,node})
                     }
+                }}>
                 </DirectoryTree>
             </Spin>
         </HiveTablesContext.Provider>

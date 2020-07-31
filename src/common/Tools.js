@@ -63,6 +63,9 @@ export default class Tools {
     }
 
     static distinct = (arrays, field) => {
+        if(!field){
+         return [...new Set(arrays)]
+        }
         const tempF = {}
         return arrays.filter(item => {
             if (item[field] in tempF) {

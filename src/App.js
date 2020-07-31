@@ -16,12 +16,13 @@ import AntZhCN from 'antd/lib/locale-provider/zh_CN';
 const initState = {
     appConfigured: false,
     loading: true,
-    lang: "zh"
+    lang: "zh",
+    enableConsole: false
 }
 const AppContext = React.createContext()
 function App() {
     const [state, dispacher] = useReducerAsync(AppReducer, initState, AppReducerHandlers)
-    const { appConfigured, loading,lang } = state
+    const { appConfigured, loading,lang,enableConsole } = state
 
     async function getAppInfo() {
         const client = new ActionProxy()
@@ -29,7 +30,10 @@ function App() {
         if (appInfo.status === 200) {
             dispacher({
                 type: AppActionNames.appConfigured,
-                data: { appConfigured: appInfo.content.configured, loading: false }
+                data: { 
+                    appConfigured: appInfo.content.configured, 
+                    enableConsole: appInfo.content.console || false, 
+                    loading: false }
             })
         }
 
@@ -45,7 +49,7 @@ function App() {
             <AppContext.Provider value={{ dispacher }}>                
                 {loading && <SpinBox />}
                 {!loading && !appConfigured && <AppSetup />}
-                {!loading && appConfigured && <AppConsole />}
+                {!loading && appConfigured && <AppConsole appInfo={{enableConsole}}/>}
             </AppContext.Provider>
         </ConfigProvider>
         </IntlProvider>
