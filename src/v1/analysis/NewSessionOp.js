@@ -24,7 +24,7 @@ export const NewSessionOp = superclass=> class extends(superclass){
       showTable = async (prefix)=>{      
           this.setState({showNewSession:false})           
           const {db,table} = this.state.currentTable
-          AnalysisWorkshop.workshop.newSession(prefix,db,table)
+          //AnalysisWorkshop.workshop.newSession(prefix,db,table)
           this.workshop.newSession(prefix,db,table)                   
       }
 }

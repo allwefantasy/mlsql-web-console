@@ -4,13 +4,20 @@ import RemoteAction from "../../../../backend_service/RemoteAction"
 
 export const { handler: LRActionHandler, action: LRAction } = ActionMaker.buildHandler(async (action) => {
 
-    const { enableRegister = false, enableLogin = false,enableConsole = false } = action.data
+    const { enableRegister, enableLogin, enableConsole } = action.data
+    const params = {}
+    if(enableRegister !== undefined){
+        params.register = enableRegister
+    }
+    if(enableLogin !== undefined){
+        params.login = enableLogin
+    }
+    if(enableConsole !== undefined){
+        params.console = enableConsole
+    }    
+    
     const client = new ActionProxy()
-    const res = await client.post(RemoteAction.APP_SAVE, {
-        login: enableLogin,
-        register: enableRegister,
-        console: enableConsole
-    })
+    const res = await client.post(RemoteAction.APP_SAVE, params)
 
     if (res.status === 200) {
         return {
