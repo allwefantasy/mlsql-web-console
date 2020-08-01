@@ -32,6 +32,8 @@ const zh_CN = {
     transform_columns: "转换字段",
     cast_columns_type: "修改字段类型",
     hive: "数仓",
+    operate_panel: "操作区",
+    data_panel:"数据区",
     
 }
 export default zh_CN;

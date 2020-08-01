@@ -31,7 +31,9 @@ export default class RenameFields extends React.Component {
   render() {
     return <Form labelCol={{ span: 6 }} ref={(et) => { this.formRef = et }}>
       {this.state.data.map(item => {
-        return <Form.Item key={item.key} name={item.key} label={item.key} value={item.key}><Input placeholder={"input the new name here"} /></Form.Item>
+        return <Form.Item key={item.key} name={item.key} label={item.key} value={item.key}>
+          <Input placeholder={"input the new name here"} />
+          </Form.Item>
       })}
     </Form>
   }

@@ -4,6 +4,7 @@ import mix from "../../common/mixin";
 import { SearchOp } from "./real_time_view_table/SearchOp";
 import { DropdownMenuUI } from "./real_time_view_table/DropdownMenuUI";
 import MLSQLHTML from "../../components/dash/MLSQLHTML";
+import AnalysisWorkshop from "./workshop";
 
 
 const ReactMarkdown = require('react-markdown')
@@ -25,7 +26,7 @@ export default class RealTimeViewTable extends mix(React.Component).with(
             isDash: false
         }
         this.config = {}
-        this.workshop = props.parent
+        this.workshop = AnalysisWorkshop.workshop
     }
 
     getDefaultRender = item => {
@@ -94,7 +95,7 @@ export default class RealTimeViewTable extends mix(React.Component).with(
             return MLSQLHTML.render(this.state.data)
         }
         return (<div style={this.tableStyle}>
-            <Table
+            <Table 
                 loading={this.state.loading}
                 size='default'
                 columns={this.state.columns}

@@ -31,6 +31,8 @@ const en_US = {
     rename_columns: "Rename Columns",
     transform_columns: "Transform Columns",
     cast_columns_type: "Cast Column Type",
-    hive: "Hive"
+    hive: "Hive",
+    operate_panel: "Operate Panel",
+    data_panel:"Data Panel",
 }
 export default en_US

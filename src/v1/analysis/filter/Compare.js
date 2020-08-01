@@ -104,8 +104,6 @@ export default class Compare extends React.Component {
             })
         }
         return <div >
-            <Collapse style={{marginBottom:"30px"}}>
-            <Collapse.Panel header="Group" key="1">
             <Form onFinish={this.addGroup}>
                 <Form.Item name={"groupName"} label="Group Name"><Input></Input></Form.Item>
                 <Form.Item name={"groupType"} label="Group Type" defaultValue={"and"}><Select >
@@ -115,9 +113,7 @@ export default class Compare extends React.Component {
                 <Form.Item >
                     <Button type="primary" htmlType="submit">Add selected conditions to group</Button>                    
                 </Form.Item>
-            </Form>  
-            </Collapse.Panel>          
-            </Collapse>
+            </Form> 
              
             <ApplyOrSave parent={this} onRollback={this.fitlerStation.onRollback} handlePersit={this.fitlerStation.handlePersit} handleTableInput={this.fitlerStation.handleTableInput} ref={(et) => this.fitlerStation.ApplyOrSaveRef = et} onSave={this.fitlerStation.onSave} onApply={()=>{
                 const selectedRows = this.buildSelectedRows()

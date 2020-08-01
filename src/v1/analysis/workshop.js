@@ -13,6 +13,8 @@ import { WorkshopMessageOp } from "./WorkshopMessageOp";
 import { WorkshopUIOp } from "./WorkshopUIOp";
 import { Resizable } from "re-resizable";
 import RealTimeViewTable from "./RealTimeViewTable";
+import { OperateStationWrapper } from "./OperateStationWrapper";
+import { RealTimeTableWrapper } from "./RealTimeTableWrapper";
 
 
 class AnalysisWorkshop extends mix(React.Component).
@@ -40,7 +42,8 @@ class AnalysisWorkshop extends mix(React.Component).
             return <SpinBox></SpinBox>
         }
         if (this.sessionId) {
-            return <OperateStation ref={(et) => this.stationRef = et} parent={this}></OperateStation>
+            //return <OperateStation ref={(et) => this.stationRef = et} parent={this}></OperateStation>
+            return <OperateStationWrapper />
         } else {
             return <Result style={{ width: "100%" }}
                 title="No Aanalysis Session Is Opened"
@@ -88,9 +91,9 @@ class AnalysisWorkshop extends mix(React.Component).
                 </Modal>
                 <div className="ws-operate-pane">
                     {this.operateStationView()}
-                </div>               
+                </div>
                 <div className="ws-table-pane">
-                    <RealTimeViewTable style={{ width: "90%" }} ref={(et) => this.displayRef = et} parent={this} />
+                    <RealTimeTableWrapper />
                 </div>
             </div>
         </div>

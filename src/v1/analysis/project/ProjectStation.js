@@ -21,8 +21,7 @@ export default class ProjectStation extends mix(React.Component).with(StationCom
 
 
     render() {
-        return <div>
-            <div className={"station-menu"}>                
+        return  <div className={"station-menu"}>                
                 <Tabs defaultActiveKey="1" className={"station-tabs"}>
                     <TabPane tab={<FormattedMessage id="select_columns"/>} key="1">
                     <ApplyOrSave parent={this} onRollback={this.onRollback} handlePersit={this.handlePersit} handleTableInput={this.handleTableInput} ref={(et)=>this.ApplyOrSaveRef=et} onSave={this.onSave} onApply={this.onSelectApply} style={{marginBottom:"30px"}}></ApplyOrSave>                        
@@ -40,10 +39,6 @@ export default class ProjectStation extends mix(React.Component).with(StationCom
                        <CastFields workshop={this.workshop}></CastFields>                                         
                     </TabPane>
                 </Tabs>
-            </div>
-            <div>
-
-            </div>
-        </div>
+            </div>                
     }
 }
