@@ -103,7 +103,7 @@ export default class Compare extends React.Component {
                 name: record.field
             })
         }
-        return <div >
+        return <div className="common-one-hundred-percent-width">
             <Form onFinish={this.addGroup}>
                 <Form.Item name={"groupName"} label="Group Name"><Input></Input></Form.Item>
                 <Form.Item name={"groupType"} label="Group Type" defaultValue={"and"}><Select >
