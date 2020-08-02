@@ -34,6 +34,10 @@ const zh_CN = {
     hive: "数仓",
     operate_panel: "操作区",
     data_panel:"数据区",
+    user_settings:"用户设置",
+    change_password:"修改密码",
+    team:"团队",
+    team_manager: "团队管理"
     
 }
 export default zh_CN;

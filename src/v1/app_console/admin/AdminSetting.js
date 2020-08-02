@@ -44,13 +44,7 @@ function AdminSetting() {
                                     type:"setState",
                                     data:{currentPage:"website-settings"}
                                 })
-                            }}>Website Settings</Menu.Item> 
-                            <Menu.Item key="change-admin-password" onClick={()=>{
-                                dispacher({
-                                    type:"setState",
-                                    data:{currentPage:"change-admin-password"}
-                                })
-                            }}>Change Password</Menu.Item>                             
+                            }}>Website Settings</Menu.Item>                                                         
                         </SubMenu> 
                         <SubMenu
                             key="engine-settings"
@@ -72,8 +66,7 @@ function AdminSetting() {
                 </div>
                 <div className="app-admin-main">
                      {currentPage==="website-settings" && <LRSettings></LRSettings>}
-                     {currentPage==="engines" && <Engines></Engines>} 
-                     {currentPage === "change-admin-password" && <ChangePassword></ChangePassword>}                    
+                     {currentPage==="engines" && <Engines></Engines>}                      
                 </div>
             </div>
         </AdminSettingContext.Provider>

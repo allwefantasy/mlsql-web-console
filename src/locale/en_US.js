@@ -34,5 +34,9 @@ const en_US = {
     hive: "Hive",
     operate_panel: "Operate Panel",
     data_panel:"Data Panel",
+    user_settings:"User Settings",
+    change_password:"Change Password",
+    team:"Team",
+    team_manager: "Team Control"
 }
 export default en_US

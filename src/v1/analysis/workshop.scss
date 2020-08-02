@@ -16,6 +16,14 @@
     display: flex;
     flex-direction: column;
     justify-content: left;
+    width: 90%;
+    overflow: scroll;
+}
+
+.ws-right-pane-vertical {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
     width: 100%;
 }
 
