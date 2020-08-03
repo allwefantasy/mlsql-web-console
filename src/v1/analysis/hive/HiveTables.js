@@ -5,7 +5,8 @@ import { HiveTablesReducer, HiveTablesHandlers, HiveTablesActionNames } from './
 import { TableOutlined, DeleteOutlined, FolderOpenOutlined } from '@ant-design/icons'
 import { useContextMenu } from '../../script_console/pages/ContextMenu';
 import AnalysisWorkshop from '../workshop';
-import Tools from '../../../common/Tools';
+import { FormattedMessage } from 'react-intl';
+import { usePartitionSelect } from './pages/usePartitionSelect';
 const { TreeNode, DirectoryTree } = Tree;
 
 const initState = {
@@ -14,7 +15,7 @@ const initState = {
     openTable: undefined,
     confirm: false,
     reloading: undefined,
-    expandedKeys:[]
+    expandedKeys: []
 }
 
 const HiveTablesContext = React.createContext()
@@ -23,27 +24,28 @@ function HiveTables(props) {
     const workshop = AnalysisWorkshop.workshop
     const { reload: externalReload } = props
     const [state, dispacher] = useReducerAsync(HiveTablesReducer, initState, HiveTablesHandlers)
-    const { dbs, loading, openTable, confirm, reloading ,
-        search_dbs,expandedKeys
+    const { dbs, loading, openTable, confirm, reloading,
+        search_dbs, expandedKeys
     } = state
+
+    const { ui: PartitionSelect,
+        form: partitionForm,
+        setOpenTable: setOpenTableForPartition,
+        setError: setPartitionError,
+        partitionColumn,noPartition
+    } = usePartitionSelect()
     const contextMenuRef = useRef()
 
     const onRender = ({ rightClickNodeTreeItem, setRightClickNodeTreeItem, dispacher }) => {
         const { id } = rightClickNodeTreeItem
-
+        console.log(id)
         return <Menu >
             <Menu.Item icon={<FolderOpenOutlined />} onClick={() => {
                 dispacher({
-                    type: HiveTablesActionNames.OPEN,
-                    data: {
-                        openTable: id,
-                        workshop
-                    }
-                })
-                dispacher({
                     type: "setState",
                     data: {
-                        confirm: false
+                        confirm: true,
+                        openTable: id
                     }
                 })
                 setRightClickNodeTreeItem(undefined)
@@ -65,10 +67,14 @@ function HiveTables(props) {
         })
     }, [reloading, externalReload])
 
+    useEffect(() => {
+        setOpenTableForPartition(openTable)
+    }, [setOpenTableForPartition, openTable])
+
     return (
         <HiveTablesContext.Provider value={{ dispacher }}>
             <Modal
-                title={`Open Table`}
+                title={<FormattedMessage id="analysis_range" />}
                 visible={confirm}
                 onCancel={() => {
                     dispacher({
@@ -77,19 +83,34 @@ function HiveTables(props) {
                             confirm: false
                         }
                     })
+                    partitionForm.resetFields()
                 }}
                 onOk={() => {
+                    const partitionValues = partitionForm.getFieldsValue()
+                    if (!noPartition && !partitionValues.tableRandom && !(partitionValues.tableStart && partitionValues.tableEnd)) {
+                        setPartitionError("Partitions is required.")
+                        return
+                    }
                     dispacher({
-                        type: "dispatch",
+                        type: HiveTablesActionNames.OPEN,
                         data: {
-                            openTable: openTable,
-                            workshop
+                            openTable,
+                            workshop,
+                            partitionValues,
+                            partitionColumn
                         }
                     })
+                    dispacher({
+                        type: "setState",
+                        data: {
+                            confirm: false
+                        }
+                    })
+                    partitionForm.resetFields()
                 }}
                 cancelText="Cancel"
                 OkText="Ok">
-                {`Open ${openTable}?`}
+                <PartitionSelect />
             </Modal>
             <Spin tip="Loading..." spinning={loading}>
                 {contextMenu()}
@@ -101,47 +122,41 @@ function HiveTables(props) {
                         })
                     }
                 } />
-                <DirectoryTree                 
-                expandedKeys = {expandedKeys}                
-                treeData={search_dbs || dbs} 
-                loadData={
-                    async (node) => {
+                <DirectoryTree
+                    expandedKeys={expandedKeys}
+                    treeData={search_dbs || dbs}
+                    loadData={
+                        async (node) => {
+                            dispacher({
+                                type: "setState",
+                                data: { loading: true }
+                            })
+                            dispacher({
+                                type: HiveTablesActionNames.LOAD,
+                                data: { dbName: node.key, node, loading: false }
+                            })
+                        }
+                    } expandAction="click" onExpand={(expandedKeys) => {
                         dispacher({
                             type: "setState",
-                            data: { loading: true }
+                            data: { expandedKeys }
                         })
+                    }} onDoubleClick={(evt, node) => {
+                        if (!node.isLeaf) {
+                            return
+                        }
                         dispacher({
-                            type: HiveTablesActionNames.LOAD,
-                            data: { dbName: node.key, node, loading: false }
+                            type: "setState",
+                            data: {
+                                confirm: true,
+                                openTable: node.key
+                            }
                         })
-                    }
-                } expandAction="click" onExpand={(expandedKeys)=>{
-                    dispacher({                        
-                        type:"setState",
-                        data: {expandedKeys}
-                    })
-                }} onDoubleClick={(evt, node) => {
-                    if (!node.isLeaf) {
-                        return
-                    }
-                    dispacher({
-                        type: HiveTablesActionNames.OPEN,
-                        data: {
-                            openTable: node.key,
-                            workshop
+                    }} onRightClick={({ event, node }) => {
+                        if (node.isLeaf) {
+                            popContextMenu({ event, node })
                         }
-                    })
-                    dispacher({
-                        type: "setState",
-                        data: {
-                            confirm: false
-                        }
-                    })
-                }} onRightClick={({event,node}) => {                    
-                    if (node.isLeaf) {
-                        popContextMenu({event,node})
-                    }
-                }}>
+                    }}>
                 </DirectoryTree>
             </Spin>
         </HiveTablesContext.Provider>

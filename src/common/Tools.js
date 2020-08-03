@@ -12,6 +12,11 @@ export default class Tools {
         return str.replace(/[\""]/g, '\\"')
     }
 
+    static quote = (str)=>{
+        if(!str) return str
+        return `"${Tools.escapeQuote(str)}"`
+    }
+
     static unQuote = (str) => {
         if (str.startsWith("\"") && str.endsWith("\"")) {
             return str.slice(1, str.length - 1)

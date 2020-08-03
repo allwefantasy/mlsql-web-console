@@ -6,8 +6,7 @@ import RemoteAction from '../../../../backend_service/RemoteAction';
 import Tools from '../../../../common/Tools';
 
 
-function Teams(props) {
-
+function ListMySQL() {
     const [reload, setReload] = useState(undefined)
     const proxy = new ActionProxy()
     const { ui, setData, setSchema, setEditorMode ,setError} = useCrudTable({
@@ -25,12 +24,19 @@ function Teams(props) {
             setReload(Tools.getJobName())
             setLoading(false)
         },
+        remove: async(row) =>{
+            const res = await proxy.post(RemoteAction.DS_REMOVE,{id:row.id})
+            if(res.status === 200){
+                setSchema(res.content.schema)
+                setData(res.content.data)
+            }
+        },
         renderConfig: {}
     })
 
     useEffect(() => {
         const fetch = async () => {
-            const res = await proxy.get(RemoteAction.TEMA_LIST, {})
+            const res = await proxy.get(RemoteAction.DS_LIST, {})
             if (res.status === 200) {
                 setSchema(res.content.schema)
                 setData(res.content.data)
@@ -49,5 +55,4 @@ function Teams(props) {
         {ui()}
     </div>
 }
-
-export { Teams }
+export { ListMySQL }

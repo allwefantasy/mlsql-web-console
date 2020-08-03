@@ -6,6 +6,9 @@ import "./leftview.scss"
 import { FormattedMessage } from 'react-intl'
 import { WorkshopTables } from "./workshop_tables/WorkshopTables";
 import { HiveTables } from "./hive/HiveTables";
+import { ActionProxy } from "../../backend_service/ActionProxy";
+import RemoteAction from "../../backend_service/RemoteAction";
+import { MysqlTree } from "./datasource/pages/MysqlTree";
 
 const { TabPane } = Tabs;
 export default class LeftView extends React.Component {
@@ -16,7 +19,6 @@ export default class LeftView extends React.Component {
             reloaWorkshop: undefined
         }
     }
-
 
     render() {
         return <Tabs defaultActiveKey="1" onTabClick={(key) => {
@@ -39,7 +41,7 @@ export default class LeftView extends React.Component {
 
             <TabPane tab={<FormattedMessage id="hive" />} key="2">
                 <div className="leftview-box" >
-                    <HiveTables/>
+                    <HiveTables />
                 </div>
             </TabPane>
 
@@ -53,7 +55,9 @@ export default class LeftView extends React.Component {
                     <AFileSystemTree ref={(et) => this.fileSystemTreeRef = et} parent={this}></AFileSystemTree>
                 </div>
             </TabPane>
-
+            <TabPane tab={<FormattedMessage id="mysql" />} key="5">
+                <MysqlTree />
+            </TabPane>
         </Tabs>
     }
 }

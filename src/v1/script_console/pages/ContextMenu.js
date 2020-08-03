@@ -26,7 +26,7 @@ const useContextMenu = ({contextMenuRef,dispacher,onRender})=>{
         setRightClickNodeTreeItem({
             pageX: clickX,
             pageY: clickY,
-            id: node.id
+            id: node.id || node.key
         })
         return () => {
             document.removeEventListener('click',click);

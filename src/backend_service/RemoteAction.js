@@ -35,7 +35,16 @@ export default class RemoteAction {
     static USER_CHANGE_PASSWORD = "/api_v1/changepassword"
 
     static APPLY_GET = "/api_v1/analysis/apply"
-    
 
+    static TEMA_LIST = "/api_v1/team" 
+    
+    static DS_ADD = "/api_v1/ds/add" 
+    static DS_LIST = "/api_v1/ds/list"
+    static DS_REMOVE = "/api_v1/ds/remove" 
+
+    static DS_MYSQL_DBS= "/api_v1/ds/mysql/dbs"
+
+    static DS_MYSQL_CONNECT = "/api_v1/ds/mysql/connect/get"
+    static DS_MYSQL_COLUMN_INFO = "/api_v1/ds/mysql/column"
 
 }

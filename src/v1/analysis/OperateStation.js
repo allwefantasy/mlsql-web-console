@@ -29,7 +29,7 @@ export default class OperateStation extends React.Component {
     render() {
         return <div className="os-pane" style={{ backgroundColor: "white" }}>
             <div className="os-tabs">
-                <Resizable style={{ borderBottom: "solid", width: "100%",overflow:"scroll" }}>
+                <Resizable style={{ borderBottom: "solid", width: "100%", overflow: "scroll" }}>
                     <Tabs defaultActiveKey="1" tabPosition="left" key={this.state.key}>
                         <TabPane tab={<FormattedMessage id="project" />} key={1} >
                             <ProjectStation parent={this}></ProjectStation>
@@ -37,24 +37,32 @@ export default class OperateStation extends React.Component {
                         <TabPane tab={<FormattedMessage id="filter" />} key={2} >
                             <FilterStation parent={this}></FilterStation>
                         </TabPane>
-                        <TabPane tab={<FormattedMessage id="join" />} key={3}>
-                            <JoinStation parent={this}></JoinStation>
-                        </TabPane>
                         <TabPane tab={<FormattedMessage id="agg" />} key={4} >
                             <AggStation parent={this}></AggStation>
                         </TabPane>
                         <TabPane tab={<FormattedMessage id="order" />} key={5} >
                             <OrderStation parent={this}></OrderStation>
                         </TabPane>
-                        <TabPane tab={<FormattedMessage id="limit" />} key={6} >
-                            <LimitStation parent={this}></LimitStation>
+                        <TabPane tab={<FormattedMessage id="more" />} key={100}>
+                            <Tabs tabPosition="left">
+                                <TabPane tab={<FormattedMessage id="join" />} key={3}>
+                                    <JoinStation parent={this}></JoinStation>
+                                </TabPane>
+                                <TabPane tab={<FormattedMessage id="limit" />} key={6} >
+                                    <LimitStation parent={this}></LimitStation>
+                                </TabPane>
+                                <TabPane tab={<FormattedMessage id="window" />} key={7} >
+                                    <WindowStation parent={this}></WindowStation>
+                                </TabPane>
+                                <TabPane tab={<FormattedMessage id="dash" />} key={8} >
+                                    <DashStation parent={this}></DashStation>
+                                </TabPane>
+                                {/* <TabPane tab={<FormattedMessage id="datasource" />} key={9} >
+                                    <DashStation parent={this}></DashStation>
+                                </TabPane> */}
+                            </Tabs>
                         </TabPane>
-                        <TabPane tab={<FormattedMessage id="window" />} key={7} >
-                            <WindowStation parent={this}></WindowStation>
-                        </TabPane>
-                        <TabPane tab={<FormattedMessage id="dash" />} key={8} >
-                            <DashStation parent={this}></DashStation>
-                        </TabPane>
+
                     </Tabs>
                 </Resizable>
             </div>

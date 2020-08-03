@@ -6,6 +6,9 @@ import { DefaultBackend } from './DefaultBackend';
 import { FormattedMessage } from 'react-intl';
 import { ApplyTimeout } from './ApplyTimeout';
 import ChangePassword from './ChangePassword';
+import { Teams } from './Teams';
+import { MySQL } from '../../../analysis/datasource/pages/MySQL';
+import { ListMySQL } from '../../../analysis/datasource/pages/ListMySQL';
 
 const { SubMenu } = Menu;
 function Settings() {
@@ -36,13 +39,13 @@ function Settings() {
                         }}><FormattedMessage id="set_timeout" /></Menu.Item>
                     </SubMenu>
                     <SubMenu key="user" title={
-                                <span>
-                                    <MailOutlined />
-                                    <span><FormattedMessage id="user_settings" /></span>
-                                </span>
-                            }>
+                        <span>
+                            <MailOutlined />
+                            <span><FormattedMessage id="user_settings" /></span>
+                        </span>
+                    }>
                         <Menu.Item key="change-admin-password"
-                            
+
 
                             onClick={() => {
                                 setCurrentPage("change-admin-password")
@@ -50,15 +53,30 @@ function Settings() {
                     </SubMenu>
 
                     <SubMenu key="team" title={
-                                <span>
-                                    <MailOutlined />
-                                    <span><FormattedMessage id="team" /></span>
-                                </span>
-                            }>
-                        <Menu.Item key="team_manager"                            
+                        <span>
+                            <MailOutlined />
+                            <span><FormattedMessage id="team" /></span>
+                        </span>
+                    }>
+                        <Menu.Item key="team_manager"
                             onClick={() => {
                                 setCurrentPage("team_manager")
                             }}><FormattedMessage id="team_manager" /></Menu.Item>
+                    </SubMenu>
+                    <SubMenu key="datasource" title={
+                        <span>
+                            <MailOutlined />
+                            <span><FormattedMessage id="datasource" /></span>
+                        </span>
+                    }>
+                        <Menu.Item key="mysql"
+                            onClick={() => {
+                                setCurrentPage("mysql")
+                            }}><FormattedMessage id="connect_mysql" /></Menu.Item>
+                        <Menu.Item key="list_mysql"
+                            onClick={() => {
+                                setCurrentPage("list_mysql")
+                            }}><FormattedMessage id="list_mysql" /></Menu.Item>
                     </SubMenu>
 
                 </Menu>
@@ -67,7 +85,9 @@ function Settings() {
                 {currentPage === "default-backend" && <DefaultBackend />}
                 {currentPage === "set-timeout" && <ApplyTimeout />}
                 {currentPage === "change-admin-password" && <ChangePassword></ChangePassword>}
-                {currentPage === "team_manager" && <ChangePassword></ChangePassword>}
+                {currentPage === "team_manager" && <Teams></Teams>}
+                {currentPage === "mysql" && <MySQL />}
+                {currentPage === "list_mysql" && <ListMySQL />}
             </div>
         </div>
     )

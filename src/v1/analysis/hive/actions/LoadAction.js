@@ -9,6 +9,7 @@ export const { handler: LoadActionHandler, action: LoadAction } = ActionMaker.bu
     const proxy = new ActionProxy()
     if(!dbName){        
         let res = await proxy.runScript(`!profiler sql "show databases";`,Tools.getJobName(),Tools.robotFetchParam())                      
+        // res = {status:200,content:{ "schema":{"type":"struct","fields":[{"name":"databaseName","type":"string","nullable":false,"metadata":{}}]},"data": [{"databaseName":"adl"}]}}
         if (res.status === 200) {        
             const dbs  = res.content.data.map(item=>{                
                 item["key"] = item.databaseName || item.namespace
@@ -28,6 +29,7 @@ export const { handler: LoadActionHandler, action: LoadAction } = ActionMaker.bu
     if(dbName){
         await proxy.runScript(`!profiler sql "use ${dbName}";`,Tools.getJobName(),Tools.robotFetchParam())    
         let res = await proxy.runScript(`!profiler sql "show tables";`,Tools.getJobName(),Tools.robotFetchParam())                             
+        // res = {status:200,content:{ "schema":{"type":"struct","fields":[{"name":"database","type":"string","nullable":false,"metadata":{}},{"name":"tableName","type":"string","nullable":false,"metadata":{}},{"name":"isTemporary","type":"boolean","nullable":false,"metadata":{}}]},"data": [{"database":"adl","tableName":"after_sale_df","isTemporary":false},{"database":"adl","tableName":"app_awake_di","isTemporary":false},{"database":"adl","tableName":"app_daily_active_user_com_di","isTemporary":false}]}}
         if (res.status === 200) {        
             const tables  = res.content.data.filter(item=>{
                 const db = item.database || item.namespace

@@ -9,16 +9,16 @@ function useIntegerStep(props) {
         <Row>
         <Col span={12}>
           <Slider
-            min={10}
-            max={300}
+            min={props.min||10}
+            max={props.max||300}
             onChange={(value)=>{setValue(value)}}
             value={value}
           />
         </Col>
         <Col span={4}>
           <InputNumber
-            min={10}
-            max={300}
+            min={props.min||10}
+            max={props.max||300}
             style={{ margin: '0 16px' }}
             value={value}
             onChange={(value)=>{setValue(value)}}
