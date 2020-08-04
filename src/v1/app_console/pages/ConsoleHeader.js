@@ -51,7 +51,12 @@ function ConsoleHeader(props) {
                     type="info"
                 />
             </Modal>
-            <Menu onClick={(e) => {
+            <Menu onClick={(e) => { 
+                if(e.key === "home"){
+                    e.domEvent.preventDefault()
+                    e.domEvent.stopPropagation()
+                    return
+                }           
                 if (logined && current === "workshop" && e.key !== "workshop") {
                     tempCurrent.current = e.key
                     setLeave("Do you wanna leave workshop? Please make sure you have saved your work before you leave.")
@@ -63,7 +68,7 @@ function ConsoleHeader(props) {
                 }
 
             }} selectedKeys={[current]} mode="horizontal">
-                <Menu.Item key="home">
+                <Menu.Item  key="home">
                     <span style={{ fontSize: 32 }}>MLSQL Web Console</span>
                     <span style={{ fontSize: 11 }}>(Build _VERSION_)</span>
                 </Menu.Item>
