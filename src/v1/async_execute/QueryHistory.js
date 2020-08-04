@@ -136,6 +136,15 @@ export default class QueryHistory extends React.Component {
        await this.reload()
     }
 
+    cleanSQL = (sql)=> {
+       try{
+        return sql.split("\n").filter(line=> !line.includes("password")).join("\n")
+       }catch(e){
+        return sql
+       }
+       
+    }
+
     render(){
       return <div className="mlsql-query-display"> 
         <Modal  
@@ -151,7 +160,7 @@ export default class QueryHistory extends React.Component {
                         mode="text"
                         theme="github"
                         name="detail_box"
-                        value={this.state.detailConsoleMessage||""}
+                        value={this.cleanSQL(this.state.detailConsoleMessage)||""}
         ></AceEditor>
         </Modal> 
         <Modal  

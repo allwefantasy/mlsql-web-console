@@ -2,6 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { Spin, Form, Divider, Select, Alert } from 'antd';
 import { ActionProxy } from '../../../../backend_service/ActionProxy';
 import { FormattedMessage } from 'react-intl';
+import Tools from '../../../../common/Tools';
 
 function usePartitionSelect() {
 
@@ -19,9 +20,12 @@ function usePartitionSelect() {
             if (!openTable) return
             const [db, table] = openTable.split(".")
             setLoading(true)
-            const res = await proxy.runScript(`!profiler sql 'show partitions ${db}.${table}';`)
+            
+            const res = await proxy.runScript(`!profiler sql 'show partitions ${db}.${table}';`,
+              Tools.getJobName(),Tools.robotFetchParam()
+            )
             if (res.status === 200) {
-                const data = res.content.map(item => {
+                const data = res.content.data.map(item => {
                     //dt=2020-08-03/hour=12                    
                     const [column, value] = item.partition.split("/")[0].split("=")
                     if (!partitionColumn) {
