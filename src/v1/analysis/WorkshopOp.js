@@ -77,6 +77,10 @@ export const WorkshopOp = (superclass) => class extends superclass {
         return { sql, tableName }
     }
     showTable = async (prefix, db, table, options) => {
+
+        //an new session,clear the sqls
+        this.sqls = []
+
         const { tableName, sql } = await this.buildLoadSQL(prefix, db, table, options)
 
         this.sqls.push({ tableName, sql })

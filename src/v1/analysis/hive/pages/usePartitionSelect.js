@@ -53,7 +53,7 @@ function usePartitionSelect() {
         fetch()
     }, [openTable])
 
-    const options = data.map(item => {
+    const options = data.reverse().map(item => {
         return <Select.Option value={item.value}>{item.value}</Select.Option>
     })
     const ui = () => {
@@ -66,12 +66,12 @@ function usePartitionSelect() {
                 {
                     !noPartition && <Form form={form}>
                         <Form.Item name="tableStart" label={<FormattedMessage id="table_start" />}>
-                            <Select>
+                            <Select showSearch>
                                 {options}
                             </Select>
                         </Form.Item>
                         <Form.Item name="tableEnd" label={<FormattedMessage id="table_end" />}>
-                            <Select>
+                            <Select showSearch>
                                 {options}
                             </Select>
                         </Form.Item>
