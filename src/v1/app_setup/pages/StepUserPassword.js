@@ -18,36 +18,36 @@ function StepUserPassword() {
     }}>        
 
         <Form.Item
-            label="Oringinal Password"
-            name="password"
+            label="UserName"
+            name="userName"
             rules={[
                 {
                     required: true,
-                    message: 'Please input your oringinal password!',
+                    message: 'Please input your username!',
                 },
             ]}
         >
             <Input.Password />
         </Form.Item>
         <Form.Item
-            label="New Password"
-            name="oldPassword"
+            label="Password"
+            name="password"
             rules={[
                 {
                     required: true,
-                    message: 'Please input your new password!',
+                    message: 'Please input your password!',
                 },
             ]}
         >
             <Input.Password />
         </Form.Item>
         <Form.Item
-            label="New Password"
-            name="password"
+            label="Repeated Password"
+            name="password2"
             rules={[
                 {
                     required: true,
-                    message: 'Please input your new password again!',
+                    message: 'Please input your password!',
                 },
             ]}
         >
