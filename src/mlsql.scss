@@ -7,6 +7,11 @@
     margin: 30px 30px;
 }
 
+.common-column-layout {
+    display: flex;
+    flex-direction: row;     
+}
+
 .common-one-hundred-percent-width {
     width: 100%;
 }

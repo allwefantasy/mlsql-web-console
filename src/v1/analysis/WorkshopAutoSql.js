@@ -39,7 +39,7 @@ export const WorkshopAutoSql = (superclass) => class extends superclass {
    */
    apply = async (params) => {
       const { tableName, sql, _data, _schema } = params
-      this.sqls.push(params)
+      this.sqls.push({tableName,sql})
 
       if (_data && _schema) {
          this.setCurrentTable("", "", tableName, _schema, _data)

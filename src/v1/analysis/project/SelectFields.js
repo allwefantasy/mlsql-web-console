@@ -42,7 +42,12 @@ export default class SelectFields extends React.Component {
 
  
   render() {
-    return <Transfer
+    return <div style={{marginBottom:"30px"}}>
+      <Transfer
+    listStyle={{
+      width: 400,
+      height: 300,
+    }}
     dataSource={this.state.data}
     showSearch
     filterOption={this.filterOption}
@@ -51,5 +56,6 @@ export default class SelectFields extends React.Component {
     // onSearch={this.handleSearch}    
     render={item => item.title}
   />
+    </div>
   }
 }
