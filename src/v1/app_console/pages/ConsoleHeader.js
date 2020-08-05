@@ -70,7 +70,7 @@ function ConsoleHeader(props) {
             }} selectedKeys={[current]} mode="horizontal">
                 <Menu.Item  key="home">
                     <span style={{ fontSize: 32 }}>MLSQL Web Console</span>
-                    <span style={{ fontSize: 11 }}>(Build 20200804.191342)</span>
+                    <span style={{ fontSize: 11 }}>(Build _VERSION_)</span>
                 </Menu.Item>
                 <Divider type="vertical"></Divider>
 

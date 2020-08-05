@@ -35,7 +35,7 @@ export default class AFileSystemTree extends mix(FileSystemTree).with(NewSession
                     <ETPopLoad key={this.currentTableName()} ignorePath={true} ignoreTableName={true} ref={et=>this.loadPopRef=et}  parent={this}></ETPopLoad>
                  </Modal>
             <Spin tip="Loading..." spinning={this.state.loading}>
-                <DirectoryTree loadData={this.onLoadData} expandAction="doubleClick" onRightClick={this.showNewSession}>
+                <DirectoryTree height={700} loadData={this.onLoadData} expandAction="doubleClick" onRightClick={this.showNewSession}>
                     {this.renderTreeNodes(this.state.root)}
                 </DirectoryTree>
             </Spin>

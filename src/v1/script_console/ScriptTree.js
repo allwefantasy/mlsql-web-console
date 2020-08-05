@@ -197,7 +197,7 @@ function ScriptTree(props) {
             {error && <AlertBox message={error}></AlertBox>}
             {loading && <SpinBox></SpinBox>}
             {!loading &&
-                <DirectoryTree
+                <DirectoryTree height={700}
                     onExpand={(expandedKeys) => {                        
                         dispacher({
                             type: ScriptTreeActionNames.expand,

@@ -184,7 +184,7 @@ function WorkshopTables(props) {
             </Modal>
             <Spin tip="Loading..." spinning={loading}>
                 {contextMenu()}
-                <DirectoryTree onDoubleClick={(evt, node) => {
+                <DirectoryTree height={700} onDoubleClick={(evt, node) => {
                     dispacher({
                         type: WorkshopTablesActionNames.OPEN,
                         data: {

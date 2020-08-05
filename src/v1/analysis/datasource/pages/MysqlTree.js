@@ -138,7 +138,7 @@ function MysqlTree() {
             </Modal>           
            <Spin tip="Loading..." spinning={loading}>
                 {contextMenu()}                
-                <DirectoryTree                    
+                <DirectoryTree height={700}                   
                     treeData={dbs}
                     expandAction="click" 
                     onDoubleClick={(evt, node) => {

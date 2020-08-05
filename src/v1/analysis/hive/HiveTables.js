@@ -122,7 +122,7 @@ function HiveTables(props) {
                         })
                     }
                 } />
-                <DirectoryTree
+                <DirectoryTree height={700}
                     expandedKeys={expandedKeys}
                     treeData={search_dbs || dbs}
                     loadData={
