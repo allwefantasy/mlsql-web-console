@@ -123,10 +123,11 @@ function FilterCondition(props) {
 
     const ui = () => {
         return <Form form={form} layout={"inline"}>
-            <Form.Item name="compare">
+            <Form.Item name="compare" initialValue={record.compare}>
                 <Select initialValue={"="}
                     onChange={(value) => {
                         setCompare(value)
+                        record.compare = value
                     }}
                     placeholder="compare" style={{width:"200px"}}>
                     <Select.Option value="=">=</Select.Option>
@@ -145,7 +146,12 @@ function FilterCondition(props) {
                     <Select.Option value={ExpressionConst.IS_NOT_EMPTY}>{'is not empty'}</Select.Option>
                 </Select>
             </Form.Item>
-            <Form.Item name="condition">
+            <Form.Item name="condition" initialValue={record.condition} onChange={(value)=>{
+                if(typeof value !== "string"){
+                    record.condition = value.target.value
+                }else record.condition = value
+                
+            }}>
                 {condition()}
             </Form.Item>
         </Form>

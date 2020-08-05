@@ -33,10 +33,16 @@ export default class AggStation extends mix(React.Component).with(StationCommonO
         const config = {
             render: {
                 groupby: (value, record) => {
-                    return <Switch onChange={(checked)=>this.enableGroupByField(checked,record)} dataref={record} />
+                    return <Switch defaultChecked={record._groupBy} onChange={(checked)=>{
+                        this.enableGroupByField(checked,record)
+                        record._groupBy = checked
+                    }} dataref={record} />
                 },
                 agg: (value, record) => {
-                    return <Button dataref={record} onClick={() => { this.showAggFuncsAndApply(record) }}>Choose function</Button>
+                    return <>
+                    <Button style={{marginRight:"30px"}} dataref={record} onClick={() => { 
+                        this.showAggFuncsAndApply(record) 
+                    }}>Choose function</Button><span>{record._agg && `(${record._agg})`||""}</span></>
                 }
             }
         }
@@ -47,8 +53,10 @@ export default class AggStation extends mix(React.Component).with(StationCommonO
         this.reload()
     }
     
-    handleFunc = ()=>{
-      const { field, transformCode, columnName } = this.applyFuncToFieldRef.getTransform()
+    handleFunc = ()=>{      
+      const { field, transformCode, columnName } = this.applyFuncToFieldRef.getTransform()        
+      const record = this.columnsRef.state.data.filter(item=>item.field === field)[0]
+      record._agg = `${transformCode} as ${columnName}`
       this.generateProjectField(transformCode,columnName)
       this.setState({ funcPopUp: false })
       this.applyFuncToFieldRef.reload()

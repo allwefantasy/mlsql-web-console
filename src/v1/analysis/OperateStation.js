@@ -13,17 +13,18 @@ import { DashStation } from "./dash/DashStation";
 import { FormattedMessage } from 'react-intl'
 import { Resizable } from "re-resizable";
 import AnalysisWorkshop from "./workshop";
+import Tools from "../../common/Tools";
 const { TabPane } = Tabs;
 
 export default class OperateStation extends React.Component {
     constructor(props) {
         super(props)
         this.workshop = AnalysisWorkshop.workshop
-        this.state = { key: Math.random() }
+        this.state = { key: Tools.getJobName() }
     }
 
     reload = () => {
-        this.setState({ key: Math.random() })
+        this.setState({ key: Tools.getJobName() })
     }
 
     render() {

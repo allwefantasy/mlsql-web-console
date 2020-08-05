@@ -109,7 +109,8 @@ export default class Compare extends React.Component {
                 const selectedRows = this.buildSelectedRows()
                 this.fitlerStation.onNonGroupFilterApply(selectedRows)
             }} style={{ marginBottom: "30px" }}></ApplyOrSave>                                  
-            <Table pagination={{pageSize:5}}  rowSelection={{
+            <Table pagination={{pageSize:5,hideOnSinglePage:true}}            
+            rowSelection={{
                 type: "checkbox",
                 ...rowSelection,
             }} columns={this.state.columns}
