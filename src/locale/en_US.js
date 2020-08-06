@@ -61,5 +61,9 @@ const en_US = {
     numPartitions:"numPartitions",
     mysql_parallel:"MySQL Parallel",    
     no_mysql_parallel:"No number columns in this table, Please click [Ok]",
+    add: "添加",
+    as: "为",
+    choose_json_field:"Choose Json Field",
+    json_fields: "Expand Json"
 }
 export default en_US

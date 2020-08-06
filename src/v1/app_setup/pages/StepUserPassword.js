@@ -27,7 +27,7 @@ function StepUserPassword() {
                 },
             ]}
         >
-            <Input.Password />
+            <Input/>
         </Form.Item>
         <Form.Item
             label="Password"

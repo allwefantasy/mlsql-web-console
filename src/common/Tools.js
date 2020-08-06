@@ -55,6 +55,16 @@ export default class Tools {
         }
     }
 
+    static keyPath(key,data,func){
+        let keyQuote = key
+        func(keyQuote)
+        if(typeof data === "object"){            
+            Object.keys(data).forEach(k=>{                 
+                Tools.keyPath(`${keyQuote}['${k}']`,data[k],func)
+            })            
+        }       
+    }
+
     static robotFetchParamWithCollect = () => {
         return {
             queryType: "robot",

@@ -1,6 +1,6 @@
 import { CommonHandlers,CommonActions} from '../../common/CommonHandlers'
-import { RemoveFieldAction, RemoveFieldActionHandler } from '../../order/actions/RemoveFieldAction'
-import { AddFieldAction, AddFieldActionHandler } from '../../order/actions/AddFieldAction'
+import { RemoveFieldAction, RemoveFieldActionHandler } from '../../common/actions/RemoveFieldAction'
+import { AddFieldAction, AddFieldActionHandler } from '../../common/actions/AddFieldAction'
 import { CastAction, CastActionHandler } from './CastAction'
 
 class CastFieldsActionNames {

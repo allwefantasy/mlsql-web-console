@@ -1,6 +1,6 @@
-import { SetStateAction, SetStateActionHandler } from "../../app_console/admin/actions/SetStateAction";
 import { RollbackAction, RollbackActionHandler } from './RollbackAction'
 import { SaveAction, SaveActionHandler } from './SaveAction'
+import { SetStateActionHandler, SetStateAction } from '../../analysis/common/actions/SetStateAction'
 
 class ApplySaveRollbackActionNames { }
 const ApplySaveRollbackHandlers = {

@@ -1,6 +1,6 @@
-import { AddFieldActionHandler, AddFieldAction } from "./AddFieldAction";
-import { RemoveFieldActionHandler, RemoveFieldAction } from "./RemoveFieldAction";
-import { SetStateAction, SetStateActionHandler } from "../../../app_console/admin/actions/SetStateAction";
+import { AddFieldActionHandler, AddFieldAction } from "../../common/actions/AddFieldAction";
+import { RemoveFieldActionHandler, RemoveFieldAction } from "../../common/actions/RemoveFieldAction";
+import { SetStateAction, SetStateActionHandler } from "../../common/actions/SetStateAction";
 import { OrderApplyActionHandler, OrderApplyAction } from "./OrderApplyAction";
 
 class OrderStationActionNames {

@@ -34,6 +34,13 @@ function AddEngines() {
             <Input/>
         </Form.Item>
 
+        <Form.Item
+            label="Access Token"
+            name="accessToken"            
+        >
+            <Input/>
+        </Form.Item>
+
         <Form.Item {...tailLayout}>
             <Button type="primary" htmlType="submit">
                 Go

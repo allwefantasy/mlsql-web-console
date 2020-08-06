@@ -33,14 +33,14 @@ export default class AggStation extends mix(React.Component).with(StationCommonO
         const config = {
             render: {
                 groupby: (value, record) => {
-                    return <Switch defaultChecked={record._groupBy} onChange={(checked)=>{
+                    return <Switch key={record.field} defaultChecked={record._groupBy} onChange={(checked)=>{
                         this.enableGroupByField(checked,record)
                         record._groupBy = checked
                     }} dataref={record} />
                 },
                 agg: (value, record) => {
                     return <>
-                    <Button style={{marginRight:"30px"}} dataref={record} onClick={() => { 
+                    <Button key={record.field} style={{marginRight:"30px"}} dataref={record} onClick={() => {                         
                         this.showAggFuncsAndApply(record) 
                     }}>Choose function</Button><span>{record._agg && `(${record._agg})`||""}</span></>
                 }
@@ -53,8 +53,9 @@ export default class AggStation extends mix(React.Component).with(StationCommonO
         this.reload()
     }
     
-    handleFunc = ()=>{      
-      const { field, transformCode, columnName } = this.applyFuncToFieldRef.getTransform()        
+    handleFunc = ()=>{ 
+      this.applyFuncToFieldRef.operateField = this.operateField       
+      const { field, transformCode, columnName } = this.applyFuncToFieldRef.getTransform()              
       const record = this.columnsRef.state.data.filter(item=>item.field === field)[0]
       record._agg = `${transformCode} as ${columnName}`
       this.generateProjectField(transformCode,columnName)

@@ -6,7 +6,6 @@ import UIMaker from '../../UIMaker';
 import './Register.scss'
 import { LoginRegisterActionNames, LoginRegisterReducer, LoginRegisterHandlers } from './actions/LoginRegisterReducer';
 import { AppConsoleActionNames } from '../actions/AppConsoleReducer';
-import { SetStateAction } from '../admin/actions/SetStateAction';
 import AlertBox from '../../AlertBox';
 
 

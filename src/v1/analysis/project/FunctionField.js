@@ -29,7 +29,9 @@ export default class FunctionField extends React.Component {
         const config = {
             render: {
                 func: (value, record) => {
-                    return <Button dataref={record} onClick={() => { this.showAggFuncsAndApply(record) }}>Choose function</Button>
+                    return <Button key={record.field} dataref={record} onClick={() => { 
+                        this.showAggFuncsAndApply(record) 
+                    }}>Choose function</Button>
                 },
                 transformCode: (value, record) => {                
                     return value
@@ -56,6 +58,7 @@ export default class FunctionField extends React.Component {
     }
 
     handleFunc = () => {
+        this.applyFuncToFieldRef.operateField = this.operateField
         const { field, transformCode, columnName,isAgg } = this.applyFuncToFieldRef.getTransform()
         if(!columnName){
            this.setState({"error":"New fieldName is required."}) 

@@ -1,4 +1,4 @@
-const { SetStateActionHandler, SetStateAction } = require("../../app_console/admin/actions/SetStateAction");
+const { SetStateActionHandler, SetStateAction } = require("./actions/SetStateAction");
 
 const CommonHandlers = {
     setState: SetStateActionHandler,        

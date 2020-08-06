@@ -10,6 +10,7 @@ import FunctionField from "./FunctionField";
 import { ProjectStationSQLOp } from "./ProjectStationSQLOp";
 import { CastFields } from "./CastFields";
 import {FormattedMessage} from 'react-intl'
+import { JsonFields } from "./JsonFields";
 
 const { TabPane } = Tabs;
 
@@ -37,6 +38,9 @@ export default class ProjectStation extends mix(React.Component).with(StationCom
                     </TabPane>
                     <TabPane tab={<FormattedMessage id="cast_columns_type"/>} key="4"> 
                        <CastFields workshop={this.workshop}></CastFields>                                         
+                    </TabPane>
+                    <TabPane tab={<FormattedMessage id="json_fields"/>} key="5"> 
+                       <JsonFields/>                                         
                     </TabPane>
                 </Tabs>
             </div>                

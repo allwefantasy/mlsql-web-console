@@ -61,6 +61,10 @@ const zh_CN = {
     numPartitions:"分区数",
     mysql_parallel:"MySQL打开并行度设置",
     no_mysql_parallel:"该表没有数字类型的列，无法设置并行度。请直接点击【确定】",
+    add: "添加",
+    as: "为",
+    choose_json_field:"选择Json字段",
+    json_fields: "Json字段展开"
     
 }
 export default zh_CN;

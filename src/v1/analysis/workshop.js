@@ -34,7 +34,7 @@ class AnalysisWorkshop extends mix(React.Component).
 
     componentDidMount() {
         // for testing should remove
-        // this.newSession("delta", "public", "simpleData", { header: "true" })
+        // this.newSession("temp", "", "cc2", {})
     }
 
     operateStationView() {

@@ -4,6 +4,7 @@ import { useReducerAsync } from 'use-reducer-async'
 import { ApplySaveRollbackReducer, ApplySaveRollbackHandlers } from './actions/ApplySaveRollbackReducer.js';
 import AlertBox from '../AlertBox.js';
 import Tools from '../../common/Tools.js';
+import AnalysisWorkshop from '../analysis/workshop.js';
 
 
 const initState = {
@@ -18,7 +19,7 @@ const ApplySaveRollbackContext = React.createContext()
 
 function ApplySaveRollback(props) {
     //dispacher parent 
-    const workshop = props.workshop
+    const workshop = props.workshop || AnalysisWorkshop.workshop
     const { dispacher: parentDispacher } = useContext(props.context)
     const [state, dispacher] = useReducerAsync(ApplySaveRollbackReducer, initState, ApplySaveRollbackHandlers)
     const { saveDiagram, saveTablePersisted, loading,error } = state

@@ -62,5 +62,5 @@
     "@storybook/addons": "^5.1.11",
     "@storybook/react": "^5.1.11"
   },
-  "proxy": "http://127.0.0.1:9002"
+  "proxy": "http://mlsql-console.k8s.uc.host.dxy"  
 }
