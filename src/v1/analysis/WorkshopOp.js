@@ -51,11 +51,11 @@ export const WorkshopOp = (superclass) => class extends superclass {
             const res = await EngineService.tableInfo(table)
             const tableInfo = res.content
             if (tableInfo.status === 200) {
-                sql = `load parquet.\`/__persisted__/${tableInfo.tableName}\`  as ${tableInfo.tableName};
-                select * from ${tableInfo.tableName} as ${tableName};`
+                sql = `load parquet.\`/__persisted__/${tableInfo.tableName}\`  as ${Tools.getField(tableInfo.tableName)};
+                select * from ${Tools.getField(tableInfo.tableName)} as ${tableName};`
             } else {
                 sql = `${tableInfo.content} 
-                select * from ${tableInfo.tableName} as ${tableName};`
+                select * from ${Tools.getField(tableInfo.tableName)} as ${tableName};`
             }
         }
 

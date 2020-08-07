@@ -73,7 +73,7 @@ export const WorkshopAutoSql = (superclass) => class extends superclass {
          this.toggleMessage("Sorry, current session have no applies.")
          return 500
       }
-      const sql = `select * from ${this.getLastApplyTable().tableName} as ${tableName};`
+      const sql = `select * from ${Tools.getField(this.getLastApplyTable().tableName)} as ${Tools.getField(tableName)};`
       this.sqls.push({ tableName, sql })
       const finalSql = this.sqls.map(item => item.sql).join("\n")
 
