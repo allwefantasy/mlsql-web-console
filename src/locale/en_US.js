@@ -64,6 +64,7 @@ const en_US = {
     add: "添加",
     as: "为",
     choose_json_field:"Choose Json Field",
-    json_fields: "Expand Json"
+    json_fields: "Expand Json",
+    union:"Union",
 }
 export default en_US

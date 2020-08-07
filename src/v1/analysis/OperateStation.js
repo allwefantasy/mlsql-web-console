@@ -14,6 +14,7 @@ import { FormattedMessage } from 'react-intl'
 import { Resizable } from "re-resizable";
 import AnalysisWorkshop from "./workshop";
 import Tools from "../../common/Tools";
+import { UnionStation } from "./union/UnionStation";
 const { TabPane } = Tabs;
 
 export default class OperateStation extends React.Component {
@@ -58,9 +59,9 @@ export default class OperateStation extends React.Component {
                                 <TabPane tab={<FormattedMessage id="dash" />} key={8} >
                                     <DashStation parent={this}></DashStation>
                                 </TabPane>
-                                {/* <TabPane tab={<FormattedMessage id="datasource" />} key={9} >
-                                    <DashStation parent={this}></DashStation>
-                                </TabPane> */}
+                                <TabPane tab={<FormattedMessage id="union" />} key={9} >
+                                    <UnionStation/>
+                                </TabPane>
                             </Tabs>
                         </TabPane>
 

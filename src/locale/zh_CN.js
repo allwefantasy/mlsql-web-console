@@ -64,7 +64,9 @@ const zh_CN = {
     add: "添加",
     as: "为",
     choose_json_field:"选择Json字段",
-    json_fields: "Json字段展开"
+    json_fields: "Json字段展开",
+    union:"合并",
+    union_table:"待合并的表",
     
 }
 export default zh_CN;
