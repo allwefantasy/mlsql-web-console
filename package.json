@@ -7,7 +7,7 @@
     "@ant-design/icons": "^4.2.1",
     "@types/react": "^16.9.44",
     "@types/react-dom": "^16.9.8",
-    "ahooks": "^2.2.0",
+    "ahooks": "^2.4.0",
     "antd": "^4.4.2",
     "axios": "^0.18.0",
     "classnames": "^2.2.6",
@@ -67,5 +67,6 @@
     "source-map-loader": "^1.0.1",
     "typescript": "^3.9.7"
   },
-  "proxy": "http://mlsql-console.k8s.uc.host.dxy"
+  "proxy1": "http://mlsql-console.k8s.uc.host.dxy",
+  "proxy": "http://127.0.0.1:9002"
 }

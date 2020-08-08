@@ -15,6 +15,7 @@ import { Resizable } from "re-resizable";
 import AnalysisWorkshop from "./workshop";
 import Tools from "../../common/Tools";
 import { UnionStation } from "./union/UnionStation";
+import { PivotStation } from "./pivot/PivotStation";
 const { TabPane } = Tabs;
 
 export default class OperateStation extends React.Component {
@@ -44,6 +45,9 @@ export default class OperateStation extends React.Component {
                         </TabPane>
                         <TabPane tab={<FormattedMessage id="order" />} key={5} >
                             <OrderStation parent={this}></OrderStation>
+                        </TabPane>
+                        <TabPane tab={<FormattedMessage id="pivot" />} key={10} >
+                            <PivotStation/>
                         </TabPane>
                         <TabPane tab={<FormattedMessage id="more" />} key={100}>
                             <Tabs tabPosition="left">

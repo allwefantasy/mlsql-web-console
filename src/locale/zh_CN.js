@@ -67,6 +67,12 @@ const zh_CN = {
     json_fields: "Json字段展开",
     union:"合并",
     union_table:"待合并的表",
+    pivot: "透视表",
+    column_left: "行列",
+    column_header: "表头列",
+    column_sum: "统计列",
+    drag_column: "拖拽列到这里",
+    drop_column: "在这里释放",
     
 }
 export default zh_CN;

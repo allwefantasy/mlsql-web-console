@@ -1,0 +1,55 @@
+.pivot-station-app {    
+    display: flex;
+    flex-direction: row;    
+    width:100%;
+    text-align: center;  
+    margin-bottom: 10px;
+}
+.pivot-station-fields {
+    width: 30%;
+    margin-right: 30px;        
+}
+.pivot-station-fields-list {
+    height: 300px;
+    overflow: scroll;
+}
+.pivot-station-bigbox {
+    width: 60%;
+    height: 300px;
+    display: flex;  
+    flex-direction: row;      
+}
+
+.pivot-station-left {
+    width: 30%; 
+    border: solid;      
+}
+
+
+.pivot-station-body {
+    display: flex;
+    flex-direction: column;
+    border: solid;    
+    width: 100%;    
+}
+
+.pivot-station-header {
+    width:100%;
+    border: solid;
+    height: 80px;
+}
+
+.pivot-station-content {
+    width:100%;
+    border: solid;
+    height: 220px;
+}
+
+.pivot-common-font {
+    font-size: 16;
+    font-weight: bold;
+}
+
+.pivot-station-commands {
+   margin-bottom: 10px; 
+}
