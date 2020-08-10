@@ -5,6 +5,7 @@ import { SearchOp } from "./real_time_view_table/SearchOp";
 import { DropdownMenuUI } from "./real_time_view_table/DropdownMenuUI";
 import MLSQLHTML from "../../components/dash/MLSQLHTML";
 import AnalysisWorkshop from "./workshop";
+import AceEditor from "react-ace";
 
 
 const ReactMarkdown = require('react-markdown')
@@ -29,21 +30,32 @@ export default class RealTimeViewTable extends mix(React.Component).with(
         this.workshop = AnalysisWorkshop.workshop
     }
 
+    wrapper = (v)=>{
+        return <div onDoubleClick={(evt)=>{                
+            evt.preventDefault()
+            evt.stopPropagation()
+            this.setState({view:{enabled:true,content:v}})
+    
+        }}>{v}</div>
+    }
+
     getDefaultRender = item => {
         const { name, type } = item
+       
 
-        if ((typeof type) === "object") {
+        if ((typeof type) === "object" || (typeof type) === "array") {
             return (value, record) => {                
-                return JSON.stringify(value)
+                const v = JSON.stringify(value)
+               return this.wrapper(v) 
             }
         }
 
         switch (type) {
             case "string": return (value, record) => {
-                return value
+                return  this.wrapper(value)
             }
             default:
-                return (value, record) => { return value }
+                return (value, record) => { return String(value) }
 
         }
     }
@@ -74,6 +86,9 @@ export default class RealTimeViewTable extends mix(React.Component).with(
                 dataIndex: item.name,
                 title: this.getDefaultTitleRender(item),
                 render: this.getDefaultRender(item),
+                width: 200,
+                textWrap: 'word-break',
+                ellipsis: {showTitle:true},
                 ...this.getDefaultSearch(item)
             }
         })
@@ -88,19 +103,20 @@ export default class RealTimeViewTable extends mix(React.Component).with(
             }
         })
     }
-
+    
     render() {
         const self = this
         if (this.state.isDash) {
             return MLSQLHTML.render(this.state.data)
         }
         return (<div style={this.tableStyle}>
-            <Table 
+            <Table                 
                 loading={this.state.loading}
                 size='default'
                 columns={this.state.columns}
                 dataSource={this.state.data}
-                scroll={{ x: true }}
+                scroll={{ x: 'max-content' }}
+                
             />
             <Modal
                 title={"View"}
@@ -110,7 +126,14 @@ export default class RealTimeViewTable extends mix(React.Component).with(
                 cancelText="Cancel"
                 OkText="Ok"
             >
-                <ReactMarkdown source={this.state.view.content || ""} />
+                <AceEditor
+                        height={"300px"}
+                        width={"100%"}
+                        mode="text"
+                        theme="github"
+                        name="detail_box"
+                        value={this.state.view.content || ""}
+                    ></AceEditor>                
             </Modal>
         </div>
         )

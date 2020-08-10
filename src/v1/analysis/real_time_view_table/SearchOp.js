@@ -3,6 +3,9 @@ import { Table, Input, Button, Space } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { SearchOutlined } from '@ant-design/icons';
 import Tools from "../../../common/Tools";
+
+
+
 export const SearchOp = (superclass) => class extends superclass {
     getColumnSearchProps = dataIndex => ({
         filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
@@ -49,7 +52,7 @@ export const SearchOp = (superclass) => class extends superclass {
                     textToHighlight={text ? text.toString() : ''}
                 />
             ) : (
-                    text
+                  this.wrapper(text)
                 ),
     });
 
