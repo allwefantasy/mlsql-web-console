@@ -107,17 +107,17 @@ function FilterCondition(props) {
             case ExpressionConst.IS_NOT_NULL:
                 return <></>
             case ExpressionConst.IN:
-                return <Select loading={inCandidateLoading} mode="tags" style={{ width: '300px' }}>
+                return <Select loading={inCandidateLoading} mode="tags" style={{ width: '100px' }}>
                     {inCandidate.map(item => {
                         return <Select.Option key={item.name} value={item.name}>{item.name}</Select.Option>
                     })}
                 </Select>
 
             case ExpressionConst.LIKE:
-                return <><Input/><span>LIKE 'a%o' means Finds any values that start with 'a' and ends with 'o' </span></>
+                return <><Input style={{ width: '100px' }} /><span>LIKE 'a%o' means Finds any values that start with 'a' and ends with 'o' </span></>
 
             default:
-                return <Input />
+                return <Input style={{ width: '100px' }} />
         }
     }
 
@@ -129,7 +129,7 @@ function FilterCondition(props) {
                         setCompare(value)
                         record.compare = value
                     }}
-                    placeholder="compare" style={{width:"200px"}}>
+                    placeholder="compare" style={{width:"100px"}}>
                     <Select.Option value="=">=</Select.Option>
                     <Select.Option value="<">{'<'}</Select.Option>
                     <Select.Option value=">">{'>'}</Select.Option>

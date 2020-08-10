@@ -67,6 +67,6 @@
     "source-map-loader": "^1.0.1",
     "typescript": "^3.9.7"
   },
-  "proxy": "http://mlsql-console.k8s.uc.host.dxy",
-  "proxy1": "http://127.0.0.1:9002"
+  "proxy1": "http://mlsql-console.k8s.uc.host.dxy",
+  "proxy": "http://127.0.0.1:9002"
 }
