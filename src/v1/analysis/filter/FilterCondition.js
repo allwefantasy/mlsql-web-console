@@ -107,7 +107,7 @@ function FilterCondition(props) {
             case ExpressionConst.IS_NOT_NULL:
                 return <></>
             case ExpressionConst.IN:
-                return <Select loading={inCandidateLoading} mode="tags" style={{ width: '100px' }}>
+                return <Select loading={inCandidateLoading} mode="tags" style={{ width: '300px' }}>
                     {inCandidate.map(item => {
                         return <Select.Option key={item.name} value={item.name}>{item.name}</Select.Option>
                     })}

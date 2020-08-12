@@ -16,6 +16,7 @@ import AnalysisWorkshop from "./workshop";
 import Tools from "../../common/Tools";
 import { UnionStation } from "./union/UnionStation";
 import { PivotStation } from "./pivot/PivotStation";
+import { AnalysisPluginStation } from "./plugin/AnalysisPluginStation";
 const { TabPane } = Tabs;
 
 export default class OperateStation extends React.Component {
@@ -59,12 +60,15 @@ export default class OperateStation extends React.Component {
                                 </TabPane>
                                 <TabPane tab={<FormattedMessage id="window" />} key={7} >
                                     <WindowStation parent={this}></WindowStation>
+                                </TabPane>                                
+                                <TabPane tab={<FormattedMessage id="union" />} key={9} >
+                                    <UnionStation/>
                                 </TabPane>
                                 <TabPane tab={<FormattedMessage id="dash" />} key={8} >
                                     <DashStation parent={this}></DashStation>
                                 </TabPane>
-                                <TabPane tab={<FormattedMessage id="union" />} key={9} >
-                                    <UnionStation/>
+                                <TabPane tab={<FormattedMessage id="plugin" />} key={11} >
+                                    <AnalysisPluginStation></AnalysisPluginStation>
                                 </TabPane>
                             </Tabs>
                         </TabPane>

@@ -18,6 +18,7 @@ export default class Tools {
     }
 
     static unQuote = (str) => {
+        if(typeof str !== "string") return str
         if (str.startsWith("\"") && str.endsWith("\"")) {
             return str.slice(1, str.length - 1)
         }
@@ -75,7 +76,7 @@ export default class Tools {
     static getField = (v) => {
         if (v.startsWith("`") && v.endsWith("`")) return v
         return `\`${v}\``
-    }
+    }    
 
     static distinct = (arrays, field) => {
         if(!field){

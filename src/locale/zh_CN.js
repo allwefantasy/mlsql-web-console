@@ -73,6 +73,7 @@ const zh_CN = {
     column_sum: "统计列",
     drag_column: "拖拽列到这里",
     drop_column: "在这里释放",
+    plugin: "插件",
     
 }
 export default zh_CN;

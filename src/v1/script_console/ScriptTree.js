@@ -10,6 +10,7 @@ import SpinBox from '../SpinBox'
 import { useContextMenuCallback, useContextMenu } from './pages/ContextMenu';
 import Tools from '../../common/Tools';
 import AlertBox from '../AlertBox'
+import { FormattedMessage } from 'react-intl'
 
 const { DirectoryTree } = Tree
 
@@ -109,6 +110,15 @@ function ScriptTree(props) {
 
         if (!target.isDir) {
             return <Menu >
+                <Menu.Item onClick={() => {                    
+                    dispacher({
+                        type: ScriptTreeActionNames.publishPlugin,
+                        data: {
+                            node: target
+                        }
+                    })
+                    setRightClickNodeTreeItem(undefined)
+                }} key={0}>Publish As Plugin To Analysis</Menu.Item>
                 <Menu.Item onClick={() => {                    
                     dispacher({
                         type: ScriptTreeActionNames.deleteScriptFile,

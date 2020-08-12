@@ -104,7 +104,7 @@ export default class Compare extends React.Component {
             })
         }
         return <div className="common-one-hundred-percent-width common-column-layout">                     
-            <div style={{marginRight:"30px"}}>
+            <div style={{marginRight:"30px",width:"80%"}}>
             <ApplyOrSave parent={this} onRollback={this.fitlerStation.onRollback} handlePersit={this.fitlerStation.handlePersit} handleTableInput={this.fitlerStation.handleTableInput} ref={(et) => this.fitlerStation.ApplyOrSaveRef = et} onSave={this.fitlerStation.onSave} onApply={()=>{
                 const selectedRows = this.buildSelectedRows()
                 this.fitlerStation.onNonGroupFilterApply(selectedRows)
