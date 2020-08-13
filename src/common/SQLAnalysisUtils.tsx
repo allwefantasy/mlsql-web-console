@@ -27,6 +27,8 @@ export interface InputType {
     name: string
     label?: string
     formType:"input"
+    onShow?:string
+    required:false
 }
 
 export interface SelectType {
@@ -36,13 +38,17 @@ export interface SelectType {
     optionSql?: string
     optionStr?: string
     selectMode:"multiple"
-    formType:"select"    
+    formType:"select" 
+    onShow?:string 
+    required:false  
 }
 
 export interface SwitchType {
     name: string
     label?: string
     formType:"switch"
+    onShow?:string
+    required:false
 }
 
 
@@ -72,7 +78,7 @@ export class SQLAnalysisUtils {
         }).map(item => item as SetChunk)
         return userInputs
     }
-    toSql=(values: {[key:string]:string}) =>{        
+    toSql=(values: {[key:string]:any}) =>{        
         const buffer = Object.keys(values).map(k => {
             const key = k
             const value = values[k]
