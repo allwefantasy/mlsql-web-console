@@ -52,7 +52,7 @@ function useCrudTable(props) {
                     <Button.Group>
                         <Button type="danger" onClick={() => {
                             if (externalRemove) {
-                                externalRemove(row)
+                                externalRemove({row,setLoading})
                             }
                             remove(index)
                         }

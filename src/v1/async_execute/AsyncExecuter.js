@@ -84,7 +84,7 @@ export default class AsyncExecuter {
 
     async run(params) {
         this.prepare()
-        const startTime = new Date().getTime()
+        const startTime = new Date().getTime()        
         const res = await this.client.runScript(this.sql, this.jobName, Object.assign(params,{
             jobName: this.jobName,
             async: true,

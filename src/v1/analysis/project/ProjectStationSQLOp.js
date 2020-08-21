@@ -60,7 +60,9 @@ export const ProjectStationSQLOp = superclass => class extends(superclass) {
              this.ApplyOrSaveRef.exit()
              return
          }
-         const newFields = Object.keys(fields).map(item=>{
+         const newFields = Object.keys(fields).filter(field=>{
+             return field !== fields[field]
+         }).map(item=>{
              return `\`${item}\` as \`${fields[item]}\``
          })
          

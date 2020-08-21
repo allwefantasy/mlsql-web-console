@@ -262,7 +262,7 @@ class CommandGroup extends React.Component {
             </Select>
             <Divider type="vertical"/>
             Engine:<EngineSelectComp useEngine={(engine)=>{
-                this.engineName = engine
+                this.parent.engineName = engine                
             }}/>
             </div>
         )

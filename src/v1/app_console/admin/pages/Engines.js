@@ -11,6 +11,18 @@ function Engines(props) {
     const [reload, setReload] = useState(undefined)
     const proxy = new ActionProxy()
     const { ui, setData, setSchema, setEditorMode ,setError} = useCrudTable({
+        remove: async ({row,setLoading}) => {
+            setLoading(true)
+            setError(undefined)
+            const res = await proxy.post(RemoteAction.ENGINE_REMOVE, {id:row.id})
+            if(res.status !== 200){
+                setLoading(false)
+                setError(res.content)
+                return
+            }
+            setReload(Tools.getJobName())
+            setLoading(false)
+        },
         submit: async ({ params, setLoading }) => {
             setLoading(true)
             setError(undefined)

@@ -33,7 +33,7 @@ function EngineSelectComp(props) {
     //   }
     //   save()
       props.useEngine(engine)
-    },[engine])
+    },[engine,props])
 
     const selectEngine = (value) => {
         setEngine(value)
