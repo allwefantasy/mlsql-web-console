@@ -213,17 +213,14 @@ function ScriptTree(props) {
                             type: ScriptTreeActionNames.expand,
                             data: { expandedKeys }
                         })
-                    }}
-                    // autoExpandParent={true}
-                    // expandedKeys={
-                    //     expandedKeys
-                    // }
+                    }}                    
                     onDoubleClick={(evt, node) => {
                         dispacher({
                             type: ScriptTreeActionNames.openScriptFile,
                             data: { consoleApp, node }
                         })
                     }}
+                    defaultExpandedKeys = {expandedKeys}
                     expandAction="click"
                     onRightClick={popContextMenu}
                     switcherIcon={<DownOutlined />}

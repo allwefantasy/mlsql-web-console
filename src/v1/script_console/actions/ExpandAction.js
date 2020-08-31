@@ -7,7 +7,8 @@ export const {handler:ExpandActionHandler,action:ExpandAction} = ActionMaker.bui
     const {expandedKeys:oldExpandedKeys} = action.__state
     const newExpanedKeys = expandedKeys.filter(item=>!oldExpandedKeys.includes(item))
     const newNoExpanedKeys = oldExpandedKeys.filter(item=>!expandedKeys.includes(item))
-    const client = new ActionProxy()    
+    const client = new ActionProxy()      
+    console.log(newExpanedKeys,newNoExpanedKeys)
     newExpanedKeys.forEach(async element => {    
         await client.post(RemoteAction.SAVE_SCRIPT_FILE,{
             id: element,isExpanded:true 

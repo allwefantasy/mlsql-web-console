@@ -56,6 +56,7 @@ class MLSQLTreeNodeBuilder {
         // item["title"] = <span className="react-contextmenu-trigger"><ContextMenuTrigger  id="scriptTreeContextMenu">{item.label}</ContextMenuTrigger></span>
         item["title"] = <span>{item.label}</span>
         item["isLeaf"] = !item["isDir"]
+        item["isExpand"] = !item["isExpanded"]
         if (item["isDir"]) {
             item["icon"] = <FolderOutlined />
         } else {
