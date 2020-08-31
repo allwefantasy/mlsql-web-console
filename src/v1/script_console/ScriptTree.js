@@ -160,7 +160,7 @@ function ScriptTree(props) {
                 dispacher({
                     type: ScriptTreeActionNames.deleteScriptFile,
                     data: {
-                        node: target,
+                        node: target,                        
                     }
                 })
                 setRightClickNodeTreeItem(undefined)

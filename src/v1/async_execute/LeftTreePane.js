@@ -16,7 +16,12 @@ export default class LeftTreePane extends React.Component {
             if(this.deltaLakeTreeRef){
                 this.deltaLakeTreeRef.reload()
             }
-        }                        
+        }
+        // if(key==="3"){                            
+        //     if(this.fileSystemTreeRef){
+        //         this.fileSystemTreeRef.reload()
+        //     }
+        // }                        
         }}>
         <TabPane tab="Script" key="1">
        <div className="leftview-box">
