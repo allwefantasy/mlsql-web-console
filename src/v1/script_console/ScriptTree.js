@@ -214,10 +214,10 @@ function ScriptTree(props) {
                             data: { expandedKeys }
                         })
                     }}
-                    autoExpandParent={true}
-                    expandedKeys={
-                        expandedKeys
-                    }
+                    // autoExpandParent={true}
+                    // expandedKeys={
+                    //     expandedKeys
+                    // }
                     onDoubleClick={(evt, node) => {
                         dispacher({
                             type: ScriptTreeActionNames.openScriptFile,
