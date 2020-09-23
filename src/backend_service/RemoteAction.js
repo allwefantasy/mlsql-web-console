@@ -52,4 +52,8 @@ export default class RemoteAction {
     static DS_MYSQL_CONNECT = "/api_v1/ds/mysql/connect/get"
     static DS_MYSQL_COLUMN_INFO = "/api_v1/ds/mysql/column"
 
+    static CLOUD_CREATE_ENGINE = "/api_v1/proxy/api/create_engine"
+    static CLOUD_DELETE_ENGINE = "/api_v1/proxy/api/delete_engine"
+    static CLOUD_ENGINE_STATUS = "/api_v1/proxy/api/status"
+
 }

@@ -9,6 +9,7 @@ import ChangePassword from './ChangePassword';
 import { Teams } from './Teams';
 import { MySQL } from '../../../analysis/datasource/pages/MySQL';
 import { ListMySQL } from '../../../analysis/datasource/pages/ListMySQL';
+import {SetupEngineFromCloud} from "../../pages/SetupEngineFromCloud";
 
 const { SubMenu } = Menu;
 function Settings() {
@@ -79,6 +80,22 @@ function Settings() {
                             }}><FormattedMessage id="list_mysql" /></Menu.Item>
                     </SubMenu>
 
+                    <SubMenu key="create_engine_from_cloud" title={
+                        <span>
+                            <MailOutlined />
+                            <span><FormattedMessage id="create_engine_from_cloud" /></span>
+                        </span>
+                    }>
+                        <Menu.Item key="mysql"
+                                   onClick={() => {
+                                       setCurrentPage("create_engine")
+                                   }}><FormattedMessage id="create_engine" /></Menu.Item>
+                        <Menu.Item key="manager_engine"
+                                   onClick={() => {
+                                       setCurrentPage("manager_engine")
+                                   }}><FormattedMessage id="manager_engine" /></Menu.Item>
+                    </SubMenu>
+
                 </Menu>
             </div>
             <div className="app-admin-main">
@@ -88,6 +105,7 @@ function Settings() {
                 {currentPage === "team_manager" && <Teams></Teams>}
                 {currentPage === "mysql" && <MySQL />}
                 {currentPage === "list_mysql" && <ListMySQL />}
+                {currentPage === "create_engine" && <SetupEngineFromCloud />}
             </div>
         </div>
     )

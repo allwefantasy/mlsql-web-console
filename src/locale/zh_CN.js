@@ -74,6 +74,20 @@ const zh_CN = {
     drag_column: "拖拽列到这里",
     drop_column: "在这里释放",
     plugin: "插件",
+    aliyun_message:"阿里云信息",
+    engine_name: "引擎名称",
+    access_key_id: "AccessKeyID",
+    access_key_secret: "AccessKeySecret",
+    regin_id: "阿里云区",
+    endpoint_public_access: "是否有公网IP",
+    k8s_address: "阿里云ASK地址",
+    driver_core_num: "引擎Driver CPU数",
+    driver_memory: "引擎Driver 内存",
+    executor_core_num: "引擎单Executor CPU数",
+    executor_memory: "引擎单Executor 内存",
+    executor_num: "引擎单Executor数目",
+    engine_version: "引擎版本",
+    jar_engine_version: "引擎Jar包版本",
     
 }
 export default zh_CN;

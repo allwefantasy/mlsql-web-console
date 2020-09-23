@@ -10,11 +10,15 @@ function useUserConfig(props) {
     const [current, setCurrent] = useState(undefined)
     const [loading, setLoading] = useState(false)
     const [form] = Form.useForm()
+    const formItemLayout = {
+        labelCol: { span: 6 },
+        wrapperCol: { span: 14 },
+    };
     const getParams = () => {
         return form.getFieldsValue()
     }
     const ui = ({ formItems, title, submit }) => (
-        <div className="common-margin common-child-center">
+        <div className="common-margin common-child-center" {...formItemLayout}>
             <Card title={title} style={{ width: "50%" }}>
                 <Form form={form}>
                     {error && <AlertBox message={<FormattedMessage id={error} />} />}

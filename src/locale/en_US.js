@@ -66,5 +66,7 @@ const en_US = {
     choose_json_field:"Choose Json Field",
     json_fields: "Expand Json",
     union:"Union",
+    aliyun_message:"Aliyun Message",
+    submit_task_success:"任务提交成功",
 }
 export default en_US
