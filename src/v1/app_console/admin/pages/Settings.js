@@ -10,6 +10,9 @@ import { Teams } from './Teams';
 import { MySQL } from '../../../analysis/datasource/pages/MySQL';
 import { ListMySQL } from '../../../analysis/datasource/pages/ListMySQL';
 import {SetupEngineFromCloud} from "../../pages/SetupEngineFromCloud";
+import {DeleteCloudEngine} from "../../pages/DeleteCloudEngine";
+import {EngineLog} from "../../pages/EngineLog";
+import {RegisterEngine} from "../../pages/RegisterEngine";
 
 const { SubMenu } = Menu;
 function Settings() {
@@ -80,20 +83,36 @@ function Settings() {
                             }}><FormattedMessage id="list_mysql" /></Menu.Item>
                     </SubMenu>
 
-                    <SubMenu key="create_engine_from_cloud" title={
+                    <SubMenu key="aliyun_cloud_engine" title={
                         <span>
                             <MailOutlined />
-                            <span><FormattedMessage id="create_engine_from_cloud" /></span>
+                            <span><FormattedMessage id="aliyun_cloud_engine" /></span>
                         </span>
                     }>
-                        <Menu.Item key="mysql"
+                        <Menu.Item key="create_cloud_engine"
                                    onClick={() => {
-                                       setCurrentPage("create_engine")
-                                   }}><FormattedMessage id="create_engine" /></Menu.Item>
-                        <Menu.Item key="manager_engine"
+                                       setCurrentPage("create_cloud_engine")
+                                   }}><FormattedMessage id="create_cloud_engine" /></Menu.Item>
+                        <Menu.Item key="delete_cloud_engine"
                                    onClick={() => {
-                                       setCurrentPage("manager_engine")
-                                   }}><FormattedMessage id="manager_engine" /></Menu.Item>
+                                       setCurrentPage("delete_cloud_engine")
+                                   }}><FormattedMessage id="delete_cloud_engine" /></Menu.Item>
+                        <Menu.Item key="cloud_engine_log"
+                                   onClick={() => {
+                                       setCurrentPage("cloud_engine_log")
+                                   }}><FormattedMessage id="cloud_engine_log" /></Menu.Item>
+                    </SubMenu>
+
+                    <SubMenu key="a_7" title={
+                        <span>
+                            <MailOutlined />
+                            <span><FormattedMessage id="a_7" /></span>
+                        </span>
+                    }>
+                        <Menu.Item key="a_8"
+                                   onClick={() => {
+                                       setCurrentPage("a_8")
+                                   }}><FormattedMessage id="a_8" /></Menu.Item>
                     </SubMenu>
 
                 </Menu>
@@ -105,7 +124,10 @@ function Settings() {
                 {currentPage === "team_manager" && <Teams></Teams>}
                 {currentPage === "mysql" && <MySQL />}
                 {currentPage === "list_mysql" && <ListMySQL />}
-                {currentPage === "create_engine" && <SetupEngineFromCloud />}
+                {currentPage === "create_cloud_engine" && <SetupEngineFromCloud />}
+                {currentPage === "delete_cloud_engine" && <DeleteCloudEngine />}
+                {currentPage === "cloud_engine_log" && <EngineLog />}
+                {currentPage === "a_8" && <RegisterEngine />}
             </div>
         </div>
     )

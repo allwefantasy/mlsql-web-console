@@ -3,11 +3,10 @@ import { Form, Card, Button } from 'antd';
 import AlertBox from '../../../AlertBox';
 import { FormattedMessage } from 'react-intl';
 
-
 function useUserConfig(props) {
-    const [error, setError] = useState(undefined)
-    const [success, setSuccess] = useState(undefined)
-    const [current, setCurrent] = useState(undefined)
+    const [error, setError] = useState("")
+    const [success, setSuccess] = useState("")
+    const [current, setCurrent] = useState("")
     const [loading, setLoading] = useState(false)
     const [form] = Form.useForm()
     const formItemLayout = {
@@ -19,7 +18,7 @@ function useUserConfig(props) {
     }
     const ui = ({ formItems, title, submit }) => (
         <div className="common-margin common-child-center" {...formItemLayout}>
-            <Card title={title} style={{ width: "50%" }}>
+            <Card title={title} style={{ width: props?.width||"50%" }}>
                 <Form form={form}>
                     {error && <AlertBox message={<FormattedMessage id={error} />} />}
                     {success && <AlertBox title={<FormattedMessage id="congratulation"/>} type="success" message={<FormattedMessage id={success} />} />}

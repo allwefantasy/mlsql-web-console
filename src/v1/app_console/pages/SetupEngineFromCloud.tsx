@@ -3,44 +3,48 @@ import { useReducerAsync } from 'use-reducer-async'
 import { SetupEngineFromCloudReducer, SetupEngineFromCloudHandlers } from './actions/SetupEngineFromCloudReducer'
 import { FormattedMessage } from 'react-intl'
 import {useUserConfig} from "../../analysis/common/pages/useUserConfig";
-import UIMaker from "../../UIMaker";
 import {ActionProxy} from "../../../backend_service/ActionProxy";
 import RemoteAction from "../../../backend_service/RemoteAction";
-import {Col, Divider, Form, Input, Select, Slider, Switch} from "antd";
-import {useEngineCreateLoading} from "./useEngineCreateLoading";
+import {Col, Divider, Form, Input, Result, Select, Slider, Switch} from "antd";
+import {UseEngineCreateLoading} from "./UseEngineCreateLoading";
 import {CommonActionNames} from "../../analysis/common/CommonActionNames";
 
 interface Props {   
 }
 
 const initState = {
-  loadingPage: false
+  loadingPage: false,
+  engineName:  ""
 }
 
 const SetupEngineFromCloudContext = React.createContext<{state:any,dispacher:React.Dispatch<any>}|null>(null)
 
 const SetupEngineFromCloud:React.FunctionComponent<Props> = (props) => {
     const [state, dispacher] = useReducerAsync(SetupEngineFromCloudReducer, initState, SetupEngineFromCloudHandlers)
-    const { ui, setError,getParams } = useUserConfig()
-    const {ui:statusUI,form:statusForm} = useEngineCreateLoading({})
-    const { loadingPage } = state
-
-
+    const {loadingPage,engineName} = state;
+    const { ui, setError,getParams } = useUserConfig({width:"70%"})
     const submit = async ()=>{
         const proxy = new ActionProxy()
         const params = getParams()
         const res = await proxy.post(RemoteAction.CLOUD_CREATE_ENGINE,params)
         if(res.status === 200){
+            setError("")
             dispacher({
                 type: CommonActionNames.setState,
                 data: {
-                    loadingPage: true
+                    loadingPage: true,
+                    engineName: params["owner"]
                 }
 
             })
-            return
+        }else {
+            try {
+                setError(JSON.parse(res.content)?.message || "Unknown Error")
+            }catch (e){
+                setError(e.description)
+            }
+
         }
-        setError(res.content)
     }
 
     useEffect(()=>{
@@ -54,13 +58,19 @@ const SetupEngineFromCloud:React.FunctionComponent<Props> = (props) => {
             <div>
                 {
                     loadingPage ?
-                        statusUI()
+                        <UseEngineCreateLoading name={engineName}/>
                         : ui({
-                        title: <FormattedMessage id="aliyun_message"/>,
+                        title: <FormattedMessage id="input_message"/>,
                         submit,
                         formItems: <>
-                            <Form.Item name={"Name"} label={<FormattedMessage id="engine_name"/>} help={"必填"}>
-                                <Input/>
+                            <Result
+                                status="warning"
+                                title={<FormattedMessage id="a_1"/>}
+                                extra={<FormattedMessage id="a_2"/>}
+                            />
+                            <Divider orientation="left"><FormattedMessage id="aliyun_related"/></Divider>
+                            <Form.Item name={"owner"} label={<FormattedMessage id="engine_name"/>} help={"必填"}>
+                                <Input />
                             </Form.Item>
                             <Form.Item name={"OSSBucket"} label={<FormattedMessage id="OSSBucket"/>} help={"必填,比如：oss://mlsql-release-repo"}>
                                 <Input/>
@@ -69,7 +79,13 @@ const SetupEngineFromCloud:React.FunctionComponent<Props> = (props) => {
                                 <Input/>
                             </Form.Item>
                             <Form.Item name={"AccessKeySecret"} label={<FormattedMessage id="access_key_secret"/>} help={"必填"}>
-                                <Input.Password/>
+                                <Input/>
+                            </Form.Item>
+                            <Form.Item name={"OSSAccessKeyID"} label={<FormattedMessage id="oss_access_key_id"/>} help={"默认同 AccessKeySecret"}>
+                                <Input/>
+                            </Form.Item>
+                            <Form.Item name={"OSSAccessKeySecret"} label={<FormattedMessage id="oss_access_key_secret"/>} help={"默认同 AccessKeySecret"}>
+                                <Input/>
                             </Form.Item>
                             <Form.Item name={"ReginID"} label={<FormattedMessage id="regin_id"/>} initialValue={"cn-hangzhou"}>
                                 <Input/>
@@ -77,7 +93,7 @@ const SetupEngineFromCloud:React.FunctionComponent<Props> = (props) => {
                             <Form.Item valuePropName="checked"  initialValue={true} name={"EndpointPublicAccess"} label={<FormattedMessage id="endpoint_public_access"/>} >
                                 <Switch  />
                             </Form.Item>
-                            <Divider type={"horizontal"}/>
+                            <Divider orientation="left"><FormattedMessage id="cluster_related"/></Divider>
                             {/*<Form.Item name={"K8sAddress"} label={<FormattedMessage id="K8sAddress"/>} help={"选填"}>*/}
                             {/*    <Input/>*/}
                             {/*</Form.Item>*/}
@@ -141,11 +157,13 @@ const SetupEngineFromCloud:React.FunctionComponent<Props> = (props) => {
                             <Form.Item name={"EngineVersion"} label={<FormattedMessage id="engine_version"/>} initialValue={"2.0.1"}>
                                 <Select>
                                     <Select.Option value={"2.0.1"}>2.0.1</Select.Option>
+                                    <Select.Option value={"2.1.0"}>2.1.0</Select.Option>
                                 </Select>
                             </Form.Item>
                             <Form.Item name={"JarEngineVersion"} label={<FormattedMessage id="jar_engine_version"/>} initialValue={"2.0.1-SNAPSHOT"}>
                                 <Select>
                                     <Select.Option value={"2.0.1-SNAPSHOT"}>2.0.1-SNAPSHOT</Select.Option>
+                                    <Select.Option value={"2.1.0-SNAPSHOT"}>2.1.0-SNAPSHOT</Select.Option>
                                 </Select>
                             </Form.Item>
 

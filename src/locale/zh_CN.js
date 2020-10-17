@@ -74,10 +74,12 @@ const zh_CN = {
     drag_column: "拖拽列到这里",
     drop_column: "在这里释放",
     plugin: "插件",
-    aliyun_message:"阿里云信息",
+    input_message:"填写信息",
     engine_name: "引擎名称",
     access_key_id: "AccessKeyID",
     access_key_secret: "AccessKeySecret",
+    oss_access_key_id: "OSS AccessKeyID",
+    oss_access_key_secret: "OSS AccessKeySecret",
     regin_id: "阿里云区",
     endpoint_public_access: "是否有公网IP",
     k8s_address: "阿里云ASK地址",
@@ -88,6 +90,30 @@ const zh_CN = {
     executor_num: "引擎单Executor数目",
     engine_version: "引擎版本",
     jar_engine_version: "引擎Jar包版本",
+    "Name is required": "引擎名称必须填写",
+    "AccessKeyID/AccessKeySecret is required": "AccessKeyID/AccessKeySecret必须填写",
+    "OSSBucket is required": "OSSBucket 字段必须填写",
+    delete_cloud_engine:"删除云引擎",
+    create_cloud_engine:"创建云引擎",
+    aliyun_cloud_engine: "在阿里云创建引擎",
+    cloud_engine_name:"云引擎名称",
+    delete_fail:"删除失败",
+    delete_success: "删除成功",
+    aliyun_related: "阿里云相关",
+    cluster_related: "集群规模相关",
+    a_1: "该功能为测试版",
+    a_2: `使用该功能时，用户可以先创建一个具有阿里云容器服务完全掌控权限的临时Token以及秘钥，
+    系统会自动在你的账号下创建一套MLSQL Engine实例。
+    该实例依托阿里云 ASK服务。用户可以在阿里云容器服务控制台查看到系统自动创建的K8s集群以及之上的MLSQL Engine实例。
+    创建完完成后，为了保证安全，用户可以删除对应的临时Token和秘钥。用户可以手动在阿里云上删除ASK以及MLSQL Engine实例，也可以通过我们的管理服务来删除。`,
+    cloud_engine_log:"查看系统日志",
+    a_3:"选择任务名称",
+    a_4: "日志信息(自动刷新中，稍候)",
+    a_5: "请选择引擎名称",
+    a_6: "日志信息",
+    a_7: "引擎列表",
+    a_8: "新注册"
+
     
 }
 export default zh_CN;

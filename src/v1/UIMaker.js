@@ -21,7 +21,7 @@ class UIMaker {
         const userStr = sessionStorage.getItem("user") 
         if(!userStr) return {}
         try{
-            return JSON.parse(JSON.parse(userStr).extraOption)
+            return JSON.parse(JSON.parse(userStr).extraOption) || {}
         }catch(e){
             return {}
         }

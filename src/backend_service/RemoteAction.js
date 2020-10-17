@@ -20,6 +20,7 @@ export default class RemoteAction {
     static LOGOUT = "/api_v1/user/logout"
 
     static ENGINE_ADD = "/api_v1/engine/add"
+    static ENGINE_REGISTER = "/api_v1/engine/register"
     static ENGINE_LIST = "/api_v1/engine/list"
     static ENGINE_REMOVE = "/api_v1/engine/remove"
 
@@ -55,5 +56,6 @@ export default class RemoteAction {
     static CLOUD_CREATE_ENGINE = "/api_v1/proxy/api/create_engine"
     static CLOUD_DELETE_ENGINE = "/api_v1/proxy/api/delete_engine"
     static CLOUD_ENGINE_STATUS = "/api_v1/proxy/api/status"
+    static CLOUD_ENGINE_LIST = "/api_v1/proxy/api/list"
 
 }
