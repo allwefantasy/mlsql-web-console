@@ -1,6 +1,6 @@
 import * as React from "react";
 import Timer from "react-compound-timer"
-import {Collapse,Table, Button} from 'antd';
+import {Collapse, Table, Button} from 'antd';
 import EngineService from "../service/EngineService";
 
 export default class JobProgress extends React.Component {
@@ -28,10 +28,21 @@ export default class JobProgress extends React.Component {
                 render: (text, record, index) => {
                     const percent = 2 * record.progress
                     return <div>
-                        {text}
-                        <div style={{width: "200px", height: "30px", backgroundColor: "yellow"}}>
-                            <div style={{width: percent + "px", height: "100%", backgroundColor: "green"}}>
+
+                        <div style={{position: "relative", width: "200px", height: "30px", backgroundColor: "yellow"}}>
+                            <div style={{
+                                position: "relative",
+                                top: "0px",
+                                right: "0px",
+                                width: percent + "px",
+                                height: "100%",
+                                backgroundColor: "rgba(27,163,232,100)"
+                            }}>
                             </div>
+                            <div style={{position: "absolute", top: "4px", textAlign: "center",width:"100%"}}>
+                                {text}
+                            </div>
+
                         </div>
                     </div>
                 }
