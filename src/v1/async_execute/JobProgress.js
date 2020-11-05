@@ -73,7 +73,7 @@ export default class JobProgress extends React.Component {
                     jobId: job.jobId,
                     duration: job.duration,
                     total: job.numTasks - job.numSkippedTasks,
-                    reasonToNumKilled: job.killedTasksSummary,
+                    numKilledTasks: job.numKilledTasks,
                     skipped: job.numSkippedTasks,
                     failed: job.numFailedTasks,
                     completed: job.numCompletedIndices,
@@ -83,8 +83,17 @@ export default class JobProgress extends React.Component {
             }).map(item => {
                     const percent = parseInt(item.completed / item.total * 100, 10)
                     let runningStr = ""
-                    if (item.started > 0) {
-                        runningStr = `(${item.started} running)`
+                    if (item.failed === 0 && item.skipped == 0 && item.started > 0) {
+                        runningStr += `(${item.started} running)`
+                    }
+                    if (item.failed > 0) {
+                        runningStr += `(${item.failed} failed)`
+                    }
+                    if (item.skipped > 0) {
+                        runningStr += `(${item.skipped} failed)`
+                    }
+                    if (item.numKilledTasks > 0) {
+                        runningStr += `(${item.numKilledTasks} killed)`
                     }
                     return {
                         title: `${item.jobId}(${temp.groupId})`,
