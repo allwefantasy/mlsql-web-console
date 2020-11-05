@@ -149,14 +149,14 @@ class MLSQLAceEditor extends React.Component {
         this.commandGroup.current.setState({loading: true});
         this.resourceProgressRef.current.enter({jobName: jobName})
         this.jobProgressRef.enter({jobName: jobName})
-        this.taskProgressRef.current.enter({jobName: jobName})        
+        //this.taskProgressRef.current.enter({jobName: jobName})
     }
 
     exitLoading = () => {
         this.commandGroup.current.setState({loading: false});
         this.jobProgressRef.exit()
         this.resourceProgressRef.current.exit()
-        this.taskProgressRef.current.exit()        
+        //this.taskProgressRef.current.exit()
     }
     etOver = (evt) => {
         const et = this.queryApp.etRef.current

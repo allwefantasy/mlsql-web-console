@@ -12,6 +12,8 @@ import AnalysisWorkshop from '../analysis/workshop';
 import { AdminSetting } from './admin/AdminSetting';
 import UIMaker from '../UIMaker';
 import { Settings } from './admin/pages/Settings';
+import {Doc} from "./pages/Doc";
+import {EngineUI} from "./pages/EgnineUI";
 
 const initState = {
     currentPage: "login",
@@ -42,6 +44,8 @@ function AppConsole(props) {
                     {currentPage === "workshop" && logined && <AnalysisWorkshop></AnalysisWorkshop>}
                     {currentPage === "admin" && logined && UIMaker.isAdmin() && <AdminSetting></AdminSetting>}
                     {currentPage === "settings" && logined && <Settings></Settings>}
+                    {currentPage === "doc" && <Doc></Doc>}
+                    {currentPage === "engine" && logined && <EngineUI></EngineUI>}
                 </div>
                 <div className="app-console-footer">
                     <div style={{ bottom: "100px", textAlign: "center", width: "100%" }}>
