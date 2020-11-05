@@ -1,6 +1,6 @@
 import * as React from "react";
 import Timer from "react-compound-timer"
-import {Table, Button} from 'antd';
+import {Collapse,Table, Button} from 'antd';
 import EngineService from "../service/EngineService";
 
 export default class JobProgress extends React.Component {
@@ -81,23 +81,29 @@ export default class JobProgress extends React.Component {
 
                 }
             }).map(item => {
-                    const percent = parseInt(item.completed / item.total * 100, 10)
+                    const percent = parseInt((item.completed / item.total * 100) + "")
                     let runningStr = ""
-                    if (item.failed === 0 && item.skipped == 0 && item.started > 0) {
+                    if (item.failed === 0 && item.skipped === 0 && item.started > 0) {
                         runningStr += `(${item.started} running)`
                     }
                     if (item.failed > 0) {
                         runningStr += `(${item.failed} failed)`
                     }
                     if (item.skipped > 0) {
-                        runningStr += `(${item.skipped} failed)`
+                        runningStr += `(${item.skipped} skipped)`
                     }
                     if (item.numKilledTasks > 0) {
                         runningStr += `(${item.numKilledTasks} killed)`
                     }
+
+                    let duration = item.duration + " ms"
+                    if (item.duration > 1000) {
+                        duration = parseInt((item.duration / 1000) + "") + " s"
+                    }
+
                     return {
                         title: `${item.jobId}(${temp.groupId})`,
-                        duration: `${item.duration} s`,
+                        duration: duration,
                         tasks: `${item.completed}/${item.total}${runningStr}`,
                         progress: percent
                     }
@@ -132,8 +138,11 @@ export default class JobProgress extends React.Component {
                         Time Cost: {this.finalTime}
                     </Button>
                     <div>
-                        {this.showSQL()}
-                        <Table dataSource={this.state.dataSource} columns={this.columns}/>
+                        <Collapse defaultActiveKey={['1']}>
+                            <Collapse.Panel header={this.showSQL()} key="1">
+                                <Table dataSource={this.state.dataSource} columns={this.columns}/>
+                            </Collapse.Panel>
+                        </Collapse>
                     </div>
                 </div>
             } else {
@@ -141,14 +150,17 @@ export default class JobProgress extends React.Component {
             }
         }
         return <div>
-            <Button type="primary" style={{marginRight: "20px"}}>
+            <Button type="primary" style={{margin: "0px 0px 20px 0px"}}>
                 Time Cost:<Timer ref={(et) => this.timer = et}>
                 <Timer.Minutes formatValue={value => `${value} m. `}/>
                 <Timer.Seconds formatValue={value => `${value} s. `}/>
             </Timer></Button>
             <div>
-                {this.showSQL()}
-                <Table dataSource={this.state.dataSource} columns={this.columns}/>
+                <Collapse defaultActiveKey={['1']}>
+                    <Collapse.Panel header={this.showSQL()} key="1">
+                        <Table dataSource={this.state.dataSource} columns={this.columns}/>
+                    </Collapse.Panel>
+                </Collapse>
             </div>
         </div>
     }

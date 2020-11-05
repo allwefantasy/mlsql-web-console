@@ -89,7 +89,7 @@ export default class EngineService {
     }
 
     static async jobProgress2(jobName) {
-        const res2 = await client.runScript(`load _mlsql_.\`jobs/v2/${jobName}\` as ${uuidv4().replaceAll("-", "")};`, uuidv4(), {"queryType": "robot"})
+        const res2 = await client.runScript(`load _mlsql_.\`jobs/v2/${jobName}\` as wow;`, uuidv4(), {"queryType": "robot"})
         return res2.content[0]
     }
 
