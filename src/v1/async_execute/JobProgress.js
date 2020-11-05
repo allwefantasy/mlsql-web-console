@@ -28,7 +28,7 @@ export default class JobProgress extends React.Component {
                 render: (text, record, index) => {
                     const percent = 2 * record.progress
                     return <div>
-                        {text}:
+                        {text}
                         <div style={{width: "200px", height: "30px", backgroundColor: "yellow"}}>
                             <div style={{width: percent + "px", height: "100%", backgroundColor: "green"}}>
                             </div>
@@ -87,7 +87,7 @@ export default class JobProgress extends React.Component {
                         runningStr = `(${item.started} running)`
                     }
                     return {
-                        title: `${item.jobId}`,//(${temp.groupId})
+                        title: `${item.jobId}(${temp.groupId})`,
                         duration: `${item.duration} s`,
                         tasks: `${item.completed}/${item.total}${runningStr}`,
                         progress: percent
