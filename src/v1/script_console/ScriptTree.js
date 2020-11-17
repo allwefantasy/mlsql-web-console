@@ -1,7 +1,7 @@
 import React, { useRef, useCallback, useEffect } from 'react';
 import { Tree, Modal, Menu, Form, Input } from 'antd';
 import { useReducerAsync } from 'use-reducer-async'
-import { DownOutlined, FileOutlined, FolderOutlined, DeleteOutlined, FileAddOutlined, FolderAddOutlined } from '@ant-design/icons';
+import { DownOutlined, ShareAltOutlined, FolderOutlined, DeleteOutlined, FileAddOutlined, FolderAddOutlined } from '@ant-design/icons';
 import { ScriptTreeReducer, ScriptTreeHandlers, ScriptTreeActionNames } from './actions/ScriptTreeReducer';
 import { ActionProxy } from '../../backend_service/ActionProxy';
 import RemoteAction from '../../backend_service/RemoteAction';
@@ -48,16 +48,27 @@ function ScriptTree(props) {
 
     useEffect(() => {
         const getList = async () => {
+            const shares = await client.get(RemoteAction.SCRIPT_SHARE_PUBLIC,{})
+            if(shares.status !== 200){
+                return
+            }
             const res = await client.get(RemoteAction.SCRIPT_FILE_LIST, {})
             if (res.status !== 200) {
                 return
             }
 
             const builder = new MLSQLTreeNodeBuilder()
+
             const treeRes = builder.build(res.content).sort((a, b) => {
-                return a.id - b.id
+                return b.id - a.id
             })
 
+            shares.content.map(item=>{
+                item[0].parentId = 0
+                const node = builder.build(item)
+                treeRes[0].childNodes.unshift(node[0])
+                return item
+            })
 
             const treeData = treeRes.map(item => {
                 return builder.convert(item)
@@ -78,6 +89,7 @@ function ScriptTree(props) {
                 }
             })
         }
+
         getList()
     }, [reloading])
 
@@ -132,6 +144,16 @@ function ScriptTree(props) {
         }
 
         return <Menu >
+            {target.parentId == nodes[0].id  &&  <Menu.Item icon={<ShareAltOutlined/>} onClick={() => {
+                dispacher({
+                    type: ScriptTreeActionNames.sharePublic,
+                    data: {
+                        node: target
+                    }
+                })
+                setRightClickNodeTreeItem(undefined)
+            }} key={0}>Share Public</Menu.Item>
+            }
             <Menu.Item icon={<FileAddOutlined />} onClick={() => {
                 dispacher({
                     type: "setState",

@@ -33,7 +33,6 @@ class MLSQLTreeNodeBuilder {
                 try {
                     list[tempMap[node.parentId]].childNodes.push(node);
                 } catch (e) {
-                    console.log("------------")
                     console.log(node)
                     console.log(tempMap[node.parentId])
                 }
@@ -44,7 +43,8 @@ class MLSQLTreeNodeBuilder {
         }
         return roots;
     }
-    convert = (item) => {                
+
+    convert = (item) => {
         if (item["childNodes"] && item["childNodes"].length > 0) {
             item["children"] = item["childNodes"]
             item["children"].map((cn) => {

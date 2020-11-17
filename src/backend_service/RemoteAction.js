@@ -36,6 +36,7 @@ export default class RemoteAction {
     static ANALYSIS_PLUGIN_LIST = "/api_v1/script_file/plugins"
     static ANALYSIS_PLUGIN_GET = "/api_v1/script_file/plugin/get"
     static ANALYSIS_PLUGIN_PUBLISH = "/api_v1/script_file/plugin/publish"
+    static SCRIPT_SHARE_PUBLIC = "/api_v1/script_file/share"
 
     static USER_EXTRA = "/api_v1/user/extra/update"
     static USER_CHANGE_PASSWORD = "/api_v1/changepassword"
