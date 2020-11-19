@@ -72,7 +72,7 @@ const SetupEngineFromCloud:React.FunctionComponent<Props> = (props) => {
                             <Form.Item name={"owner"} label={<FormattedMessage id="engine_name"/>} help={"必填"}>
                                 <Input />
                             </Form.Item>
-                            <Form.Item name={"OSSBucket"} label={<FormattedMessage id="OSSBucket"/>} help={"必填,比如：oss://mlsql-release-repo"}>
+                            <Form.Item name={"OSSBucket"} label={<FormattedMessage id="OSSBucket"/>} help={"默认bucket名称,比如：mlsql-release-repo"}>
                                 <Input/>
                             </Form.Item>
                             <Form.Item name={"AccessKeyID"} label={<FormattedMessage id="access_key_id"/>} help={"必填"}>
@@ -154,15 +154,13 @@ const SetupEngineFromCloud:React.FunctionComponent<Props> = (props) => {
                                     }}
                                 />
                             </Form.Item>
-                            <Form.Item name={"EngineVersion"} label={<FormattedMessage id="engine_version"/>} initialValue={"2.0.1"}>
+                            <Form.Item name={"EngineVersion"} label={<FormattedMessage id="engine_version"/>} initialValue={"2.1.0"}>
                                 <Select>
-                                    <Select.Option value={"2.0.1"}>2.0.1</Select.Option>
                                     <Select.Option value={"2.1.0"}>2.1.0</Select.Option>
                                 </Select>
                             </Form.Item>
-                            <Form.Item name={"JarEngineVersion"} label={<FormattedMessage id="jar_engine_version"/>} initialValue={"2.0.1-SNAPSHOT"}>
+                            <Form.Item name={"JarEngineVersion"} label={<FormattedMessage id="jar_engine_version"/>} initialValue={"2.1.0-SNAPSHOT"}>
                                 <Select>
-                                    <Select.Option value={"2.0.1-SNAPSHOT"}>2.0.1-SNAPSHOT</Select.Option>
                                     <Select.Option value={"2.1.0-SNAPSHOT"}>2.1.0-SNAPSHOT</Select.Option>
                                 </Select>
                             </Form.Item>
