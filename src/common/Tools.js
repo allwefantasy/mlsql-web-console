@@ -52,7 +52,8 @@ export default class Tools {
         return {
             queryType: "robot",
             fetchType: "take",
-            includeSchema: true
+            includeSchema: true,
+            outputSize: 200
         }
     }
 
