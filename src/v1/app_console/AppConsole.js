@@ -14,6 +14,7 @@ import UIMaker from '../UIMaker';
 import { Settings } from './admin/pages/Settings';
 import {Doc} from "./pages/Doc";
 import {EngineUI} from "./pages/EgnineUI";
+import {IndexManager} from "../app/IndexManager";
 
 const initState = {
     currentPage: "login",
@@ -41,6 +42,7 @@ function AppConsole(props) {
                     {currentPage === "register" && <Register></Register>}
                     {currentPage !== "register" && !logined && <Login></Login>}
                     {currentPage === "console" && logined && <MLSQLQueryApp></MLSQLQueryApp>}
+                    {currentPage === "indexer_manager" && logined && <IndexManager></IndexManager>}
                     {currentPage === "workshop" && logined && <AnalysisWorkshop></AnalysisWorkshop>}
                     {currentPage === "admin" && logined && UIMaker.isAdmin() && <AdminSetting></AdminSetting>}
                     {currentPage === "settings" && logined && <Settings></Settings>}

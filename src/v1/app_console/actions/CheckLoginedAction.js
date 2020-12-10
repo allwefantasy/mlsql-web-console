@@ -2,7 +2,8 @@ import UIMaker from "../../UIMaker"
 import ActionMaker from "../../ActionMaker"
 
 export const {handler:CheckLoginedActionHandler,action:CheckLoginedAction} = ActionMaker.buildHandler(async (action)=>{
-    let currentPage = "settings"
+    let currentPage = "indexer_manager"
+    // let currentPage = "workshop"
     if(action.__state.currentPage==="register" && !UIMaker.logined()){
         currentPage = "register"
     }

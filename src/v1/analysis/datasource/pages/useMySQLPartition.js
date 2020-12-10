@@ -11,8 +11,8 @@ function useMySQLPartition() {
     const [openTable, setOpenTable] = useState("")
     const [loading, setLoading] = useState(false)
     const [data, setData] = useState([])
-    const [error, setError] = useState(undefined)
-    const [column, setColumn] = useState(undefined)
+    const [error, setError] = useState("")
+    const [column, setColumn] = useState("")
     const [form] = Form.useForm()
     const proxy = new ActionProxy()
 

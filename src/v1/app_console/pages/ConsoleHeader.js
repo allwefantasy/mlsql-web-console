@@ -87,6 +87,11 @@ function ConsoleHeader(props) {
                 {logined && <Menu.Item key="workshop" icon={<AppstoreOutlined />}>
                    <FormattedMessage id="analysis_workshop"/>                    
                 </Menu.Item>}
+
+                {logined && <Menu.Item key="indexer_manager" icon={<AppstoreOutlined />}>
+                    <FormattedMessage id="indexer_manager"/>
+                </Menu.Item>}
+
                 {
                     logined && <Menu.Item key="settings" icon={<SettingOutlined />}>
                         <FormattedMessage id="settings"/>                    

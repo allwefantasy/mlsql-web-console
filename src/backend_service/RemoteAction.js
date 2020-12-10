@@ -59,4 +59,7 @@ export default class RemoteAction {
     static CLOUD_ENGINE_STATUS = "/api_v1/proxy/api/status"
     static CLOUD_ENGINE_LIST = "/api_v1/proxy/api/list"
 
+    static INDEXER_LIST = "/api_v1/indexer"
+    static MYSQL_INDEXER_CREATE = "/api_v1/indexer/mysql/build"
+
 }

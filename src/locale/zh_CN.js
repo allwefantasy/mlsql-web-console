@@ -112,7 +112,12 @@ const zh_CN = {
     a_5: "请选择引擎名称",
     a_6: "日志信息",
     a_7: "引擎列表",
-    a_8: "新注册"
+    a_8: "新注册",
+    indexer_manager: "索引管理",
+    indexer_list: "索引列表",
+    create_indexer: "创建索引",
+    mysql_indexer_manager:"MySQL数据库索引管理",
+    other_indexer_manager:"其他数据源索引管理"
 
     
 }

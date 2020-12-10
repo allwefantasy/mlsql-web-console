@@ -65,8 +65,9 @@ function ScriptTree(props) {
 
             shares.content.map(item=>{
                 item[0].parentId = 0
+                item[0].label = <span style={{color:"green"}}>{item[0].label+"(shared by others)"}</span>
                 const node = builder.build(item)
-                treeRes[0].childNodes.unshift(node[0])
+                treeRes[0].childNodes = treeRes[0].childNodes.concat(node[0])
                 return item
             })
 
