@@ -4,6 +4,8 @@ import {MailOutlined, SettingOutlined} from '@ant-design/icons';
 import {FormattedMessage} from "react-intl";
 import {IndexList} from "./indexmanager/IndexerList";
 import {CreateIndexer} from "./indexmanager/CreateIndexer";
+import {OtherIndexList} from "./other_indexmanager/OtherIndexerList";
+import {OtherCreateIndexer} from "./other_indexmanager/OtherCreateIndexer";
 
 
 const {SubMenu} = Menu;
@@ -52,8 +54,10 @@ function IndexManager() {
                 </Menu>
             </div>
             <div className="app-admin-main">
-                {currentPage === "indexer_list" && <IndexList />}
-                {currentPage === "create_indexer" && <CreateIndexer />}
+                {currentPage === "indexer_list" && <IndexList/>}
+                {currentPage === "create_indexer" && <CreateIndexer/>}
+                {/*{currentPage === "indexer_list2" && <OtherIndexList/>}*/}
+                {/*{currentPage === "create_indexer2" && <OtherCreateIndexer/>}*/}
             </div>
         </div>
     )

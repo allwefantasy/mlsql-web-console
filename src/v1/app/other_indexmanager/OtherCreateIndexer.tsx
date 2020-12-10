@@ -29,12 +29,11 @@ interface TablePartition {
     dbName: string;
     tableName: string;
 }
-
 interface Engine {
-    name: string;
+    name:string;
 }
 
-export function CreateIndexer() {
+export function OtherCreateIndexer() {
     const formItemLayout = {
         labelCol: {span: 6},
         wrapperCol: {span: 14},
@@ -48,8 +47,8 @@ export function CreateIndexer() {
     const [table, setTable] = useState<{ dbName: string, tableName: string } | null>(null)
     const [tp, setTp] = useState<TablePartition | null>(null)
     const [engines, setEngines] = useState<Array<Engine>>([])
+
     const {ui: PartitionUI, form: partitionForm, setOpenTable, setError: setPartitionError, partitionNumValue} = useMySQLPartition()
-    const [enableSyncInterval, setEnableSyncInterval] = useState<boolean>(false)
 
     const fetch = async () => {
         const proxy = new ActionProxy()
@@ -162,22 +161,11 @@ export function CreateIndexer() {
                     </Form.Item>
 
                     <Form.Item name={"indexerType"} label={<FormattedMessage id="索引类型"/>}>
-                        <Select onChange={(value, option) => {
-                            if(value === "parquet"){
-                                setEnableSyncInterval(true)
-                            }
-                        }}>
-                            <Select.Option value={"mysql"}>实时</Select.Option>
-                            <Select.Option value={"parquet"}>定时</Select.Option>
+                        <Select>
+                            <Select.Option value={"realtime"}>实时</Select.Option>
+                            <Select.Option value={"interval"}>定时</Select.Option>
                         </Select>
                     </Form.Item>
-
-                    {
-                        enableSyncInterval ?
-                        <Form.Item name={"syncInterval"} label={<FormattedMessage id="同步周期(小时)"/>}>
-                            <Input/>
-                        </Form.Item>: <></>
-                    }
 
                     <Form.Item name={"idCols"} label={<FormattedMessage id="标识唯一组合键"/>}>
                         <Input/>
