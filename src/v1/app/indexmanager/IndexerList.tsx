@@ -31,44 +31,47 @@ export function IndexList() {
         loadIndexers()
     }, [])
 
-    return <div className="common-margin common-child-center" >
+    return <div className="common-margin common-child-center">
         <Table dataSource={result}>
-            <Table.Column title="索引名称" dataIndex="name" key="name" />
+            <Table.Column title="索引名称" dataIndex="name" key="name"/>
         </Table>
-        <Table dataSource={result} >
-            <Table.Column title="当前状态" dataIndex="status" key="status" render={(value,record,index)=>{
-                if(value===0){
+        <Table dataSource={result}>
+            <Table.Column title="当前状态" dataIndex="status" key="status" render={(value, record, index) => {
+                if (value === 0) {
                     return <>索引完成</>
                 }
-                if(value === 1){
+                if (value === 1) {
                     return <>索引中</>
                 }
-              return <></>
+                return <></>
             }}/>
-            <Table.Column title="上一次索引时间" dataIndex="lastExecuteTime" key="lastExecuteTime" render={(value,record,index)=>{
-                 const date = new Date(value);
-                return <>{ moment(date).format("YYYY-MM-DD hh:mm:ss")}</>
-            }}/>
-            <Table.Column title="上一次索引状态" dataIndex="lastStatus" key="lastStatus" render={(value,record,index)=>{
-                if(value===0){
+            <Table.Column title="上一次索引时间" dataIndex="lastExecuteTime" key="lastExecuteTime"
+                          render={(value, record, index) => {
+                              const date = new Date(value);
+                              return <>{moment(date).format("YYYY-MM-DD hh:mm:ss")}</>
+                          }}/>
+            <Table.Column title="上一次索引状态" dataIndex="lastStatus" key="lastStatus" render={(value, record, index) => {
+                if (value === 0) {
                     return <>索引完成</>
                 }
-                if(value === 1){
+                if (value === 1) {
                     return <>索引失败</>
                 }
                 return <></>
             }}/>
 
-            <Table.Column title="上一次索引信息" dataIndex="lastFailMsg" key="lastFailMsg" render={(value,record,index)=>{
-                return <>{value}</>
-            }}/>
+            <Table.Column title="上一次索引信息" width="200"
+                          ellipsis={{showTitle: true}} dataIndex="lastFailMsg" key="lastFailMsg"
+                          render={(value, record, index) => {
+                              return <>{value}</>
+                          }}/>
 
-            <Table.Column title="操作" dataIndex="operate" key="operate"  fixed='right'  width="100px" render={(value,record,index)=>{
-                return <>
-                    <Button>删除</Button>
-                    <Button>{(record as {id:number}).id}</Button>
-                </>
-            }}/>
+            <Table.Column title="操作" dataIndex="operate" key="operate" fixed='right' width="100px"
+                          render={(value, record, index) => {
+                              return <>
+                                  <Button>删除</Button>
+                              </>
+                          }}/>
 
 
         </Table>
