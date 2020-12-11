@@ -61,5 +61,6 @@ export default class RemoteAction {
 
     static INDEXER_LIST = "/api_v1/indexer"
     static MYSQL_INDEXER_CREATE = "/api_v1/indexer/mysql/build"
+    static INDEXER_REMOVE = "/api_v1/indexer/remove"
 
 }

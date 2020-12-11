@@ -60,9 +60,9 @@ export function CreateIndexer() {
             item.isLeaf = false
             item.children = item.tables.map(table => {
                 return {
-                    id: `${item.name}.${table}`,
-                    key: `${item.name}.${table}`,
-                    title: table,
+                    id: `${item.name}.${table.name}`,
+                    key: `${item.name}.${table.name}`,
+                    title: table.name,
                     isLeaf: true,
                     icon: <TableOutlined/>
                 }

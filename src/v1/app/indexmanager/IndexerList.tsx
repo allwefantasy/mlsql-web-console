@@ -1,5 +1,5 @@
 import React, {useState, useCallback, useEffect} from 'react';
-import {Button, Card, Form, Table} from "antd";
+import {Button, Card, Form, Popconfirm, Table} from "antd";
 import {ActionProxy} from "../../../backend_service/ActionProxy";
 import RemoteAction from "../../../backend_service/RemoteAction";
 import moment from "moment";
@@ -26,6 +26,13 @@ export function IndexList() {
             const value = res.content as Array<MlsqlIndexer>
             setResult(value)
         }
+    }
+    const removeIndexer = async (name: string) => {
+        const proxy = new ActionProxy()
+        await proxy.post(RemoteAction.INDEXER_REMOVE, {
+            name
+        })
+        loadIndexers()
     }
     useEffect(() => {
         loadIndexers()
@@ -69,7 +76,16 @@ export function IndexList() {
             <Table.Column title="操作" dataIndex="operate" key="operate" fixed='right' width="100px"
                           render={(value, record, index) => {
                               return <>
-                                  <Button>删除</Button>
+                                  <Popconfirm
+                                      title="确认要删除该索引么？"
+                                      okText="Yes"
+                                      cancelText="No"
+                                      onConfirm={() => {
+                                          removeIndexer((record as { name: string }).name)
+                                      }}
+                                  >
+                                      <Button>删除</Button>
+                                  </Popconfirm>
                               </>
                           }}/>
 
