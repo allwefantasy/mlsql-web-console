@@ -163,8 +163,11 @@ export function CreateIndexer() {
 
                     <Form.Item name={"indexerType"} label={<FormattedMessage id="索引类型"/>}>
                         <Select onChange={(value, option) => {
-                            if(value === "parquet"){
+                            if (value === "parquet") {
                                 setEnableSyncInterval(true)
+                            }
+                            if (value === "mysql") {
+                                setEnableSyncInterval(false)
                             }
                         }}>
                             <Select.Option value={"mysql"}>实时</Select.Option>
@@ -174,9 +177,9 @@ export function CreateIndexer() {
 
                     {
                         enableSyncInterval ?
-                        <Form.Item name={"syncInterval"} label={<FormattedMessage id="同步周期(小时)"/>}>
-                            <Input/>
-                        </Form.Item>: <></>
+                            <Form.Item name={"syncInterval"} label={<FormattedMessage id="同步周期(小时)"/>}>
+                                <Input/>
+                            </Form.Item> : <></>
                     }
 
                     <Form.Item name={"idCols"} label={<FormattedMessage id="标识唯一组合键"/>}>
