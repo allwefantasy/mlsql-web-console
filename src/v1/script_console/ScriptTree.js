@@ -1,18 +1,25 @@
-import React, { useRef, useCallback, useEffect } from 'react';
-import { Tree, Modal, Menu, Form, Input } from 'antd';
-import { useReducerAsync } from 'use-reducer-async'
-import { DownOutlined, ShareAltOutlined, FolderOutlined, DeleteOutlined, FileAddOutlined, FolderAddOutlined } from '@ant-design/icons';
-import { ScriptTreeReducer, ScriptTreeHandlers, ScriptTreeActionNames } from './actions/ScriptTreeReducer';
-import { ActionProxy } from '../../backend_service/ActionProxy';
+import React, {useRef, useCallback, useEffect} from 'react';
+import {Popconfirm, Tree, Modal, Menu, Form, Input} from 'antd';
+import {useReducerAsync} from 'use-reducer-async'
+import {
+    DownOutlined,
+    ShareAltOutlined,
+    FolderOutlined,
+    DeleteOutlined,
+    FileAddOutlined,
+    FolderAddOutlined
+} from '@ant-design/icons';
+import {ScriptTreeReducer, ScriptTreeHandlers, ScriptTreeActionNames} from './actions/ScriptTreeReducer';
+import {ActionProxy} from '../../backend_service/ActionProxy';
 import RemoteAction from '../../backend_service/RemoteAction';
 import MLSQLTreeNodeBuilder from '../../service/MLSQLTreeBuilder';
 import SpinBox from '../SpinBox'
-import { useContextMenuCallback, useContextMenu } from './pages/ContextMenu';
+import {useContextMenuCallback, useContextMenu} from './pages/ContextMenu';
 import Tools from '../../common/Tools';
 import AlertBox from '../AlertBox'
-import { FormattedMessage } from 'react-intl'
+import {FormattedMessage} from 'react-intl'
 
-const { DirectoryTree } = Tree
+const {DirectoryTree} = Tree
 
 
 const initState = {
@@ -31,9 +38,10 @@ const initState = {
 const ScriptTreeContext = React.createContext()
 
 function ScriptTree(props) {
-    const { consoleApp } = props
+    const {consoleApp} = props
     const [state, dispacher] = useReducerAsync(ScriptTreeReducer, initState, ScriptTreeHandlers)
-    const { loading,
+    const {
+        loading,
         nodes,
         error, createFileError,
         createType,
@@ -48,8 +56,8 @@ function ScriptTree(props) {
 
     useEffect(() => {
         const getList = async () => {
-            const shares = await client.get(RemoteAction.SCRIPT_SHARE_PUBLIC,{})
-            if(shares.status !== 200){
+            const shares = await client.get(RemoteAction.SCRIPT_SHARE_PUBLIC, {})
+            if (shares.status !== 200) {
                 return
             }
             const res = await client.get(RemoteAction.SCRIPT_FILE_LIST, {})
@@ -63,9 +71,9 @@ function ScriptTree(props) {
                 return b.id - a.id
             })
 
-            shares.content.map(item=>{
+            shares.content.map(item => {
                 item[0].parentId = 0
-                item[0].label = <span style={{color:"green"}}>{item[0].label+"(shared by others)"}</span>
+                item[0].label = <span style={{color: "green"}}>{item[0].label + "(shared by others)"}</span>
                 const node = builder.build(item)
                 treeRes[0].childNodes = treeRes[0].childNodes.concat(node[0])
                 return item
@@ -95,7 +103,7 @@ function ScriptTree(props) {
     }, [reloading])
 
     const onRender = ({rightClickNodeTreeItem, setRightClickNodeTreeItem, dispacher}) => {
-        const { id } = rightClickNodeTreeItem
+        const {id} = rightClickNodeTreeItem
         let target = undefined
 
         Tools.visitDown(nodes[0], (item) => {
@@ -104,8 +112,8 @@ function ScriptTree(props) {
             }
         })
         if (id === nodes[0].id) {
-            return <Menu >
-                <Menu.Item icon={<FolderAddOutlined />} onClick={
+            return <Menu>
+                <Menu.Item icon={<FolderAddOutlined/>} onClick={
                     () => {
                         dispacher({
                             type: "setState",
@@ -122,8 +130,8 @@ function ScriptTree(props) {
         }
 
         if (!target.isDir) {
-            return <Menu >
-                <Menu.Item onClick={() => {                    
+            return <Menu>
+                <Menu.Item onClick={() => {
                     dispacher({
                         type: ScriptTreeActionNames.publishPlugin,
                         data: {
@@ -132,7 +140,7 @@ function ScriptTree(props) {
                     })
                     setRightClickNodeTreeItem(undefined)
                 }} key={0}>Publish As Plugin To Analysis</Menu.Item>
-                <Menu.Item onClick={() => {                    
+                <Menu.Item onClick={() => {
                     dispacher({
                         type: ScriptTreeActionNames.deleteScriptFile,
                         data: {
@@ -144,8 +152,8 @@ function ScriptTree(props) {
             </Menu>
         }
 
-        return <Menu >
-            {target.parentId == nodes[0].id  &&  <Menu.Item icon={<ShareAltOutlined/>} onClick={() => {
+        return <Menu>
+            {target.parentId == nodes[0].id && <Menu.Item icon={<ShareAltOutlined/>} onClick={() => {
                 dispacher({
                     type: ScriptTreeActionNames.sharePublic,
                     data: {
@@ -155,7 +163,7 @@ function ScriptTree(props) {
                 setRightClickNodeTreeItem(undefined)
             }} key={0}>Share Public</Menu.Item>
             }
-            <Menu.Item icon={<FileAddOutlined />} onClick={() => {
+            <Menu.Item icon={<FileAddOutlined/>} onClick={() => {
                 dispacher({
                     type: "setState",
                     data: {
@@ -167,7 +175,7 @@ function ScriptTree(props) {
                 })
                 setRightClickNodeTreeItem(undefined)
             }} key={1}>Create Script</Menu.Item>
-            <Menu.Item icon={<FolderAddOutlined />} onClick={() => {
+            <Menu.Item icon={<FolderAddOutlined/>} onClick={() => {
                 dispacher({
                     type: "setState",
                     data: {
@@ -179,22 +187,22 @@ function ScriptTree(props) {
                 })
                 setRightClickNodeTreeItem(undefined)
             }} key={2}>Create Folder</Menu.Item>
-            <Menu.Item icon={<DeleteOutlined />} onClick={() => {
+            <Menu.Item icon={<DeleteOutlined/>} onClick={() => {
                 dispacher({
                     type: ScriptTreeActionNames.deleteScriptFile,
                     data: {
-                        node: target,                        
+                        node: target,
                     }
                 })
                 setRightClickNodeTreeItem(undefined)
             }} key={3}>Delete</Menu.Item>
         </Menu>
     }
-    const { onRightClick: popContextMenu, ui: contextMenu } = useContextMenu({ contextMenuRef, dispacher, onRender })
+    const {onRightClick: popContextMenu, ui: contextMenu} = useContextMenu({contextMenuRef, dispacher, onRender})
 
 
     return (
-        <ScriptTreeContext.Provider value={{ dispacher }}>
+        <ScriptTreeContext.Provider value={{dispacher}}>
             {contextMenu()}
             <Modal
                 title={createTitle}
@@ -202,7 +210,7 @@ function ScriptTree(props) {
                 onCancel={() => {
                     dispacher({
                         type: "setState",
-                        data: { operateModal: false }
+                        data: {operateModal: false}
                     })
                 }}
                 onOk={() => {
@@ -223,33 +231,34 @@ function ScriptTree(props) {
                 }
                 <Form form={form}>
                     <Form.Item name="fileName" label="File Name">
-                        <Input />
+                        <Input/>
                     </Form.Item>
                 </Form>
             </Modal>
             {error && <AlertBox message={error}></AlertBox>}
             {loading && <SpinBox></SpinBox>}
             {!loading &&
-                <DirectoryTree height={700}
-                    onExpand={(expandedKeys) => {                        
-                        dispacher({
-                            type: ScriptTreeActionNames.expand,
-                            data: { expandedKeys }
-                        })
-                    }}                    
-                    onDoubleClick={(evt, node) => {
-                        dispacher({
-                            type: ScriptTreeActionNames.openScriptFile,
-                            data: { consoleApp, node }
-                        })
-                    }}
-                    defaultExpandedKeys = {expandedKeys}
-                    expandAction="click"
-                    onRightClick={popContextMenu}
-                    switcherIcon={<DownOutlined />}
-                    treeData={nodes}></DirectoryTree>}
-                    
+            <DirectoryTree height={700}
+                           onExpand={(expandedKeys) => {
+                               dispacher({
+                                   type: ScriptTreeActionNames.expand,
+                                   data: {expandedKeys}
+                               })
+                           }}
+                           onDoubleClick={(evt, node) => {
+                               dispacher({
+                                   type: ScriptTreeActionNames.openScriptFile,
+                                   data: {consoleApp, node}
+                               })
+                           }}
+                           defaultExpandedKeys={expandedKeys}
+                           expandAction="click"
+                           onRightClick={popContextMenu}
+                           switcherIcon={<DownOutlined/>}
+                           treeData={nodes}></DirectoryTree>}
+
         </ScriptTreeContext.Provider>
     )
 }
-export { ScriptTree, ScriptTreeContext }
+
+export {ScriptTree, ScriptTreeContext}
