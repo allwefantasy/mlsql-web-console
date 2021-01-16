@@ -85,7 +85,7 @@ export function CreateIndexer() {
         setError("")
         const proxy = new ActionProxy()
         const params = form.getFieldsValue()
-        if (!params["idCols"]) {
+        if (params["syncInterval"] === "mysql" && !params["idCols"]) {
             setError("idCols is required")
             return
         }
@@ -177,14 +177,17 @@ export function CreateIndexer() {
 
                     {
                         enableSyncInterval ?
-                            <Form.Item name={"syncInterval"} label={<FormattedMessage id="同步周期(小时)"/>}>
+                            <Form.Item name={"syncInterval"} label={<FormattedMessage id="同步周期(d/h/m)"/>}>
                                 <Input/>
                             </Form.Item> : <></>
                     }
 
-                    <Form.Item name={"idCols"} label={<FormattedMessage id="标识唯一组合键"/>}>
-                        <Input/>
-                    </Form.Item>
+                    {
+                        !enableSyncInterval ?
+                            <Form.Item name={"idCols"} label={<FormattedMessage id="标识唯一组合键"/>}>
+                                <Input/>
+                            </Form.Item> : <></>
+                    }
 
                     <Form.Item name={"engineName"} label={<FormattedMessage id="选择构建索引的引擎"/>}>
                         <Select>

@@ -14,6 +14,7 @@ export default class ExecuteUnit extends React.Component {
     execute = () => {
         const sql = this.codeBlock.originalEditor().getValue()
         const engine = new Engine(5 * 60 * 1000)
+        this.notebook.saveNoteBook()
         engine.run(sql, (msg) => {
             this.displayGroup.refresh(msg)
             this.commandGroup.setState({isExecute: false})

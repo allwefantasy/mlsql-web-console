@@ -31,7 +31,7 @@ export default class NodeBook extends React.Component {
             this.executeUnits.push(this.createNewExecuteUnit())
             this.setState({executeUnits: this.executeUnits})
         }
-        this.saveNoteBook()
+        //this.saveNoteBook()
     }
 
     saveNoteBook = () => {

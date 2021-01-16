@@ -61,7 +61,9 @@ export default class DisplayGroup extends React.Component {
 
     displayTable = () => {
         if (this.state.displayData) {
-            return <DataTable data={this.state.displayData} ref={(et) => this.displayTableRef = et}></DataTable>
+            if(this.state.displayData && MLSQLHTML.isShouldRender(this.state.displayData)){}else{
+                return <DataTable data={this.state.displayData} ref={(et) => this.displayTableRef = et}></DataTable>
+            }
         } else {
             return <div></div>
         }

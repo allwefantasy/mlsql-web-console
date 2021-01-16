@@ -42,13 +42,13 @@ function IndexManager() {
         </span>
                         }
                     >
-                        <Menu.Item key="indexer_list2" onClick={() => {
-                            setCurrentPage("indexer_list2")
-                        }}><FormattedMessage id="indexer_list2"/></Menu.Item>
+                        {/*<Menu.Item key="indexer_list2" onClick={() => {*/}
+                        {/*    setCurrentPage("indexer_list2")*/}
+                        {/*}}><FormattedMessage id="indexer_list2"/></Menu.Item>*/}
 
-                        <Menu.Item key="create_indexer2" onClick={() => {
-                            setCurrentPage("create_indexer2")
-                        }}><FormattedMessage id="create_indexer2"/></Menu.Item>
+                        {/*<Menu.Item key="create_indexer2" onClick={() => {*/}
+                        {/*    setCurrentPage("create_indexer2")*/}
+                        {/*}}><FormattedMessage id="create_indexer2"/></Menu.Item>*/}
 
                     </SubMenu>
                 </Menu>

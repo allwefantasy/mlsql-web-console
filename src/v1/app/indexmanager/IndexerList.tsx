@@ -71,6 +71,7 @@ export function IndexList() {
 
                               return <>{moment(date).format("YYYY-MM-DD hh:mm:ss") + deltaStr}</>
                           }}/>
+
             <Table.Column title="上一次索引状态" dataIndex="lastStatus" key="lastStatus" render={(value, record, index) => {
                 if (value === 0) {
                     return <>索引完成</>
