@@ -24,23 +24,14 @@ export default class CommandGroup extends React.Component {
         this.setState({isExecute: false})
     }
 
-    addBlock = ()=>{
-        this.notebook.createExecuteUnitAfterCurrent(this.executeUnit)
-    }
-
-    removeBlock = ()=>{
-        this.notebook.removeExecuteUnitAfterCurrent(this.executeUnit)
-    }
-
     render() {
 
         return <div>
             {
-                this.state.isExecute ? <NewButton onClick={this.cancelExecute}><Icon type="sync" spin/></NewButton> :
-                    <NewButton onClick={this.evtExecute}><Icon type="caret-right"/></NewButton>
+                this.state.isExecute ? <span onClick={this.cancelExecute}><Icon type="sync" spin/></span> :
+                    <span onClick={this.evtExecute}><Icon type="caret-right"/></span>
             }
-            <NewButton onClick={this.addBlock}>+</NewButton>
-            <NewButton onClick={this.removeBlock}>-</NewButton>
+
         </div>
     }
 }
