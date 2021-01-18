@@ -2,6 +2,7 @@ import React from 'react'
 import DataTable from "./DataTable";
 import MLSQLHTML, {MLSQLHTMLPanel} from "../dash/MLSQLHTML";
 import AceEditor from "react-ace";
+import {Collapse} from "antd";
 
 export default class DisplayGroup extends React.Component {
 
@@ -61,8 +62,16 @@ export default class DisplayGroup extends React.Component {
 
     displayTable = () => {
         if (this.state.displayData) {
-            if(this.state.displayData && MLSQLHTML.isShouldRender(this.state.displayData)){}else{
-                return <DataTable data={this.state.displayData} ref={(et) => this.displayTableRef = et}></DataTable>
+            if (this.state.displayData && MLSQLHTML.isShouldRender(this.state.displayData)) {
+            } else {
+                return <>
+                    <Collapse style={{margin: "20px 0px", padding: "0px 0px"}} defaultActiveKey={"1"}>
+                        <Collapse.Panel header="Result" key="1">
+                            <DataTable data={this.state.displayData}
+                                       ref={(et) => this.displayTableRef = et}></DataTable>
+                        </Collapse.Panel>
+                    </Collapse>
+                </>
             }
         } else {
             return <div></div>

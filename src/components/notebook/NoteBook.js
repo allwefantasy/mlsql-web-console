@@ -31,7 +31,19 @@ export default class NodeBook extends React.Component {
             this.executeUnits.push(this.createNewExecuteUnit())
             this.setState({executeUnits: this.executeUnits})
         }
-        //this.saveNoteBook()
+    }
+
+    createExecuteUnitAfterCurrent = (current)=>{
+        const currentIndex = this.executeUnitRefs.indexOf(current)
+        const newUnit = this.createNewExecuteUnit()
+        this.executeUnits.splice(currentIndex+1,0,newUnit)
+        this.setState({executeUnits: this.executeUnits})
+    }
+
+    removeExecuteUnitAfterCurrent = (current)=>{
+        const currentIndex = this.executeUnitRefs.indexOf(current)
+        this.executeUnits.splice(currentIndex,1)
+        this.setState({executeUnits: this.executeUnits})
     }
 
     saveNoteBook = () => {
