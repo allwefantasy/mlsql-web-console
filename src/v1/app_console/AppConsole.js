@@ -15,6 +15,7 @@ import { Settings } from './admin/pages/Settings';
 import {Doc} from "./pages/Doc";
 import {EngineUI} from "./pages/EgnineUI";
 import {IndexManager} from "../app/IndexManager";
+import {MLSQLScriptPluginsApp} from "../../components/script_plugins/MLSQLScriptPluginsApp";
 
 const initState = {
     currentPage: "login",
@@ -48,6 +49,7 @@ function AppConsole(props) {
                     {currentPage === "settings" && logined && <Settings></Settings>}
                     {currentPage === "doc" && <Doc></Doc>}
                     {currentPage === "engine" && logined && <EngineUI></EngineUI>}
+                    {currentPage === "scriptPlugin" && logined && <MLSQLScriptPluginsApp></MLSQLScriptPluginsApp>}
                 </div>
                 <div className="app-console-footer">
                     <div style={{ bottom: "100px", textAlign: "center", width: "100%" }}>

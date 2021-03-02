@@ -21,20 +21,16 @@ class ScriptPluginView extends React.Component {
             steps: props.steps.concat([{desc: "MLSQL Script", "final": true}])
         }
         this.nav = props.parent
+        this.formRef = React.createRef()
     }
 
     next() {
-
-        this.props.form.validateFields((err, values) => {
-            if (!err) {
-                console.log('Received values of form: ', values);
-                const current = this.state.current + 1;
-                this.setState({current});
-                this.nav.pushParam(values)
-            }
+        this.formRef.current.validateFields().then(values => {
+            console.log('Received values of form: ', values);
+            const current = this.state.current + 1;
+            this.setState({current});
+            this.nav.pushParam(values)
         });
-
-
     }
 
     prev() {
@@ -47,14 +43,10 @@ class ScriptPluginView extends React.Component {
             return <ResultView nav={this.nav}/>
         }
         const formItems = item["params"]
-        const {getFieldDecorator} = this.props.form;
+        // const form = this.formRef.current
         return formItems.map((formItem) => {
-            return <Form.Item {...formItemLayout} label={formItem['name']}>
-                {getFieldDecorator(formItem['name'], {
-                    rules: [{required: formItem['required'], message: `Please input ${formItem['required']}!`}],
-                })(
-                    <Input type="input" placeholder={formItem['desc']}/>
-                )}
+            return <Form.Item {...formItemLayout} name={formItem['name']} label={formItem['name']} rules={[{required: true}]}>
+                <Input type="input" placeholder={formItem['desc']}/>
             </Form.Item>
         })
     }

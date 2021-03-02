@@ -70,7 +70,7 @@ function ConsoleHeader(props) {
             }} selectedKeys={[current]} mode="horizontal">
                 <Menu.Item  key="home">
                     <span style={{ fontSize: 32 }}>MLSQL Web Console</span>
-                    <span style={{ fontSize: 11 }}>(Build _VERSION_)</span>
+                    <span style={{ fontSize: 11 }}>(Build 20210225.171935)</span>
                 </Menu.Item>
                 <Divider type="vertical"></Divider>
 
@@ -104,6 +104,7 @@ function ConsoleHeader(props) {
                 }
                 {
                     logined && <SubMenu icon={<MoreOutlined />} title={<FormattedMessage id="more"/>}>
+                        <Menu.Item key="scriptPlugin">脚本插件</Menu.Item>
                         <Menu.Item key="doc">中文文档</Menu.Item>
                         <Menu.Item key="engine">Engine</Menu.Item>
                         <Menu.Item key="logout" icon={<LogoutOutlined />}>Logout</Menu.Item>
