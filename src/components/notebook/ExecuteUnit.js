@@ -3,8 +3,7 @@ import CodeBlock from "./CodeBlock";
 import CommandGroup from "./CommandGroup";
 import Engine from "./service/Engine";
 import DisplayGroup from "./DisplayGroup";
-
-
+import './notebook.scss'
 export default class ExecuteUnit extends React.Component {
     constructor(props) {
         super(props)
@@ -14,11 +13,11 @@ export default class ExecuteUnit extends React.Component {
     execute = () => {
         const sql = this.codeBlock.originalEditor().getValue()
         const engine = new Engine(5 * 60 * 1000)
-        this.notebook.saveNoteBook()
+        this.props.saveNoteBook()
         engine.run(sql, (msg) => {
             this.displayGroup.refresh(msg)
             this.commandGroup.setState({isExecute: false})
-            this.notebook.nextExecuteUnit()
+            // this.notebook.nextExecuteUnit()
         }, msg => {
             this.displayGroup.fail(msg)
             this.commandGroup.setState({isExecute: false})
@@ -33,15 +32,27 @@ export default class ExecuteUnit extends React.Component {
         return this.codeBlock.originalEditor().getValue()
     }
 
-
     render() {
-        return <div>
-            <CodeBlock initialCode={this.props.initialCode} ref={et => {
-                this.codeBlock = et
-            }} executeUnit={this}/>
-            <CommandGroup ref={et => {
-                this.commandGroup = et
-            }} executeUnit={this}/>
+
+        const {
+            initialCode,
+            onAddCell,
+            onRemoveCell,
+            disableDelete
+        } = this.props
+        return <div className="mb5">
+            <CodeBlock 
+                initialCode={initialCode} 
+                ref={et => { this.codeBlock = et }} 
+                executeUnit={this}
+                onChangeEditorValue={this.props.onChangeEditorValue}
+            />
+            <CommandGroup 
+            ref={et => {this.commandGroup = et}}
+            executeUnit={this}
+            onAddCell={onAddCell}
+            onRemoveCell={onRemoveCell}
+            disableDelete={disableDelete}/>
             <DisplayGroup ref={et => this.displayGroup = et}/>
 
         </div>

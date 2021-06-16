@@ -1,7 +1,7 @@
 import * as React from "react"
 import {Tabs} from 'antd';
 import MLSQLAceEditor from "../MLSQLAceEditor";
-import NodeBook from "../notebook/NoteBook";
+import NoteBook from "../notebook/NoteBook";
 import PythonEditor from "../python/PythonEditor";
 
 const TabPane = Tabs.TabPane;
@@ -68,7 +68,8 @@ export class TabEditor extends React.Component {
         this[action](targetKey);
     }
 
-    addFull = (tabName, callback) => {    
+    addFull = (tabInfo, callback) => {    
+        const { name: tabName, id } = tabInfo
         const editor = (activeKey) => {
             if (tabName.endsWith(".mlsql")) {
                 return <MLSQLAceEditor parent={this.parent} parentCallback={(ref) => {
@@ -78,7 +79,7 @@ export class TabEditor extends React.Component {
                     }
                 }} activeKey={activeKey}/>
             } else if(tabName.endsWith(".nb")) {
-                return <NodeBook parent={this.parent} parentCallback={(ref) => {
+                return <NoteBook id={id} name={tabName} parent={this.parent} parentCallback={(ref) => {
                     this.pushRef({ref: ref, activeKey: activeKey})
                     if (callback) {
                         callback({ref: ref, activeKey: activeKey})
@@ -99,7 +100,8 @@ export class TabEditor extends React.Component {
         panes.push({
             title: tabName || 'MLSQL ' + this.newTabIndex,
             content: editor(activeKey),
-            key: activeKey
+            key: activeKey,
+            id
         });
         this.setState({panes, activeKey});
     }

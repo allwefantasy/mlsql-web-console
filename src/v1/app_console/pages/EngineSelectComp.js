@@ -40,8 +40,8 @@ function EngineSelectComp(props) {
     }
     return (
         <Select onChange={selectEngine} style={{width: "120px"}}>
-            {data.map(item=>{
-                return <Select.Option value={item.name}>{item.name}</Select.Option>
+            {data.map((item)=>{
+                return <Select.Option value={item.name} key={item.id}>{item.name}</Select.Option>
             })}
         </Select>
     )

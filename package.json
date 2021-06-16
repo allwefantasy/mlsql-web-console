@@ -4,14 +4,15 @@
   "private": true,
   "dependencies": {
     "@ant-design/compatible": "^1.0.4",
-    "@ant-design/icons": "^4.2.1",
+    "@ant-design/icons": "^4.6.2",
     "@types/react": "^16.9.44",
     "@types/react-dom": "^16.9.8",
     "ahooks": "^2.4.0",
-    "antd": "^4.4.2",
+    "antd": "^4.16.2",
     "axios": "^0.18.0",
     "classnames": "^2.2.6",
     "file-selector": "^0.1.8",
+    "lodash": "^4.17.21",
     "moment": "^2.24.0",
     "node-sass": "^4.9.4",
     "randomcolor": "^0.5.4",
@@ -68,5 +69,5 @@
     "typescript": "^3.9.7"
   },
   "proxy1": "http://mlsql-console.k8s.uc.host.dxy",
-  "proxy": "http://127.0.0.1:9002"
+  "proxy": "http://localhost:9002"
 }

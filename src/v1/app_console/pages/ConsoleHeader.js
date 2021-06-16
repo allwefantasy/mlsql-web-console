@@ -72,7 +72,8 @@ function ConsoleHeader(props) {
                     <span style={{ fontSize: 32 }}>MLSQL Web Console</span>
                     <span style={{ fontSize: 11 }}>(Build 20210225.171935)</span>
                 </Menu.Item>
-                <Divider type="vertical"></Divider>
+                {/* <Divider type="vertical"></Divider> */}
+                {/* menu 中不能包含其他的组件， 否则会报错 */}
 
                 {!logined && <Menu.Item key="login" icon={<LoginOutlined />}>
                     <FormattedMessage id="login"/>

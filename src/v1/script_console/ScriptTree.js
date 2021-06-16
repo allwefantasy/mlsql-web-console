@@ -200,7 +200,6 @@ function ScriptTree(props) {
     }
     const {onRightClick: popContextMenu, ui: contextMenu} = useContextMenu({contextMenuRef, dispacher, onRender})
 
-
     return (
         <ScriptTreeContext.Provider value={{dispacher}}>
             {contextMenu()}
