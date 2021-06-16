@@ -15,6 +15,8 @@ export default class NoteBook extends React.Component {
             excuteList: [{id: '1', content: ''}]
         }
         this.engine = new Engine(5 * 60 * 1000)
+        this.addCell = this.addCell.bind(this)
+        this.removeCell = this.removeCell.bind(this);
     }
 
     // createNewExecuteUnit = (initialCode) => {
@@ -22,6 +24,7 @@ export default class NoteBook extends React.Component {
     // }
 
     // addRef = (instance) => {
+    //     // console.log(instance, 'int')
     //     if (instance) {
     //         this.executeUnitRefs.push(instance)
     //     }
@@ -47,6 +50,22 @@ export default class NoteBook extends React.Component {
         })
     }
 
+    addCell (index) {
+        const id = Math.max(...this.state.excuteList.map(v => v.id)) + 1
+        const newList = cloneDeep(this.state.excuteList)
+        newList.splice(index + 1, 0, {content: '', id})
+        this.setState({
+            excuteList: newList
+        })
+    }
+
+    removeCell (cell) {
+        const newList = this.state.excuteList.filter(v => v.id !== cell.id)
+        this.setState({
+            excuteList: newList
+        })
+    }
+
     componentDidMount() {
         if (this.props.parentCallback) {
             this.props.parentCallback(this)
@@ -54,7 +73,6 @@ export default class NoteBook extends React.Component {
     }
 
     handleChangeEditorValue = (cell, value) => {
-        console.log(cell, value)
         let newList = cloneDeep(this.state.excuteList)
         const index = newList.findIndex(v => v.id === cell.id)
         newList[index].content = value
@@ -63,7 +81,7 @@ export default class NoteBook extends React.Component {
         })
     }
 
-    text = (value, scriptId) => { // 初始化 editor 的值
+    text = (value, scriptId) => { // 初始化 ed
         this.scriptId = scriptId
         this.initialCode = value
         // if (value && value !== "undefined") {
