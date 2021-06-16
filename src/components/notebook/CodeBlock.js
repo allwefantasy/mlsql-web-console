@@ -1,5 +1,6 @@
 import React from 'react'
 import AceEditor from "react-ace";
+import { debounce } from 'lodash'
 
 /**
  * onLoad(editor){
@@ -26,6 +27,10 @@ export default class CodeBlock extends React.Component {
     componentDidMount() {
         this.originalEditor().container.style.lineHeight = 3
     }
+    changeValue = debounce((value) => {
+        const { onChangeEditorValue } = this.props
+        onChangeEditorValue(value) 
+        } , 500);
 
     render() {
         return (
@@ -38,7 +43,7 @@ export default class CodeBlock extends React.Component {
                 value={this.props.initialCode}
                 mode="sql"
                 theme="github"
-
+                onChange={this.changeValue}
             />
         )
     }

@@ -1,11 +1,7 @@
 import React from 'react'
-import { Icon } from '@ant-design/compatible';
-import {Button} from "antd";
-import styled from 'styled-components';
 
-const NewButton = styled.button`
-  margin: 10px 10px;  
-`;
+import { Button, Space } from 'antd'
+import { LoadingOutlined, CaretRightOutlined, MinusCircleOutlined, PlusCircleOutlined } from '@ant-design/icons';
 export default class CommandGroup extends React.Component {
 
     constructor(props) {
@@ -25,13 +21,21 @@ export default class CommandGroup extends React.Component {
     }
 
     render() {
-
+        const {
+            onAddCell,
+            onRemoveCell,
+            disableDelete
+        } = this.props
         return <div>
-            {
-                this.state.isExecute ? <span onClick={this.cancelExecute}><Icon type="sync" spin/></span> :
-                    <span onClick={this.evtExecute}><Icon type="caret-right"/></span>
-            }
-
+            <Space>
+                {
+                    this.state.isExecute ? <span onClick={this.cancelExecute}><LoadingOutlined /></span> :
+                        <span onClick={this.evtExecute}><CaretRightOutlined /></span>
+                    
+                }
+                <Button type="text" icon={<PlusCircleOutlined />} onClick={onAddCell}></Button>
+                <Button type="text" disabled={disableDelete} icon={<MinusCircleOutlined />} onClick={onRemoveCell}></Button>
+            </Space>
         </div>
     }
 }

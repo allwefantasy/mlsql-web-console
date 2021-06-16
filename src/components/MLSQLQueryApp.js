@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import MLSQLAceEditor from './MLSQLAceEditor'
 import './MLSQLQueryApp.scss'
 import AceEditor from "react-ace";
 import {MLSQLQueryDisplay} from "./MLSQLQueryDisplay";
@@ -7,22 +6,24 @@ import {MLSQLDash} from "./query/MLSQLDash";
 import {TabEditor} from "./editor/TabEditor";
 import {MLSQLETQuick} from "./et/MLSQLETQuick";
 import {Resizable} from "re-resizable";
-import ExecuteUnit from "./notebook/ExecuteUnit";
 import LeftTreePane from '../v1/async_execute/LeftTreePane';
 import '../v1/analysis/workshop.scss'
-
 class MLSQLQueryApp extends Component {
 
     constructor(props) {
         super(props);
         // create a ref to store the textInput DOM element
-        this.state = {sqlContent: "", displayEditor: "normal"}
+        this.state = {
+            sqlContent: "",
+            displayEditor: "normal"
+        }
         
         this.editorGroup = React.createRef()
         this.messageBox = React.createRef()
         this.display = React.createRef()
         this.dash = React.createRef()
         this.etRef = React.createRef()
+        
 
         // key is script id
         // value is editor ref
@@ -32,14 +33,13 @@ class MLSQLQueryApp extends Component {
 
     openExistsOrNewEditor = (script) => {
         const self = this
-
         if (this.fileToEditorMap.hasOwnProperty(script.id)) {
             const editorRef = this.fileToEditorMap[script.id]
             editorRef.ref.text(script.content, script.id)
             this.editorGroup.current.onChange(editorRef.activeKey)
-
+            
         } else {
-            this.editorGroup.current.addFull(script.name, (editorRef) => {
+            this.editorGroup.current.addFull(script, (editorRef) => {
                 editorRef.ref.text(script.content, script.id)
                 self.fileToEditorMap[script.id] = editorRef
             })
